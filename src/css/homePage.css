@@ -1,0 +1,271 @@
+
+
+.screen a {
+  display: contents;
+  text-decoration: none;
+}
+
+.container-center-horizontal {
+  display: flex;
+  margin-top: -8px;
+  flex-direction: row;
+  justify-content: center;
+  pointer-events: none;
+  width: 1366px;
+  
+  /* height: 100%; */
+}
+
+.container-center-horizontal>* {
+  flex-shrink: 0;
+  pointer-events: auto;
+}
+.home {
+  align-items: flex-start;
+  /* background-color:red; */
+  display: flex;
+  height: 790px;
+  overflow: hidden;
+  width: 1346.9px;
+  margin-left: -7px;
+}
+.groupe-2 {
+  display: flex;
+  height: 46px;
+  width: 228px;
+  overflow: hidden;
+}
+
+.groupe-1 {
+  display: flex;
+  /* height: 26px; */
+  flex: 1;
+  margin-bottom: -7.7px;
+  margin-right: -1.7px;
+  margin-top: -14.5px;
+  width: 214.75px;
+}
+
+.rectangle-1 {
+  border-radius: 39px;
+  flex: 1;
+  object-fit: cover;
+  width: 214.75px;
+}
+
+.x2 {
+  /* display: flex;  */
+  height: 794px;
+  margin-top: 180px;
+  width: 794px;
+
+}
+
+.x2-1 {
+  flex: 1;
+  margin-bottom: -12px !important;
+  margin-left: -19px !important;
+  margin-right: -9px !important;
+  margin-top: -6px !important;
+  object-fit: cover !important;
+  width: 612.25px !important;
+}
+
+
+
+.flex-col {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-left: -310px;
+  margin-top: 67px;
+  min-height: 1192px;
+  position: relative;
+  width: 800px;
+  
+}
+
+.overlap-group1 {
+  align-items: flex-start;
+  background-color: gold;
+  border-radius: 36px;
+  display: flex;
+  height: 42px;
+  margin-left: 149.75px;
+  min-width: 222px;
+  padding: 11.9px 4.4px;
+  position: relative;
+}
+
+
+.x3 {
+
+  background-size: cover;
+  height: 1000px;
+  width: 1000px;
+  left: 0;
+  position: absolute;
+  top: 0;
+}
+
+.group-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-left: 150px;
+  margin-top: -410px;
+  min-height: 1510px;
+  width: 1304px;
+}
+
+.overlap-group2 {
+  height: 1304px;
+  position: relative;
+  width: 1304px;
+}
+
+.trac-1 {
+  height: 200px;
+  width: 200px;
+  left: 570px;
+  top: 373px;
+  object-fit: cover;
+  position: absolute;
+}
+
+.groupe-6 {
+  height: 60px;
+  width: 60px;
+  left: 605px;
+  object-fit: cover;
+  position: absolute;
+  top: 480px;
+}
+
+.trac-84 {
+  height: 30px;
+  left: 0px;
+  object-fit: cover;
+  position: absolute;
+  top: 1px;
+  width: 30px;
+
+}
+
+.trac-container {
+  height: 44px;
+  width: 44px;
+  left: 620px;
+  position: absolute;
+  top: 495px;
+cursor: pointer;
+}
+
+.trac-85 {
+  height: 34px;
+  left: -2px;
+  object-fit: cover;
+  position: absolute;
+  top: -1px;
+  width: 34px;
+}
+
+.why-do-we-use-iti {
+  color: #570B03;
+  font-family: "cera_pro";
+  font-size: var(--font-size-m);
+  font-weight: 500;
+  left: 190px;
+  letter-spacing: 0;
+  line-height: 25px;
+  position: absolute;
+  top: 552px;
+  white-space: nowrap;
+}
+
+.span0 {
+  font-family: "cerapro-black";
+  font-weight: 900;
+  font-size: 25px;
+}
+
+.span1 {
+  font-family: "cerapro-medium";
+
+}
+
+.rectangle-9 {
+  background-color: #570B03;
+  border-radius: 28px;
+  height: 56px;
+  left: 190px;
+  position: absolute;
+  top: 770px;
+  width: 194px;
+}
+
+.rectangle-10 {
+  background-color: #570B03;
+  border-radius: 28px;
+  height: 56px;
+  left: 400px;
+  position: absolute;
+  top: 770px;
+  width: 194px;
+}
+
+.ellipse-3 {
+  background-color: gold;
+  border-radius: 25px;
+  height: 50px;
+  left: 195px;
+  position: absolute;
+  top: 772.5px;
+  width: 50px;
+}
+
+.icon-play {
+  height: 32px;
+  left: 210px;
+  object-fit: cover;
+  position: absolute;
+  top: 782px;
+  width: 28px;
+}
+
+.watch-me {
+  color: gold;
+  font-family: "cerapro-bold";
+  font-size: "font-size-m";
+  font-weight: 700;
+  left: 260px;
+  letter-spacing: 0;
+  line-height: 25px;
+  position: absolute;
+  top: 785px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+
+.groupe-7 {
+  height: 75px;
+  /* position: center; */
+  /* position: absolute; */
+  margin-top: -200px;
+  object-fit: cover;
+  width: 72px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.rectangle-13 {
+  -webkit-backdrop-filter: blur(30px) brightness(115%);
+  backdrop-filter: blur(30px) brightness(115%);
+  /* height: 768px;
+  width: 1366px;
+  top: 300px;
+  display: none;
+  position: center; */
+  /* transform: translate(-50%, -50%); */
+}

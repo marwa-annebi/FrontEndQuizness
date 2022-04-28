@@ -1,0 +1,20 @@
+@font-face {
+    font-family: "CeraPro-Black";
+    font-style: normal;
+    font-weight: 900;
+    src: url("./fonts/CeraProBlack.otf") format("opentype");
+}
+
+@font-face {
+    font-family: "CeraPro-Medium";
+    font-style: normal;
+    font-weight: 500;
+    src: url("./fonts/CeraProMedium.otf") format("opentype");
+}
+
+@font-face {
+    font-family: "CeraPro-Bold";
+    font-style: normal;
+    font-weight: 700;
+    src: url("./fonts/CeraProBold.otf") format("opentype");
+}
