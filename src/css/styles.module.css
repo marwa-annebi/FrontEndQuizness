@@ -1,0 +1,15 @@
+
+
+.green_btn {
+	border: none;
+	outline: none;
+	padding: 12px 0;
+	background-color: #570B03;
+	border-radius: 20px;
+	width: 180px;
+	font-weight: 700;
+color: gold;
+	cursor: pointer;
+	font-family: "cerapro-bold";
+    font-size: var(--font-size-m);
+}

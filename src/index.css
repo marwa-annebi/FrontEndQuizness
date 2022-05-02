@@ -18,3 +18,7 @@
     font-weight: 700;
     src: url("./fonts/CeraProBold.otf") format("opentype");
 }
+.App{
+    font-family: "cerapro-bold";
+    text-align: center;
+}

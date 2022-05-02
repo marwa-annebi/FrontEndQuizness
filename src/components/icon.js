@@ -1,6 +1,6 @@
-export default function Icon({ children }) {
+export default function Icon({ children ,onclick}) {
   return (
-    <div style={StyledIcon} className="a1">
+    <div style={StyledIcon} className="a1" onClick={onclick}>
       {children}
     </div>
   );
