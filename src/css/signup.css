@@ -14,11 +14,11 @@
     margin-bottom: 10px;
 }
 
-.rectangle-white {
+.form {
     flex-direction: column;
 }
 
-::placeholder {
+::label {
     color: #560a02;
     font-family: "cerapro-bold";
     font-size: var(--font-size-m);
@@ -152,21 +152,18 @@
     cursor: pointer;
     position: absolute;
     object-fit: cover;
-    top: 380px;
-    left: 200px
+    top: 20px;
+    left: 10px
 }
-
-
-
 .IconsContainer1 {
     display: flex;
     justify-content: space-between;
     /* align-items: center; */
     /* text-align:1 center; */
     margin: 2rem 0rem 0;
-    margin-left: 110px;
+    margin-left: 100px;
     width: 50%;
-    margin-top: 80px;
+    margin-top: 70px;
 
 }
 
