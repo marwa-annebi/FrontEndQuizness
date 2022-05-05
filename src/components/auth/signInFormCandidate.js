@@ -9,6 +9,7 @@ import { makeStyles, TextField, Button } from "@material-ui/core";
 import axios from "axios";
 import Loading from "../Loading";
 import Notification from "../Notification";
+import { Link } from "react-router-dom";
 const styles = makeStyles({
   textField: {
     width: "70%",
@@ -135,7 +136,9 @@ function SignInFormCandidate() {
           <Button variant="primary" type="submit">
             <img src={iconPlay} className="iconPlay" />
           </Button>
+          <Link to="/lostPassword/2" >
           <h4 className="lost-your-password">Lost your password ?</h4>
+          </Link>
           <div className="IconsContainer">
                     <Icon onclick={google}>
               <FaGoogle size={"40px"} />
