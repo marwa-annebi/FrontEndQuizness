@@ -7,7 +7,7 @@ import {
   makeStyles,
   Paper,
 } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import PasswordStrengthBar from "react-password-strength-bar";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
@@ -15,6 +15,8 @@ import { TextField } from "@mui/material";
 import "./../../../css/resetPassword.css";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import Loading from "../../Loading";
+import Notification from "../../Notification";
 const styles = makeStyles({
   textField: {
     // width: "200%",
@@ -87,18 +89,18 @@ export default function ResetPassword() {
     message: "",
     type: "",
   });
-  const url = `/auth/setNewPassword/${params.id}/${params.resetToken}/${params.type}`;
-  useEffect(() => {
-    const verifyUrl = async () => {
-      try {
-        await axios.get(url);
-        setValidUrl(true);
-      } catch (error) {
-        setValidUrl(false);
-      }
-    };
-    verifyUrl();
-  }, [params, url]);
+  //   const url = ;
+  //   useEffect(() => {
+  //     const verifyUrl = async () => {
+  //       try {
+  //         await axios.get(url);
+  //         setValidUrl(true);
+  //       } catch (error) {
+  //         setValidUrl(false);
+  //       }
+  //     };
+  //     verifyUrl();
+  //   }, [params, url]);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -108,7 +110,13 @@ export default function ResetPassword() {
         },
       };
       setloading(true);
-      const { data } = await axios.post(url, { password }, config);
+      const { data } = await axios.post(
+        `/auth/setNewPassword/${params.id}/${params.resetToken}/${params.type}`,
+        { password },
+        config
+      );
+      console.log(`${params.id}`);
+      //   setValidUrl(true)
       setNotify({
         isOpen: true,
         message: data.message,
@@ -131,9 +139,11 @@ export default function ResetPassword() {
     }
   };
   return (
-    <Paper className="form form--wrapper" elevation={8}>
-      <CssBaseline />
-      {validUrl ? (
+    <Fragment>
+      {loading && <Loading />}
+      <Notification notify={notify} setNotify={setNotify} />
+      <Paper className="form form--wrapper" elevation={8}>
+        <CssBaseline />
         <form className="form" onSubmit={handleSubmit}>
           <h1 className="header4">Reset password</h1>
 
@@ -179,9 +189,7 @@ export default function ResetPassword() {
             submit
           </Button>
         </form>
-      ) : (
-        <h1>404 Not Found</h1>
-      )}
-    </Paper>
+      </Paper>
+    </Fragment>
   );
 }

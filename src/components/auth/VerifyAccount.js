@@ -102,7 +102,7 @@ export default function VerifyAccount() {
         config
       );
       setValidUrl(true);
-      localStorage.setItem("userInfo", JSON.stringify(data));
+      // localStorage.setItem("userInfo", JSON.stringify(data));
       console.log(params.id);
     } catch (error) {
       if (

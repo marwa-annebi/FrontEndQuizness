@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./../../css/siginFormQuizMaster.css";
 import iconPlay from "./../../assets/polygone-2-1@1x.png";
 import Icon from "../icon";
@@ -8,6 +8,8 @@ import { Button, makeStyles, TextField } from "@material-ui/core";
 import axios from "axios";
 import Loading from "../Loading";
 import Notification from "../Notification";
+import { Link, useNavigate } from "react-router-dom";
+
 const styles = makeStyles({
   textField: {
     width: "70%",
@@ -56,6 +58,7 @@ export default function SigInForm() {
     message: "",
     type: "",
   });
+  const navigate = useNavigate();
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
@@ -65,17 +68,22 @@ export default function SigInForm() {
         },
       };
       setloading(true);
+      console.log("hello");
       const { data } = await axios.post(
         "/auth/loginUser",
         { email, password, type: "3" },
         config
       );
-
-      localStorage.setItem("userInfo", JSON.stringify(data));
+      localStorage.setItem("quizmasterInfo", JSON.stringify(data));
+      // console.log(userInfo);
+      console.log("hello");
+      // if(data){
+      //   navigate("/dashboard/quizMaster")
+      // }
       setloading(false);
     } catch (error) {
       setloading(false);
-
+      console.log(error.response.data.message);
       if (
         error.response &&
         error.response.status >= 400 &&
@@ -89,66 +97,78 @@ export default function SigInForm() {
       }
     }
   };
+  useEffect(() => {
+    const quizmasterInfo = localStorage.getItem("quizmasterInfo");
+    if (!quizmasterInfo) {
+    }
+    // console.log(quizmasterInfo);
+    else if (quizmasterInfo) {
+      navigate("/dashboard/quizMaster");
+      window.location.reload(true);
+    }
+  }, [navigate]);
 
   return (
-    <div>
+    // <div>
+    <div className="rectangle-white">
       {loading && <Loading />}
       <Notification notify={notify} setNotify={setNotify} />
-      <div className="rectangle-white">
-        <h1 className="title">log in as Quiz master </h1>
-        <form onSubmit={submitHandler} style={{ flexDirection: "column" }}>
-          <TextField
-            type="email"
-            // class="form__field"
-            label="Email"
-            value={email}
-            id="email"
-            required
-            onChange={(e) => setEmail(e.target.value)}
-            className={classes.textField}
-            InputProps={{
-              className: classes.input,
-            }}
-            InputLabelProps={{ className: classes.label }}
-          />
-          <br />
-          <TextField
-            type="password"
-            // class="form__field"
-            label="Password"
-            value={password}
-            id="password"
-            required
-            onChange={(e) => setPassword(e.target.value)}
-            className={classes.textField}
-            InputProps={{
-              className: classes.input,
-            }}
-            InputLabelProps={{ className: classes.label }}
-          />
-          <br />
-          <Button variant="primary" type="submit">
-            <img src={iconPlay} className="iconPlay" />
-          </Button>
+      <h1 className="title">log in as Quiz master </h1>
+      <form onSubmit={submitHandler} style={{ flexDirection: "column" }}>
+        <TextField
+          type="email"
+          // class="form__field"
+          label="Email"
+          value={email}
+          id="email"
+          required
+          onChange={(e) => setEmail(e.target.value)}
+          className={classes.textField}
+          InputProps={{
+            className: classes.input,
+          }}
+          InputLabelProps={{ className: classes.label }}
+        />
+        <br />
+        <TextField
+          type="password"
+          // class="form__field"
+          label="Password"
+          value={password}
+          id="password"
+          required
+          onChange={(e) => setPassword(e.target.value)}
+          className={classes.textField}
+          InputProps={{
+            className: classes.input,
+          }}
+          InputLabelProps={{ className: classes.label }}
+        />
+        <br />
+        <Button variant="primary" type="submit">
+          <img src={iconPlay} className="iconPlay" />
+        </Button>
+        <Link to="/lostPassword/3">
           <h4 className="lost-your-password">Lost your password ?</h4>
-          <div className="IconsContainer">
-            <Icon onclick={google}>
-              <FaGoogle size={"40px"} />
-            </Icon>
-            <Icon onclick={linkedin}>
-              <FaLinkedinIn size={"40px"} />
-            </Icon>
-            <Icon onclick={microsoft}>
-              <FaMicrosoft size={"40px"} />
-            </Icon>
-          </div>
-          <div style={{ marginTop: "50px" }}>
-            <a href="#" className="btn-sign-up" onClick={switchToSignup}>
-              sign up
-            </a>
-          </div>
-        </form>
-      </div>
+        </Link>
+        <div className="IconsContainer">
+          <Icon onclick={google}>
+            <FaGoogle size={"40px"} />
+          </Icon>
+          <Icon onclick={linkedin}>
+            <FaLinkedinIn size={"40px"} />
+          </Icon>
+          <Icon onclick={microsoft}>
+            <FaMicrosoft size={"40px"} />
+          </Icon>
+        </div>
+        <div style={{ marginTop: "50px" }}>
+          <a href="#" className="btn-sign-up" onClick={switchToSignup}>
+            sign up
+          </a>
+        </div>
+      </form>
     </div>
+    // </div>
   );
 }

@@ -88,7 +88,7 @@ export default function ForgotPasswordScreen() {
         { email, type: params.type },
         config
       );
-      localStorage.setItem("userInfo", JSON.stringify(data));
+      // localStorage.setItem("userInfo", JSON.stringify(data));
       setNotify({
         isOpen: true,
         message: data.message,
