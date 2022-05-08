@@ -72,7 +72,7 @@ function SignInFormCandidate() {
         config
       );
       // console.log(data);
-      localStorage.setItem("userInfo", JSON.stringify(data));
+      localStorage.setItem("candidateInfo", JSON.stringify(data));
       setloading(false);
     } catch (error) {
       setloading(false);
@@ -93,11 +93,11 @@ function SignInFormCandidate() {
   };
 
   return (
-    <div>
+    // <div>
+      <div className="rectangle-white">
       {" "}
       {loading && <Loading />}
       <Notification notify={notify} setNotify={setNotify} />
-      <div className="rectangle-white">
         <h1 className="title" style={{ color: "#560a02" }}>
           log in as Candidate{" "}
         </h1>
@@ -157,7 +157,7 @@ function SignInFormCandidate() {
           </div>{" "}
         </form>
       </div>
-    </div>
+    // </div>
   );
 }
 
