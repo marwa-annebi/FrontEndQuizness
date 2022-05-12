@@ -5,8 +5,7 @@ import Icon from "../icon";
 import { FaGoogle, FaLinkedinIn, FaMicrosoft } from "react-icons/fa";
 import { Button, FormControl, makeStyles, TextField } from "@material-ui/core";
 import axios from "axios";
-import { Snackbar } from "@mui/material";
-import MuiAlert from "@mui/material/Alert";
+import PasswordField from "material-ui-password-field";
 import Loading from "../Loading";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
@@ -14,6 +13,10 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import PasswordStrengthBar from "react-password-strength-bar";
 import Notification from "../Notification";
+import { useNavigate } from "react-router-dom";
+import isEmail from "validator/lib/isEmail";
+import Password from "antd/lib/input/Password";
+
 const styles = makeStyles({
   textField: {
     width: "70%",
@@ -43,7 +46,6 @@ const styles = makeStyles({
   focused: {},
 });
 
-
 function SignUpQuizmaster() {
   const google = () => {
     window.open("http://localhost:5000/auth/google/Quizmaster", "_self");
@@ -65,6 +67,8 @@ function SignUpQuizmaster() {
   const [confirmpassword, setConfirmPassword] = useState("");
   const [loading, setloading] = useState(false);
   const [showPassword, setshowPassword] = useState(false);
+  const [isValid, setIsValid] = useState(false);
+  const [dirty, setDirty] = useState(false);
   const [notify, setNotify] = useState({
     isOpen: false,
     message: "",
@@ -77,7 +81,7 @@ function SignUpQuizmaster() {
   const handleMouseDownPassword = () => {
     setshowPassword(false);
   };
-
+  const navigate = useNavigate();
   const submitHandler = async (e) => {
     e.preventDefault();
     if (password !== confirmpassword) {
@@ -99,13 +103,12 @@ function SignUpQuizmaster() {
           { firstName, lastName, email, password },
           config
         );
-        setNotify({
-          isOpen: true,
-          message: "verify your email ,check your inbox",
-          type: "success",
-        });
-        setloading(false);
-        localStorage.setItem("userInfo", JSON.stringify(data));
+        localStorage.setItem("quizmasterInfo", JSON.stringify(data));
+        const quizmasterInfo =  JSON.parse(localStorage.getItem("quizmasterInfo"));
+        console.log(quizmasterInfo);
+        if (quizmasterInfo) {
+          navigate(`/sendVerification/${quizmasterInfo.userId}`);
+        }
       } catch (error) {
         if (
           error.response &&
@@ -121,6 +124,17 @@ function SignUpQuizmaster() {
         }
       }
     }
+  };
+  const handleChange = (event) => {
+    const val = event.target.value;
+
+    if (isEmail(val)) {
+      setIsValid(true);
+    } else {
+      setIsValid(false);
+    }
+
+    setEmail(val);
   };
 
   return (
@@ -165,8 +179,9 @@ function SignUpQuizmaster() {
             label="email"
             value={email}
             id="email"
-            // required
-            onChange={(e) => setEmail(e.target.value)}
+            error={dirty && isValid === false}
+            onBlur={() => setDirty(true)}
+            onChange={(e) => handleChange(e)}
             className={classes.textField}
             InputProps={{
               className: classes.input,

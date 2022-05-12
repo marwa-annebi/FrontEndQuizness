@@ -6,6 +6,8 @@ import { IoLogOut } from "react-icons/io5";
 import { IoMdAddCircle } from "react-icons/io";
 import { RiNotification2Fill } from "react-icons/ri";
 import { IconContext } from "react-icons";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 const styles = makeStyles({
   overlapGroup5: {
     alignItems: "center",
@@ -19,9 +21,7 @@ const styles = makeStyles({
     width: "55px",
     padding: "4px 3px 4px 4px",
   },
-
   image1: {
-    // borderRadius: "35px",
     height: "55px",
     objectFit: "cover",
     width: "55px",
@@ -36,7 +36,6 @@ const styles = makeStyles({
     minHeight: "21px",
     minWidth: "168px",
     whiteSpace: "nowrap",
-    // marginTop:"50px"
   },
   groupe9: {
     alignItems: "center",
@@ -45,31 +44,20 @@ const styles = makeStyles({
     display: "flex",
     height: "55px",
     justifyContent: "flex-end",
-    // marginTop: "10px",
-    // marginLeft: "8px",
     width: "190px",
-    // paddingTop:"15px",
-    // paddingBottom:"-10px"
-
-    // padding: "20px 9px",
   },
   iconLogout: {
     backgroundColor: "gold",
     alignItems: "center",
-    // fontSize:"40px"
     width: "55px",
     height: "51px",
-    // justifyContent: "center",
     borderRadius: "39px",
     marginLeft: "8px",
   },
   addQuiz: {
     fontFamily: "cerapro-bold",
     fontWeight: 700,
-    // fontSize: "font-size-m",
     letterSpacing: 0,
-    // lineHeight: "31px",
-    // minHeight: "41px",
     whiteSpace: "nowrap",
     color: "#570b03",
   },
@@ -80,22 +68,24 @@ const styles = makeStyles({
     minWidth: "186px",
     paddingRight: "50px",
     justifyContent: "flex-end",
-    // alignItems: "flex-end",
-    paddingLeft:"0px"
+    paddingLeft: "0px",
   },
   iconAdd: {
-    // backgroundColor: "#570b03",
-    // alignItems: "center",
-    // fontSize:"40px"
-    // width: "70px",
-    // height: "57px",
-    // justifyContent: "center",
-    // borderRadius: "39px",
-    // marginLeft: "8px",
     paddingLeft: "0px",
   },
 });
 export default function NavBar() {
+  const navigate = useNavigate();
+  const logoutHandler = async () => {
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+    await axios.get("/auth/logout", config);
+    localStorage.removeItem("quizmasterInfo");
+    navigate("/");
+  };
   const classes = styles();
   return (
     <AppBar style={{ backgroundColor: "white" }} elevation="0">
@@ -121,10 +111,8 @@ export default function NavBar() {
           >
             <Grid item>
               <Button
-                // color="primary"
                 size="large"
                 startIcon={
-                  //   <IconButton className={classes.iconAdd}>
                   <IconContext.Provider
                     value={{
                       color: "#570B03",
@@ -134,7 +122,6 @@ export default function NavBar() {
                   >
                     <IoMdAddCircle />
                   </IconContext.Provider>
-                  //   </IconButton>
                 }
                 className={classes.btn}
               >
@@ -153,7 +140,7 @@ export default function NavBar() {
                 <IconContext.Provider
                   value={{ color: "#570B03", size: "70px" }}
                 >
-                  <IoLogOut />
+                  <IoLogOut onClick={logoutHandler} />
                 </IconContext.Provider>
               </IconButton>
             </Grid>

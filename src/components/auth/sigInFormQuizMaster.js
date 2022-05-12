@@ -77,9 +77,10 @@ export default function SigInForm() {
       localStorage.setItem("quizmasterInfo", JSON.stringify(data));
       // console.log(userInfo);
       console.log("hello");
-      // if(data){
-      //   navigate("/dashboard/quizMaster")
-      // }
+      if (data) {
+        navigate("/dashboard/quizMaster");
+      }
+      window.location.reload(true);
       setloading(false);
     } catch (error) {
       setloading(false);
@@ -97,16 +98,16 @@ export default function SigInForm() {
       }
     }
   };
-  useEffect(() => {
-    const quizmasterInfo = localStorage.getItem("quizmasterInfo");
-    if (!quizmasterInfo) {
-    }
-    // console.log(quizmasterInfo);
-    else if (quizmasterInfo) {
-      navigate("/dashboard/quizMaster");
-      window.location.reload(true);
-    }
-  }, [navigate]);
+  // useEffect(() => {
+  //   const quizmasterInfo = localStorage.getItem("quizmasterInfo");
+  //   if (!quizmasterInfo) {
+  //   }
+  //   // console.log(quizmasterInfo);
+  //   else if (quizmasterInfo) {
+  //     navigate("/dashboard/quizMaster");
+  //   }
+  //   window.location.reload(true);
+  // }, [navigate]);
 
   return (
     // <div>

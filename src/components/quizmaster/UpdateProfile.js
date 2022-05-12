@@ -1,7 +1,10 @@
-import React from 'react'
+import React from "react";
+import ContentMenuItem from "./../ContentMenuItem";
 
 export default function UpdateProfile() {
   return (
-    <div>UpdateProfile</div>
-  )
+    <ContentMenuItem>
+      <div>UpdateProfile</div>
+    </ContentMenuItem>
+  );
 }
