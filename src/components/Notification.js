@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Notification(props) {
-  const { notify, setNotify } = props;
+  const { notify, setNotify ,vertical,horizontal} = props;
   const classes = useStyles();
 
   const handleClose = (event, reason) => {
@@ -27,7 +27,7 @@ export default function Notification(props) {
       className={classes.root}
       open={notify.isOpen}
       autoHideDuration={3000}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+   anchorOrigin={{ vertical, horizontal }}
       onClose={handleClose}
     >
       <Alert severity={notify.type} onClose={handleClose}>

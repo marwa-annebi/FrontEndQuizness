@@ -10,14 +10,14 @@ import {
 } from "@ant-design/icons";
 import { Menu } from "antd";
 import { Home } from "@material-ui/icons";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import QuestionsBank from "./QuestionsBank";
 function getItem(label, key) {
   return {
+    label,
     key,
     // icon,
     // children,
-    label,
     // type,
   };
 }
@@ -25,37 +25,51 @@ function getItem(label, key) {
 const items = [
   getItem(
     // <div style={{ padding: "100px", height: "" }}>
-      <Link className="link" to="/dashboard/quizMaster/updateProfile">
-        Account
-      </Link>
+    <NavLink
+      className={({ isActive }) => (isActive ? "link-active" : "link")}
+      to="/dashboard/quizMaster/updateProfile"
+    >
+      Account
+    </NavLink>,
     // </div>
-      ,
     "1"
   ),
   getItem(
-    <Link className="link" to="/dashboard/quizMaster/category">
+    <NavLink
+      className={({ isActive }) => (isActive ? "link-active" : "link")}
+      to="/dashboard/quizMaster/category"
+    >
       Category{" "}
-    </Link>,
+    </NavLink>,
     "2"
   ),
   getItem(
     <div className="divLink">
-      <Link className="link" to="/dashboard/quizMaster/questionsBank">
+      <NavLink
+        className={({ isActive }) => (isActive ? "link-active" : "link")}
+        to="/dashboard/quizMaster/questionsBank"
+      >
         Questions bank
-      </Link>
+      </NavLink>
     </div>,
     "3"
   ),
   getItem(
-    <Link className="link" to="/dashboard/quizMaster/quizHistory">
+    <NavLink
+      className={({ isActive }) => (isActive ? "link-active" : "link")}
+      to="/dashboard/quizMaster/quizHistory"
+    >
       Quiz history
-    </Link>,
+    </NavLink>,
     "4"
   ),
   getItem(
-    <Link className="link" to="/dashboard/quizMaster/candidate">
+    <NavLink
+      className={({ isActive }) => (isActive ? "link-active" : "link")}
+      to="/dashboard/quizMaster/candidate"
+    >
       List Candidate{" "}
-    </Link>,
+    </NavLink>,
     "5"
   ),
   // getItem("Voucher ", "5"),
@@ -65,8 +79,8 @@ export default function SideMenu() {
   return (
     <div className="menu">
       <Menu
-        defaultSelectedKeys={["1"]}
-        // defaultOpenKeys={["sub1"]}
+        defaultSelectedKeys={["1"]} 
+        defaultOpenKeys={["1"]}
         mode="inline"
         // theme="light"
         items={items}

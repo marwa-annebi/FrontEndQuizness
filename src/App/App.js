@@ -16,7 +16,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<Dashboard />} path="/dashboard/quizMaster/*" exact >
-          <Route path="updateProfile" element={<UpdateProfile/>} />
+          <Route path="updateProfile" element={<UpdateProfile/>}  />
           <Route path="quizHistory" element={<QuizHistory/>} />
           <Route path="questionsBank" element={<QuestionsBank/>} />
           <Route path="category" element={<Category/>} />

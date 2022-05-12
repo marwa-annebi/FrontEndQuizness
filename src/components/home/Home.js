@@ -55,7 +55,8 @@ export default function Home() {
               </span>
             </h1>
             <div className="rectangle-9"></div>
-            <div className="rectangle-10"></div>
+            <div className="rectangle-10" 
+            ></div>
             <div className="ellipse-3"></div>
             <img className="icon-play" src={polygone} />
 
