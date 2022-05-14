@@ -7,13 +7,15 @@ import trac1 from "./../../assets/trac--1@1x.png";
 import groupe6 from "./../../assets/groupe-6@1x.png";
 import groupe84 from "./../../assets/trac-84-1.png";
 import trac85 from "./../../assets/trac--85-1x.png";
-import polygone from "./../../assets/polygone.png";
+import polygone from "./../../assets/Polygone.svg";
 import msngr from "./../../assets/msngr.png";
 import PopupVideo from "../PopupVideo";
-import AuthForm from "./../auth/AuthForm";
+import chronomater from "./../../assets/chronometer.svg";
+import PopUpRegisterQuizmaster from "../auth/PopUpRegisterQuizmaster";
 export default function Home() {
   const [openPopup, setOpenPopup] = useState(false);
   const [openPopupLogin, setopenPopupLogin] = useState(false);
+  
   return (
     <div className="container-center-horizontal">
       <div className="home screen">
@@ -30,14 +32,14 @@ export default function Home() {
             <img className="groupe-6" src={groupe6} />
             <div
               className="trac-container"
-              onClick={() => {
-                setopenPopupLogin(true);
-              }}
+              // onClick={() => {
+              //   setopenPopupLogin(true);
+              // }}
             >
               <img className="trac-84" src={groupe84} />
               <img className="trac-85" src={trac85} />
             </div>
-      <AuthForm openLogin={openPopupLogin} setOpenPopupLogin={setopenPopupLogin} />
+            {/* <AuthForm openLogin={openPopupLogin} setOpenPopupLogin={setopenPopupLogin} /> */}
 
             <h1 className="why-do-we-use-iti">
               <span className="span0">
@@ -55,8 +57,17 @@ export default function Home() {
               </span>
             </h1>
             <div className="rectangle-9"></div>
-            <div className="rectangle-10" 
-            ></div>
+            <div
+              className="rectangle-10"
+              onClick={() => {
+                setopenPopupLogin(true);
+              }}
+            >
+              7 Days Free Trial
+            </div>
+            <div className="ellipse-4"></div>
+
+            <img className="chrono" src={chronomater} />
             <div className="ellipse-3"></div>
             <img className="icon-play" src={polygone} />
 
@@ -73,13 +84,17 @@ export default function Home() {
           <img className="groupe-7" src={msngr} />
         </div>
       </div>
+            <PopUpRegisterQuizmaster
+              open={openPopupLogin}
+              setOpenPopup={setopenPopupLogin}
+            />
     </div>
   );
 }
 function X3(props) {
   const { src } = props;
 
-  return <div className="x3" style={{ backgroundImage: `url(${src})` }}></div>;
+  return <div className="x4" style={{ backgroundImage: `url(${src})` }}></div>;
 }
 function Logo(props) {
   const { src } = props;

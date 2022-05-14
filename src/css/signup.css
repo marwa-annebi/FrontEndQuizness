@@ -35,7 +35,7 @@
 .form__group1 {
     position: relative;
     padding: 15px 0 0;
- /* width: 50%; */
+    /* width: 50%; */
 }
 
 .form__field {
@@ -147,14 +147,21 @@
 }
 
 .iconPlay1 {
-    height: 40px;
-    width: 34px;
+    height: 50px;
+    width: 44px;
     cursor: pointer;
     position: absolute;
     object-fit: cover;
     top: 20px;
-    left: 10px
+    /* bottom: 30px; */
+    /* left: 10px */
+    color: #560a02;
 }
+
+.iconPlay1:hover {
+    color: gold;
+}
+
 .IconsContainer1 {
     display: flex;
     justify-content: space-between;
@@ -163,7 +170,7 @@
     margin: 2rem 0rem 0;
     margin-left: 100px;
     width: 50%;
-    margin-top: 70px;
+    margin-top: 90px;
 
 }
 
@@ -174,8 +181,31 @@
     margin-top: 10px;
 
 }
-.btn-sign-up1:hover{
-    opacity: 0.48;
-    
+
+.google:hover {
+    color: gold;
+    /* background: #560a02; */
+    /* border-radius: 4rem */
 }
 
+.a1 {
+    height: 4rem;
+    width: 4rem;
+    background: gold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4rem;
+    color: #560a02;
+}
+
+.a1:hover {
+    background-color: #560a02;
+    cursor: pointer;
+    /* box-shadow: #560a026b 0px 54px 55px, #560a0277 0px -12px 30px, #560a0273 0px 4px 6px, #560a026c 0px 12px 13px, #560a0249 0px -3px 5px; */
+}
+
+.btn-sign-up1:hover {
+    opacity: 0.48;
+
+}

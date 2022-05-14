@@ -3,11 +3,14 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import useTable from "../useTable";
 import ContentMenuItem from "./../ContentMenuItem";
-import { Form } from "react-bootstrap";
+import { IconContext } from "react-icons";
+import "./../../css/questionBank.css";
 import {
   Box,
   Collapse,
   IconButton,
+  Menu,
+  MenuItem,
   Radio,
   Table,
   TableBody,
@@ -23,6 +26,9 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Checkbox from "../../controls/Checkbox";
 import { CheckBox } from "@mui/icons-material";
+import { FaPlus, FaRegListAlt } from "react-icons/fa";
+import { CgPlayListCheck } from "react-icons/cg";
+import { GiChoice } from "react-icons/gi";
 const headCells = [
   { id: "", label: "" },
   { id: "_id_question", label: "Id" },
@@ -87,6 +93,14 @@ export default function QuestionsBank() {
     });
   };
   const [open, setOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const openMenu = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
     <ContentMenuItem>
       <TblContainer>
@@ -177,6 +191,62 @@ export default function QuestionsBank() {
         </TableBody>
       </TblContainer>
       <TblPagination />
+      <div className="divAdd">
+        <IconContext.Provider
+          value={{
+            color: "#570b03",
+            size: "25px",
+          }}
+        >
+          <Button
+            id="basic-button"
+            aria-controls={openMenu ? "basic-menu" : undefined}
+            aria-haspopup="true"
+            aria-expanded={openMenu ? "true" : undefined}
+            onClick={handleClick}
+            style={{ TextAlign: "center", width: "170px" }}
+          >
+            <FaPlus />
+          </Button>
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={openMenu}
+            onClose={handleClose}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
+            MenuProps={{
+              anchorOrigin: {
+                vertical: "bottom",
+                horizontal: "left",
+              },
+              transformOrigin: {
+                vertical: "top",
+                horizontal: "left",
+              },
+              getContentAnchorEl: null,
+            }}
+          >
+            <MenuItem
+              className="divMenu"
+              onClick={handleClose}
+              style={{ justifyContent: "center" }}
+            >
+              <CgPlayListCheck style={{ marginRight: "10px" }} /> MCQ
+            </MenuItem>
+            <MenuItem
+              className="divMenu"
+              onClick={handleClose}
+              style={{ justifyContent: "center" }}
+            >
+              <GiChoice style={{ marginRight: "10px" }} />
+              TFQ
+            </MenuItem>
+          </Menu>
+          {/* </div> */}
+        </IconContext.Provider>
+      </div>
     </ContentMenuItem>
   );
 }
