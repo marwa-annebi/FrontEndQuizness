@@ -15,6 +15,7 @@
   width: 100vw;
   /* height: 100%; */
 }
+
 .container-center-horizontal>* {
   flex-shrink: 0;
   pointer-events: auto;
@@ -108,7 +109,7 @@
 }
 
 
-.x3 {
+.x4 {
 
   background-size: cover;
   height: 1000px;
@@ -122,7 +123,7 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-  margin-left: 150px;
+  margin-left: 120px;
   margin-top: -410px;
   min-height: 1510px;
   width: 1304px;
@@ -183,7 +184,7 @@
 .why-do-we-use-iti {
   color: #570B03;
   font-family: "cera_pro";
-  font-size: var(--font-size-m);
+  font-size: 20px;
   font-weight: 500;
   left: 190px;
   letter-spacing: 0;
@@ -207,7 +208,7 @@
 .rectangle-9 {
   background-color: #570B03;
   border-radius: 28px;
-  height: 56px;
+  height: 46px;
   left: 190px;
   position: absolute;
   top: 770px;
@@ -215,41 +216,64 @@
 }
 
 .rectangle-10 {
-  background-color: #570B03;
-  border-radius: 28px;
-  height: 56px;
+  /* background-color: #570B03; */
+  /* border-radius: 28px; */
+  height: 36px;
   left: 400px;
-  position: absolute;
+  /* position: absolute; */
   top: 770px;
-  width: 194px;
-  color: gold;
-  font-family: "cerapro-bold";
-  font-size: "font-size-m";
-  font-weight: 700;
+  width: 220px;
+  font-weight: 900;
+  background-color: var(--gold);
+  border: 4px solid var(--mahogany-3);
+  border-radius: 28px;
+  color: var(--mahogany-3);
+  font-family: var(--font-family-cerapro-bold);
+  font-size: 27;
   /* left: 260px; */
   cursor: pointer;
-
+  line-height: 32px;
+align-items: center;
+text-align: center;
   letter-spacing: 0;
   /* line-height: 25px;  */
-  /* position: absolute;   */
+  position: absolute;  
 }
 
 .ellipse-3 {
   background-color: gold;
   border-radius: 25px;
-  height: 50px;
+  height: 40px;
   left: 195px;
   position: absolute;
   top: 772.5px;
-  width: 50px;
+  width: 40px;
 }
 
 .icon-play {
   height: 32px;
-  left: 210px;
+  left: 205px;
   object-fit: cover;
   position: absolute;
-  top: 782px;
+  top: 777px;
+  width: 28px;
+}
+.ellipse-4 {
+  background-color: #570B03;
+  border-radius: 25px;
+  height: 43px;
+  left:400px;
+  position: absolute;
+  top: 770.5px;
+  width: 43px;
+}
+.chrono{
+  /* background-color: #570B03; */
+  height: 32px;
+  left: 408px;
+  object-fit: cover;
+  position: absolute;
+  top: 775.5px;
   width: 28px;
 }
 
@@ -260,7 +284,7 @@
   font-weight: 700;
   left: 260px;
   letter-spacing: 0;
-  line-height: 25px;
+  line-height: 15px;
   position: absolute;
   top: 785px;
   white-space: nowrap;

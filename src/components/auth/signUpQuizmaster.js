@@ -1,12 +1,8 @@
 import React, { useContext, useState } from "react";
-import { AccountContext } from "../accountContext";
-import iconPlay from "./../../assets/polygone-2-1@1x.png";
 import Icon from "../icon";
-import { FaGoogle, FaLinkedinIn, FaMicrosoft } from "react-icons/fa";
-import { Button, FormControl, makeStyles, TextField } from "@material-ui/core";
+import { FaGoogle, FaLinkedinIn, FaMicrosoft, FaPlay } from "react-icons/fa";
+import { Button, makeStyles, TextField } from "@material-ui/core";
 import axios from "axios";
-import PasswordField from "material-ui-password-field";
-import Loading from "../Loading";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -15,8 +11,8 @@ import PasswordStrengthBar from "react-password-strength-bar";
 import Notification from "../Notification";
 import { useNavigate } from "react-router-dom";
 import isEmail from "validator/lib/isEmail";
-import Password from "antd/lib/input/Password";
-
+import "./../../css/signup.css";
+import Loading from "../Loading";
 const styles = makeStyles({
   textField: {
     width: "70%",
@@ -27,9 +23,24 @@ const styles = makeStyles({
     fontWeight: 500,
   },
 
+  inputPassword: {
+    color: "black",
+    fontFamily: "cerapro-Medium",
+    letterSpacing: ".2rem",
+    underline: {
+      "&&:after": {
+        borderBottom: "none",
+      },
+    },
+    // font-size: var(--font-size-m);
+  },
+
   input: {
     color: "black",
     fontFamily: "cerapro-Medium",
+
+    // letterSpacing: ".2rem",
+
     // font-size: var(--font-size-m);
   },
   label: {
@@ -44,6 +55,15 @@ const styles = makeStyles({
     },
   },
   focused: {},
+  rectanglewhite: {
+    width: "450px",
+    backgroundColor: "white",
+    border: "3px solid gold",
+    borderRadius: "30px",
+    marginLeft: "120px",
+    height: "550px",
+    marginTop: "28px",
+  },
 });
 
 function SignUpQuizmaster() {
@@ -58,17 +78,18 @@ function SignUpQuizmaster() {
   const microsoft = () => {
     window.open("http://localhost:5000/auth/microsoft/Quizmaster", "_self");
   };
-  const { switchToSignin } = useContext(AccountContext);
+  // const { switchToSignin } = useContext(AccountContext);
   const classes = styles();
   const [firstName, setFirstName] = useState("");
   const [lastName, setlastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmPassword] = useState("");
-  const [loading, setloading] = useState(false);
+  const [loading, setloading] = useState(undefined);
   const [showPassword, setshowPassword] = useState(false);
   const [isValid, setIsValid] = useState(false);
   const [dirty, setDirty] = useState(false);
+  const [done, setDone] = useState(undefined);
   const [notify, setNotify] = useState({
     isOpen: false,
     message: "",
@@ -83,6 +104,8 @@ function SignUpQuizmaster() {
   };
   const navigate = useNavigate();
   const submitHandler = async (e) => {
+    setloading(false);
+    // setDone(undefined);
     e.preventDefault();
     if (password !== confirmpassword) {
       setNotify({
@@ -97,17 +120,21 @@ function SignUpQuizmaster() {
             "Content-type": "application/json",
           },
         };
-        setloading(true);
         const { data } = await axios.post(
           "/auth/registerQuizMaster",
           { firstName, lastName, email, password },
           config
         );
+        setloading(true);
+        // setTimeout(() => {
+        // }, 1000)
         localStorage.setItem("quizmasterInfo", JSON.stringify(data));
-        const quizmasterInfo =  JSON.parse(localStorage.getItem("quizmasterInfo"));
+        const quizmasterInfo = JSON.parse(
+          localStorage.getItem("quizmasterInfo")
+        );
         console.log(quizmasterInfo);
         if (quizmasterInfo) {
-          navigate(`/sendVerification/${quizmasterInfo.userId}`);
+          navigate(`/quizmaster/${quizmasterInfo.userId}`);
         }
       } catch (error) {
         if (
@@ -138,11 +165,25 @@ function SignUpQuizmaster() {
   };
 
   return (
-    <div>
+    <div
+    // style={{
+    //   backgroundColor: "transparent",
+    //   width: "100vw",
+    //   height: "100vh",
+    //   marginLeft: "210px",
+    //   marginTop: "57px",
+    // }}
+    >
+      <Notification
+        notify={notify}
+        setNotify={setNotify}
+        vertical="top"
+        horizontal="center"
+      />
+      {/* {!done ? ( */}
       {loading && <Loading />}
-      <Notification notify={notify} setNotify={setNotify} />
-
-      <div className="rectangle-white">
+      {/* ) : ( */}
+      <div className={classes.rectanglewhite}>
         <h1 className="title1">Register as Quiz master</h1>
         <form onSubmit={submitHandler} style={{ flexDirection: "column" }}>
           <TextField
@@ -199,7 +240,7 @@ function SignUpQuizmaster() {
             className={classes.textField}
             InputLabelProps={{ className: classes.label }}
             InputProps={{
-              className: classes.input,
+              className: classes.inputPassword,
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton
@@ -221,6 +262,7 @@ function SignUpQuizmaster() {
               width: "300px",
               marginLeft: "60px",
               marginBottom: "-20px",
+              fontFamily: "cerapro-bold",
             }}
           />
 
@@ -234,32 +276,28 @@ function SignUpQuizmaster() {
             onChange={(e) => setConfirmPassword(e.target.value)}
             className={classes.textField}
             InputProps={{
-              className: classes.input,
+              className: classes.inputPassword,
             }}
             InputLabelProps={{ className: classes.label }}
           />
           <br />
-          <Button variant="primary" type="submit">
-            <img src={iconPlay} className="iconPlay1" />
+          <Button type="submit">
+            <FaPlay className="iconPlay1" />
           </Button>
         </form>
         <div className="IconsContainer1">
           <Icon onclick={google}>
-            <FaGoogle size={"40px"} />
+            <FaGoogle size={"40px"} className="google" />
           </Icon>
           <Icon onclick={linkedin}>
-            <FaLinkedinIn size={"40px"} />
+            <FaLinkedinIn size={"40px"} className="google" />
           </Icon>
           <Icon onclick={microsoft}>
-            <FaMicrosoft size={"40px"} />
+            <FaMicrosoft size={"40px"} className="google" />
           </Icon>
         </div>
-        <div style={{ marginTop: "45px" }}>
-          <a href="#" className="btn-sign-up1" onClick={switchToSignin}>
-            sign in
-          </a>
-        </div>
       </div>
+      {/* )} */}
     </div>
   );
 }

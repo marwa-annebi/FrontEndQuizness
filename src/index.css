@@ -138,3 +138,24 @@ body {
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
   }
+  .icon:before {
+    content: "\f00d";
+}
+
+.display-swatches {
+    display: flex;
+    grid-template-columns: repeat(6, 1fr);
+    grid-gap: 10px;
+    /* justify-content: center; */
+  }
+  /* .center-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  } */
+
+
+
+
+
+  
