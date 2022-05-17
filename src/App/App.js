@@ -6,7 +6,7 @@ import VerifyAccount from "../components/auth/VerifyAccount";
 import Home from "../components/home/Home";
 import Candidate from "../components/quizmaster/Candidate";
 import Category from "../components/quizmaster/Category";
-import Dashboard from "../components/quizmaster/Dashboard";
+import Dashboard from "../components/quizmaster/dashboard";
 import QuestionsBank from "../components/quizmaster/QuestionsBank";
 import QuizHistory from "../components/quizmaster/QuizHistory";
 import UpdateProfile from "../components/quizmaster/UpdateProfile";
