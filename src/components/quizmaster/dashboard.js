@@ -15,10 +15,10 @@ export default function Dashboard() {
         <NavBar />
       </Grid>
 
-      <Grid item xs={8}>
+      <Grid item  >
         <SideMenu />
       </Grid>
-      <Grid item xs={4}>
+      <Grid item>
         <Outlet />
       </Grid>
     </Grid>

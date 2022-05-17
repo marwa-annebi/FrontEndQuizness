@@ -1,7 +1,10 @@
-import React from 'react'
+import React from "react";
+import ContentMenuItem from "./../ContentMenuItem"
 
 export default function Candidate() {
   return (
-    <div>Candidate</div>
-  )
+    <ContentMenuItem>
+      <div>Candidate</div>
+    </ContentMenuItem>
+  );
 }

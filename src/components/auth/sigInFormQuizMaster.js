@@ -22,7 +22,8 @@ const styles = makeStyles({
 
   input: {
     color: "black",
-    fontFamily: "cerapro-Medium",
+    fontFamily: "cera_pro",
+    letterSpacing: "inherit",
     // font-size: var(--font-size-m);
   },
   label: {
@@ -48,7 +49,7 @@ export default function SigInForm() {
     window.open("http://localhost:5000/auth/microsoft/Quizmaster", "_self");
   };
 
-  const { switchToSignup } = useContext(AccountContext);
+  // const { switchToSignup } = useContext(AccountContext);
   const classes = styles();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -77,9 +78,10 @@ export default function SigInForm() {
       localStorage.setItem("quizmasterInfo", JSON.stringify(data));
       // console.log(userInfo);
       console.log("hello");
-      // if(data){
-      //   navigate("/dashboard/quizMaster")
-      // }
+      if (data) {
+        navigate("/dashboard/quizMaster");
+      }
+      window.location.reload(true);
       setloading(false);
     } catch (error) {
       setloading(false);
@@ -97,16 +99,16 @@ export default function SigInForm() {
       }
     }
   };
-  useEffect(() => {
-    const quizmasterInfo = localStorage.getItem("quizmasterInfo");
-    if (!quizmasterInfo) {
-    }
-    // console.log(quizmasterInfo);
-    else if (quizmasterInfo) {
-      navigate("/dashboard/quizMaster");
-      window.location.reload(true);
-    }
-  }, [navigate]);
+  // useEffect(() => {
+  //   const quizmasterInfo = localStorage.getItem("quizmasterInfo");
+  //   if (!quizmasterInfo) {
+  //   }
+  //   // console.log(quizmasterInfo);
+  //   else if (quizmasterInfo) {
+  //     navigate("/dashboard/quizMaster");
+  //   }
+  //   window.location.reload(true);
+  // }, [navigate]);
 
   return (
     // <div>
@@ -162,11 +164,11 @@ export default function SigInForm() {
             <FaMicrosoft size={"40px"} />
           </Icon>
         </div>
-        <div style={{ marginTop: "50px" }}>
+        {/* <div style={{ marginTop: "50px" }}>
           <a href="#" className="btn-sign-up" onClick={switchToSignup}>
             sign up
           </a>
-        </div>
+        </div> */}
       </form>
     </div>
     // </div>
