@@ -2,7 +2,7 @@ import react from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ForgotPasswordScreen from "../components/auth/forgotPassword/ForgotPasswordScreen";
 import ResetPassword from "../components/auth/resetPassword/ResetPassword";
-
+import HomeQuizMaster from "../components/home/HomeQuizMaster";
 import Home from "../components/home/HomePrincipale";
 import Candidate from "../components/quizmaster/Candidate";
 import Category from "../components/quizmaster/Category";
@@ -25,7 +25,7 @@ function App() {
         </Route>
         <Route path="/" element={<Home />} exact />
         <Route element={<LinaerStepper />} path="/quizmaster/:id" exact />
-        
+
         <Route
           element={<ForgotPasswordScreen />}
           path="/lostPassword/:type"
@@ -35,6 +35,17 @@ function App() {
           element={<ResetPassword />}
           path="/setNewPassword/:id/:resetToken/:type"
           exact
+        />
+        <Route
+          path={
+            window.location.protocol +
+            "//" +
+            ":domain_name"+
+            "." +
+            window.location.host +
+            "/myHome"
+          }
+          element={<HomeQuizMaster />}
         />
         {/* <Route element={<CompanySettings/>}
         path="/account/:id"></Route> */}

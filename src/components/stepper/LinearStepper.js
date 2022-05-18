@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Stepper, Step, StepLabel } from "@material-ui/core";
 import { styled } from "@mui/material/styles";
 import Lottie from "react-lottie";
+import { Link } from "react-router-dom";
 import { IconContext } from "react-icons";
 import * as animationData from "./../../assets/lotties/11272-party-popper.json";
 import { makeStyles } from "@material-ui/core/styles";
@@ -51,6 +52,7 @@ const LinaerStepper = () => {
   const [domain_name, setdomain_name] = useState("");
   const [activeStep, setActiveStep] = useState(0);
   const [skippedSteps, setSkippedSteps] = useState([]);
+  const [subdomain, setSubDomain] = useState(null);
   const [notify, setNotify] = useState({
     isOpen: false,
     message: "",
@@ -81,6 +83,7 @@ const LinaerStepper = () => {
       setcheck((prev) => prev.filter((x) => value !== x));
     }
   };
+
   const postDetails = (pics) => {
     setPicMessage(null);
     if (pics.type === "image/jpeg" || pics.type === "image/png") {
@@ -153,6 +156,11 @@ const LinaerStepper = () => {
           },
           config
         );
+        setNotify({
+          isOpen: false,
+          message: data.message,
+          type: "success",
+        });
         console.log(data);
       } catch (error) {
         if (
@@ -274,6 +282,7 @@ const LinaerStepper = () => {
       borderRadius: 14,
     },
   }));
+
   return (
     <div className="container-center-horizontal">
       <div className="stepper screen">
@@ -298,7 +307,6 @@ const LinaerStepper = () => {
         </div>
         <div className="border1 cerapro-bold-mahogany-45px border-5px-mahogany">
           <div className="content1">
-            {/* <form onSubmit={handleChange}> */}
             <Stepper
               activeStep={activeStep}
               connector={<QontoConnector></QontoConnector>}
@@ -342,33 +350,53 @@ const LinaerStepper = () => {
                   variant="contained"
                   type="submit"
                 >
-                  Continue
+                  <a
+                    key={domain_name}
+                    href={
+                      window.location.protocol +
+                      "//" +
+                      domain_name +
+                      "." +
+                      window.location.host +
+                      "/myHome"
+                    }
+                    style={{ color: "var(--mahogany)" }}
+                  >
+                    {" "}
+                    Continue
+                  </a>
                 </button>
               </div>
             ) : (
               <>
                 <form onSubmit={handleChange}>
                   {getStepContent(activeStep)}
+                  {/* <Button
+                  className={classes.button}
+                  disabled={activeStep === 0}
+                  onClick={handleBack}
+                >
+                  back
+                </Button> */}
+                  {/* {isStepOptional(activeStep) && (
+            <Button
+              className={classes.button}
+              variant="contained"
+              color="primary"
+              onClick={handleSkip}
+            >
+              skip
+            </Button>
+          )} */}
 
-                  {activeStep === 0 ? (
-                    <button
-                      className="btnVerif border-1px-dove-gray"
-                      variant="contained"
-                      type="submit"
-                      onClick={handleNext}
-                    >
-                      verify
-                    </button>
-                  ) : (
-                    <button
-                      className="btnVerif border-1px-dove-gray"
-                      variant="contained"
-                      type="submit"
-                      onClick={handleNext}
-                    >
-                      Continue
-                    </button>
-                  )}
+                  <button
+                    className="btnVerif border-1px-dove-gray"
+                    variant="contained"
+                    type="submit"
+                    onClick={handleNext}
+                  >
+                    {activeStep === 1 ? "Continue" : "Verify"}
+                  </button>
                 </form>
               </>
             )}
