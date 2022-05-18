@@ -1,17 +1,11 @@
 import React, { useState } from "react";
 import OtpInput from "react-otp-input";
 import "./../../css/verifyAccount.css";
-import Typography from "@material-ui/core/Typography";
-import Container from "@material-ui/core/Container";
+
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
+
 import Grid from "@material-ui/core/Grid";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import axios from "axios";
-import { useParams, Link, useNavigate } from "react-router-dom";
+
 import code from "./../../assets/pin-code-svgrepo-com.svg";
 import { Snackbar } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
@@ -24,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     // backgroundColor: "red",
     // height: "50vh",
     textAlign: "center",
-    fontFamily: "CeraPro-Medium",
+    // fontFamily: "CeraPro-Medium",
     marginBottom: "100px",
   },
   avatar: {
@@ -50,80 +44,15 @@ const useStyles = makeStyles((theme) => ({
     // backgroundColor:"gold"
   },
 }));
-const customStyles = {
-  content: {
-    top: "50%",
-    left: "50%",
-    width: "200px",
-    backgroundColor: "#570B03",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "column",
-    borderRadius: "25px",
-    borderColor: "transparent",
-    height: "400px",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-    fontFamily: "cerapro-bold",
-    fontWeight: 700,
-  },
-  overlay: {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    webkitBackdropFilter: "blur(30px) brightness(115%)",
-    backdropFilter: " blur(30px) brightness(115%)",
-    backgroundColor: "transparent",
-  },
-};
-export default function VerifyAccount() {
-  const navigate = useNavigate();
-  const [otp, setotp] = useState("");
-  const [error, seterror] = useState(null);
-  const params = useParams();
-  const [validUrl, setValidUrl] = useState(false);
-  const handleChange = async (e) => {
-    e.preventDefault();
-    try {
-      const config = {
-        headers: {
-          "Content-type": "application/json",
-        },
-      };
-      const { data } = await axios.post(
-        "/auth/verifyOTP",
-        { userId: params.id, otp },
-        config
-      );
-      console.log(params.id);
-      setValidUrl(true);
-      // if (data) {
-      //   navigate();
-      // }
-      // localStorage.setItem("userInfo", JSON.stringify(data));
-      console.log(params.id);
-    } catch (error) {
-      if (
-        error.response &&
-        error.response.status >= 400 &&
-        error.response.status <= 500
-      ) {
-        seterror(error.response.data.message);
-        console.log(error.response.data.message);
-      }
-    }
-  };
-  const [open, setopen] = React.useState(false);
 
+export default function VerifyAccount({ handleChange,  otp ,setValue}) {
+  // const [otp, setotp] = useState();
+  const [error, seterror] = useState(null);
+  const [open, setopen] = React.useState(false);
+  // const [otp, setotp] = useState("");
   const handleClick = () => {
     setopen(true);
   };
-
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -131,9 +60,7 @@ export default function VerifyAccount() {
 
     setopen(false);
   };
-
   const classes = useStyles();
-  const theme = useTheme();
   return (
     <div>
       {error && (
@@ -167,13 +94,16 @@ export default function VerifyAccount() {
               letterSpacing: 0,
               lineHeight: "45px",
               whiteSpace: "nowrap",
-              color: "var(--mahogany-3)",
+              color: "var(--mahogany)",
               fontFamily: "var(--font-family-cerapro-bold)",
-              fontSize: "var(--font-size-m)",
+              fontSize: "var(--font-size-l)",
+              marginBottom:"5px"
             }}
           >
             Email Verification Code
           </h1>
+        <hr style={{ width: "400px", boxShadow: "0px 3px 6px #00000029",marginTop:"0px" }} />
+
         </Grid>
 
         <Grid
@@ -197,6 +127,7 @@ export default function VerifyAccount() {
                   height: "3rem",
                   margin: "0 1rem",
                   fontSize: "2rem",
+                  // name="otp",
                   // borderRadius: 35,
                   // border: "1px solid gold",
                   fontFamily: "CeraPro-Medium",
@@ -206,14 +137,15 @@ export default function VerifyAccount() {
                 }}
                 numInputs={6}
                 value={otp}
-                onChange={(otp) => {
-                  setotp(otp);
+                onChange={(otp)=>{
+                  setValue(otp)
                 }}
+                // name="otp"
                 // onSubmit={handleChange}
                 // autocomplete={one - time - code}
               />
             </Grid>
-            <button type="submit">submit</button>
+            {/* <button type="submit">submit</button> */}
           </form>
         </Grid>
       </Grid>
