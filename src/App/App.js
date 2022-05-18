@@ -10,6 +10,7 @@ import Dashboard from "../components/quizmaster/Dashboard";
 import QuestionsBank from "../components/quizmaster/QuestionsBank";
 import QuizHistory from "../components/quizmaster/QuizHistory";
 import UpdateProfile from "../components/quizmaster/UpdateProfile";
+import CompanySettings from "../components/stepper/CompanySettings";
 import LinaerStepper from "../components/stepper/LinearStepper";
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         </Route>
         <Route path="/" element={<Home />} exact />
         <Route element={<LinaerStepper />} path="/quizmaster/:id" exact />
+        
         <Route
           element={<ForgotPasswordScreen />}
           path="/lostPassword/:type"
@@ -34,6 +36,8 @@ function App() {
           path="/setNewPassword/:id/:resetToken/:type"
           exact
         />
+        {/* <Route element={<CompanySettings/>}
+        path="/account/:id"></Route> */}
       </Routes>
     </BrowserRouter>
   );
