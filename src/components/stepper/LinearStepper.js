@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Stepper, Step, StepLabel } from "@material-ui/core";
 import { styled } from "@mui/material/styles";
 import Lottie from "react-lottie";
+import { Link, useNavigate } from "react-router-dom";
 import { IconContext } from "react-icons";
 import * as animationData from "./../../assets/lotties/11272-party-popper.json";
 import { makeStyles } from "@material-ui/core/styles";
@@ -51,11 +52,23 @@ const LinaerStepper = () => {
   const [domain_name, setdomain_name] = useState("");
   const [activeStep, setActiveStep] = useState(0);
   const [skippedSteps, setSkippedSteps] = useState([]);
+  const [subdomain, setSubDomain] = useState(null);
+  const [businessName, setbusinessName] = useState("");
   const [notify, setNotify] = useState({
     isOpen: false,
     message: "",
     type: "",
   });
+
+  useEffect(() => {
+    const host = window.location.host; // gets the full domain of the app
+    console.log(host);
+    console.log(window.history);
+    const arr = host.split(".").slice(0, host.includes("localhost") ? -1 : -2);
+    if (arr.length > 0) setSubDomain(arr[0]);
+    console.log(subdomain);
+  }, []);
+
   const steps = getSteps();
   const handleNext = () => {
     if (notify.type === "success") {
@@ -67,20 +80,7 @@ const LinaerStepper = () => {
       setActiveStep(activeStep);
     }
   };
-  const handleColors = (e) => {
-    const { value, checked } = e.target;
 
-    // console.log(check);
-    if (checked) {
-      if (check.length <= 1) {
-        setcheck((prev) => [...prev, value]);
-      }
-      console.log(check);
-    } else {
-      //  console.log(check);
-      setcheck((prev) => prev.filter((x) => value !== x));
-    }
-  };
   const postDetails = (pics) => {
     setPicMessage(null);
     if (pics.type === "image/jpeg" || pics.type === "image/png") {
@@ -117,7 +117,7 @@ const LinaerStepper = () => {
       try {
         // console.log(otp);
         const { data } = await axios.post(
-          "/auth/verifyOTP",
+          process.env.REACT_APP_BACKEND + "/auth/verifyOTP",
           { userId: params.id, otp },
           config
         );
@@ -146,13 +146,24 @@ const LinaerStepper = () => {
       try {
         console.log(params.id);
         const { data } = await axios.put(
-          "/auth/updateAccount",
+          process.env.REACT_APP_BACKEND + "/auth/updateAccount",
           {
             id: params.id,
-            account: { domain_name: domain_name, logo: logo, colors: check },
+            account: {
+              domain_name: domain_name,
+              logo: logo,
+              colors: check,
+              businessName: businessName,
+            },
           },
           config
         );
+        setNotify({
+          isOpen: false,
+          message: data.message,
+          type: "success",
+        });
+
         console.log(data);
       } catch (error) {
         if (
@@ -196,7 +207,7 @@ const LinaerStepper = () => {
   //     return setPicMessage("Please Select an Image");
   //   }
   // };
-
+  console.log(window.location.protocol);
   function getStepContent(step) {
     // console.log(params);
     switch (step) {
@@ -221,6 +232,8 @@ const LinaerStepper = () => {
             setcheck={setcheck}
             domain_name={domain_name}
             setdomain_name={setdomain_name}
+            setbusinessName={setbusinessName}
+            businessName={businessName}
           />
         );
 
@@ -228,6 +241,9 @@ const LinaerStepper = () => {
         return "unknown step";
     }
   }
+
+  console.log("#domain_name", domain_name);
+
   const defaultOptions = {
     loop: true,
     autoplay: true,
@@ -237,7 +253,7 @@ const LinaerStepper = () => {
       preserveAspectRatio: "xMidYMid slice",
     },
   };
-
+  const navigate = useNavigate();
   const isStepSkipped = (step) => {
     return skippedSteps.includes(step);
   };
@@ -274,6 +290,7 @@ const LinaerStepper = () => {
       borderRadius: 14,
     },
   }));
+
   return (
     <div className="container-center-horizontal">
       <div className="stepper screen">
@@ -298,7 +315,6 @@ const LinaerStepper = () => {
         </div>
         <div className="border1 cerapro-bold-mahogany-45px border-5px-mahogany">
           <div className="content1">
-            {/* <form onSubmit={handleChange}> */}
             <Stepper
               activeStep={activeStep}
               connector={<QontoConnector></QontoConnector>}
@@ -337,38 +353,59 @@ const LinaerStepper = () => {
                 }}
               >
                 <Lottie options={defaultOptions} height={400} width={400} />
-                <button
-                  className="btnVerif border-1px-dove-gray"
-                  variant="contained"
-                  type="submit"
+                <a
+                  href={
+                    window.location.protocol +
+                    "//" +
+                    domain_name +
+                    "." +
+                    window.location.host +
+                    "/dashboard"
+                  }
+                  style={{ color: "var(--mahogany)" }}
                 >
-                  Continue
-                </button>
+                  <button
+                    className="btnVerif border-1px-dove-gray"
+                    variant="contained"
+                    // type="submit"
+                    // onClick={navigate(
+                    //   `http://${domain_name}/localhost:3000/myHome`
+                    // )}
+                  >
+                    Continue
+                  </button>
+                </a>
               </div>
             ) : (
               <>
                 <form onSubmit={handleChange}>
                   {getStepContent(activeStep)}
+                  {/* <Button
+                  className={classes.button}
+                  disabled={activeStep === 0}
+                  onClick={handleBack}
+                >
+                  back
+                </Button> */}
+                  {/* {isStepOptional(activeStep) && (
+            <Button
+              className={classes.button}
+              variant="contained"
+              color="primary"
+              onClick={handleSkip}
+            >
+              skip
+            </Button>
+          )} */}
 
-                  {activeStep === 0 ? (
-                    <button
-                      className="btnVerif border-1px-dove-gray"
-                      variant="contained"
-                      type="submit"
-                      onClick={handleNext}
-                    >
-                      verify
-                    </button>
-                  ) : (
-                    <button
-                      className="btnVerif border-1px-dove-gray"
-                      variant="contained"
-                      type="submit"
-                      onClick={handleNext}
-                    >
-                      Continue
-                    </button>
-                  )}
+                  <button
+                    className="btnVerif border-1px-dove-gray"
+                    variant="contained"
+                    type="submit"
+                    onClick={handleNext}
+                  >
+                    {activeStep === 1 ? "Continue" : "Verify"}
+                  </button>
                 </form>
               </>
             )}

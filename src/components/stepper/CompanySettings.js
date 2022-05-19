@@ -1,7 +1,7 @@
 import { makeStyles, TextField, Paper, Button } from "@material-ui/core";
 import { Box, Checkbox, Grid } from "@mui/material";
 import axios from "axios";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { BiExport } from "react-icons/bi";
 import IosShareRoundedIcon from "@mui/icons-material/IosShareRounded";
 import { ColorExtractor } from "react-color-extractor";
@@ -98,9 +98,14 @@ export default function CompanySettings({
   setcheck,
   domain_name,
   setdomain_name,
+  businessName,
+  setbusinessName,
+  setSubDomain,
+  subdomain
 }) {
   const classes = styles();
   const [colors, setcolors] = useState([]);
+
   // const [pic, setPic] = useState();
   // const [check, setcheck] = useState([]);
   // const [domain_name, setdomain_name] = useState("");
@@ -331,6 +336,8 @@ export default function CompanySettings({
                 InputProps={{
                   classes: { input: classes.input },
                 }}
+                value={businessName}
+                onChange={(e)=>setbusinessName(e.target.value)}
               />
             </Grid>
             <Grid xs={12}>
