@@ -4,33 +4,48 @@ import "./../../css/homeQuizmaster.css";
 export default function HomeQuizMaster() {
   const [companySettings, setcompanySettings] = useState([]);
   // const [domain_name, setdomain_name] = useState(null);
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
   const [subdomain, setSubDomain] = useState(null);
   useEffect(() => {
-		const host = window.location.host; // gets the full domain of the app
-
-		const arr = host  
-			.split(".")
-			.slice(0, host.includes("localhost") ? -1 : -2);
-		if (arr.length > 0) setSubDomain(arr[0]);
     getCompanySettings();
-
-	}, [companySettings])
+  }, [companySettings]);
   const getCompanySettings = async () => {
     const config = {
       headers: {
         "Content-type": "application/json",
       },
     };
-    let host = window.location.hostname;
-    // let hostname = baseurl(host);
-
-    const { data } = await axios.get(
-      "/auth/getCompanySettings",
-      { domainName: host },
-      config
-    );
+    const host = window.location.host; // gets the full domain of the app
+    console.log(host);
+    const arr = host.split(".").slice(0, host.includes("localhost") ? -1 : -2);
+    // if (arr.length > 0) setSubDomain(arr[0]);
+    let hostname = arr.toString();
+    // console.log(subdomain);
+    console.log(hostname);
+    try {
+      const { data } = await axios.get(
+        process.env.REACT_APP_BACKEND +
+          `/auth/getCompanySettings?domain_name=${hostname}`,
+        config
+      );
+    } catch (error) {
+      if (
+        error.response &&
+        error.response.status >= 400 &&
+        error.response.status <= 500
+      ) {
+        setNotify({
+          isOpen: true,
+          message: error.response.data.message,
+          type: "error",
+        });
+      }
+    }
   };
-
 
   return (
     // <div className="app">
