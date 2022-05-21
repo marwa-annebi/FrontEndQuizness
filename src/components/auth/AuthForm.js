@@ -2,14 +2,11 @@ import React, { useState } from "react";
 import "./../../css/authForm.css";
 import Modal from "react-modal";
 import logo from "./../../assets/rectangle-1-1@1x (1).png";
-import rectangle from "./../../assets/rectangle-28@1x.png";
 import SigInForm from "./sigInFormQuizMaster";
-import SignInFormCandidate from "./signInFormCandidate";
 import Index from "./indexCandidate";
-import IndexQuizmaster from "./indexQuizmaster";
-const customStyles = {
+const customStylespopup = {
   content: {
-    top: "50%",
+    top: "55%",
     left: "50%",
     width: "880px",
     backgroundColor: "transparent",
@@ -32,6 +29,18 @@ const customStyles = {
     backgroundColor: "transparent",
   },
 };
+const styles = {
+  backgroundRed: {
+    backgroundColor: "#560a02",
+  },
+
+  background: {
+    boxShadow: "0px 1px 4px gold",
+    border: "2px solid gold",
+    backgroundColor: "#560a02",
+    color: "gold",
+  },
+};
 function AuthForm(props) {
   const { openLogin, setOpenPopupLogin } = props;
   const [welcome, setWelcome] = useState(false);
@@ -41,6 +50,7 @@ function AuthForm(props) {
     return classArr.join(" ");
   };
 
+  // let color1 = companySettings.account.colors[0];
   const setFormClass = () => {
     const classArr = ["form-side cfb"];
     if (welcome) classArr.push("send-left");
@@ -48,35 +58,33 @@ function AuthForm(props) {
   };
   const [active, setActive] = useState("signin");
   return (
-    <div>
-      <Modal
-        isOpen={openLogin}
-        style={customStyles}
-        onRequestClose={() => setOpenPopupLogin(false)}
-      >
-        <div className="container-center-horizontal">
-          <div className="overlap-group">
-            <Groupe19 src={logo} />
+    // <div>
+    <Modal
+      isOpen={openLogin}
+      style={customStylespopup}
+      onRequestClose={() => setOpenPopupLogin(false)}
+    >
+      <div className="container">
+        <div
+          className={`${welcome ? styles.backgroundRed : ""} rectangle-28`}
+          // style={styles.backgroundRed}
+        >
+          <div className={setBannerClass()}>
+            <button
+              onClick={() => setWelcome(!welcome)}
+              className={`${welcome ? styles.background : ""} loginAs`}
+              // style={styles.background}
+            >
+              {welcome ? "Log in as Quiz Master" : "Log in as Candidate"}
+            </button>
           </div>
-
-          {/* <div className="overlap-grou1"> */}
-          <div className={`${welcome ? "background-red" : ""} rectangle-28`}>
-            <div className={setBannerClass()}>
-              <button
-                onClick={() => setWelcome(!welcome)}
-                className={`${welcome ? "background" : ""} loginAs`}
-              >
-                {welcome ? "Log in as Quiz Master" : "Log in as Candidate"}
-              </button>
-            </div>
-            <div className={setFormClass()}>
-              {welcome ? <Index /> : <IndexQuizmaster />}
-            </div>
-            {/* </div> */}
+          <div className={setFormClass()}>
+            {welcome ? <Index /> : <SigInForm />}
           </div>
+          {/* </div> */}
         </div>
-      </Modal>
-    </div>
+      </div>
+    </Modal>
   );
 }
 

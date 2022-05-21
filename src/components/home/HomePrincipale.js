@@ -15,12 +15,12 @@ import PopUpRegisterQuizmaster from "../auth/PopUpRegisterQuizmaster";
 export default function Home() {
   const [openPopup, setOpenPopup] = useState(false);
   const [openPopupLogin, setopenPopupLogin] = useState(false);
-  
+
   return (
     <div className="container-center-horizontal">
       <div className="home screen">
         <div className="flex-col">
-          <div className="overlap-group1">
+          <div className="overlap-group1" style={{ marginRight: "150px" }}>
             <Logo src={logo} />
           </div>
           <X2 src={x2} />
@@ -39,8 +39,6 @@ export default function Home() {
               <img className="trac-84" src={groupe84} />
               <img className="trac-85" src={trac85} />
             </div>
-            {/* <AuthForm openLogin={openPopupLogin} setOpenPopupLogin={setopenPopupLogin} /> */}
-
             <h1 className="why-do-we-use-iti">
               <span className="span0">
                 Why do we use it?
@@ -84,10 +82,10 @@ export default function Home() {
           <img className="groupe-7" src={msngr} />
         </div>
       </div>
-            <PopUpRegisterQuizmaster
-              open={openPopupLogin}
-              setOpenPopup={setopenPopupLogin}
-            />
+      <PopUpRegisterQuizmaster
+        open={openPopupLogin}
+        setOpenPopup={setopenPopupLogin}
+      />
     </div>
   );
 }
@@ -116,8 +114,4 @@ function X2(props) {
       <img width="712px" height="712px" src={src} />
     </div>
   );
-}
-
-function showDiv() {
-  document.getElementById("welcomeDiv").style.display = "block";
 }

@@ -13,15 +13,15 @@ export default function Loading() {
   };
 
   return (
-    <div >
+    <div>
       {/* {loading && ( */}
-        <Lottie
-          options={defaultOptions}
-          height={400}
-          width={400}
-          // style={{ transformOrigin: "50% 50%" }}
-        />
+      <Lottie
+        options={defaultOptions}
+        height={400}
+        width={400}
+        style={{ transformOrigin: "50% 50%" }}
+      />
       {/* )} */}
-     </div>
+    </div>
   );
 }

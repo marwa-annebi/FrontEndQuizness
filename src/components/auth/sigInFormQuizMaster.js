@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import "./../../css/siginFormQuizMaster.css";
 import iconPlay from "./../../assets/polygone-2-1@1x.png";
 import Icon from "../icon";
-import { FaGoogle, FaLinkedinIn, FaMicrosoft } from "react-icons/fa";
+import { FaGoogle, FaLinkedinIn, FaMicrosoft, FaPlay } from "react-icons/fa";
 import { AccountContext } from "../accountContext";
 import { Button, makeStyles, TextField } from "@material-ui/core";
 import axios from "axios";
@@ -147,13 +147,15 @@ export default function SigInForm() {
           InputLabelProps={{ className: classes.label }}
         />
         <br />
-        <Button variant="primary" type="submit">
-          <img src={iconPlay} className="iconPlay" />
+        <Button type="submit">
+          <FaPlay className="iconPlay1" style={{ color: "red" }} />
         </Button>
         <Link to="/lostPassword/3">
-          <h4 className="lost-your-password">Lost your password ?</h4>
+          <h4 className="lost-your-password" style={{ marginTop: "150px" }}>
+            Lost your password ?
+          </h4>
         </Link>
-        <div className="IconsContainer">
+        <div className="IconsContainer" style={{ marginTop: "80px" }}>
           <Icon onclick={google}>
             <FaGoogle size={"40px"} />
           </Icon>

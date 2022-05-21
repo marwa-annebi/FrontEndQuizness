@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Stepper, Step, StepLabel } from "@material-ui/core";
 import { styled } from "@mui/material/styles";
 import Lottie from "react-lottie";
+import { Link, useNavigate } from "react-router-dom";
 import { IconContext } from "react-icons";
 import * as animationData from "./../../assets/lotties/11272-party-popper.json";
 import { makeStyles } from "@material-ui/core/styles";
@@ -9,11 +10,15 @@ import "./../../css/stepper.css";
 import CompanySettings from "./CompanySettings";
 import VerifyAccount from "./VerifyAccount";
 import { IoIosArrowDropleftCircle } from "react-icons/io";
-import logo from "./../../assets/logo.svg";
+import quizness from "./../../assets/logo.svg";
 import StepConnector, {
   stepConnectorClasses,
 } from "@mui/material/StepConnector";
 import { Button } from "@mui/material";
+import { useParams } from "react-router-dom";
+import axios, { Axios } from "axios";
+import Notification from "../Notification";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     fontFamily: " var(--font-family-cerapro-bold)",
@@ -38,19 +43,207 @@ function getSteps() {
   return ["", "", ""];
 }
 
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return <VerifyAccount />;
-    case 1:
-      return <CompanySettings />;
-
-    default:
-      return "unknown step";
-  }
-}
-
 const LinaerStepper = () => {
+  const params = useParams();
+  const [otp, setotp] = useState();
+  const [check, setcheck] = useState([]);
+  const [logo, setlogo] = useState();
+  const classes = useStyles();
+  const [domain_name, setdomain_name] = useState("");
+  const [activeStep, setActiveStep] = useState(0);
+  const [skippedSteps, setSkippedSteps] = useState([]);
+  const [subdomain, setSubDomain] = useState(null);
+  const [businessName, setbusinessName] = useState("");
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
+
+  useEffect(() => {
+    const host = window.location.host; // gets the full domain of the app
+    console.log(host);
+    console.log(window.history);
+    const arr = host.split(".").slice(0, host.includes("localhost") ? -1 : -2);
+    if (arr.length > 0) setSubDomain(arr[0]);
+    console.log(subdomain);
+  }, []);
+
+  const steps = getSteps();
+  const handleNext = () => {
+    if (notify.type === "success") {
+      setActiveStep(activeStep + 1);
+      setSkippedSteps(
+        skippedSteps.filter((skipItem) => skipItem !== activeStep)
+      );
+    } else if (notify.type === "error") {
+      setActiveStep(activeStep);
+    }
+  };
+
+  const postDetails = (pics) => {
+    setPicMessage(null);
+    if (pics.type === "image/jpeg" || pics.type === "image/png") {
+      const data = new FormData();
+      data.append("file", pics);
+      data.append("upload_preset", "3almni");
+      data.append("cloud_name", "dknkfvzye");
+      fetch("https://api.cloudinary.com/v1_1/dknkfvzye/image/upload", {
+        method: "post",
+        body: data,
+      })
+        .then((res) => res.json())
+
+        .then((data) => {
+          setlogo(data.url.toString());
+
+          console.log(data.url);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      return setPicMessage("Please Select an Image");
+    }
+  };
+  const handleChange = async (e) => {
+    e.preventDefault();
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+    if (activeStep === 0) {
+      try {
+        // console.log(otp);
+        const { data } = await axios.post(
+          process.env.REACT_APP_BACKEND + "/auth/verifyOTP",
+          { userId: params.id, otp },
+          config
+        );
+        // console.log(params.id);
+        setNotify({
+          isOpen: false,
+          message: data.message,
+          type: "success",
+        });
+      } catch (error) {
+        if (
+          error.response &&
+          error.response.status >= 400 &&
+          error.response.status <= 500
+        ) {
+          setNotify({
+            isOpen: true,
+            message: error.response.data.message,
+            type: "error",
+          });
+          console.log(error.response.data.message);
+        }
+      }
+    }
+    if (activeStep === 1) {
+      try {
+        console.log(params.id);
+        const { data } = await axios.put(
+          process.env.REACT_APP_BACKEND + "/auth/updateAccount",
+          {
+            id: params.id,
+            account: {
+              domain_name: domain_name,
+              logo: logo,
+              colors: check,
+              businessName: businessName,
+            },
+          },
+          config
+        );
+        setNotify({
+          isOpen: false,
+          message: data.message,
+          type: "success",
+        });
+
+        console.log(data);
+      } catch (error) {
+        if (
+          error.response &&
+          error.response.status >= 400 &&
+          error.response.status <= 500
+        ) {
+          setNotify({
+            isOpen: true,
+            message: error.response.data.message,
+            type: "error",
+          });
+          // console.log(error.response.data.message);
+        }
+      }
+    }
+  };
+  const [picMessage, setPicMessage] = useState();
+  // const postDetails = (pics) => {
+  //   setPicMessage(null);
+  //   if (pics.type === "image/jpeg" || pics.type === "image/png") {
+  //     const data = new FormData();
+  //     data.append("file", pics);
+  //     data.append("upload_preset", "3almni");
+  //     data.append("cloud_name", "dknkfvzye");
+  //     fetch("https://api.cloudinary.com/v1_1/dknkfvzye/image/upload", {
+  //       method: "post",
+  //       body: data,
+  //     })
+  //       .then((res) => res.json())
+
+  //       .then((data) => {
+  //         setlogo(data.url.toString());
+  //         console.log("hello");
+  //         console.log(data.url);
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //   } else {
+  //     return setPicMessage("Please Select an Image");
+  //   }
+  // };
+  console.log(window.location.protocol);
+  function getStepContent(step) {
+    // console.log(params);
+    switch (step) {
+      case 0:
+        return (
+          <VerifyAccount
+            handleChange={handleChange}
+            // onChange={onChange}
+            otp={otp}
+            setValue={setotp}
+          />
+        );
+      case 1:
+        return (
+          <CompanySettings
+            pic={logo}
+            setPic={setlogo}
+            handleSubmit={handleChange}
+            // // onChange={onChange}
+            postDetails={postDetails}
+            check={check}
+            setcheck={setcheck}
+            domain_name={domain_name}
+            setdomain_name={setdomain_name}
+            setbusinessName={setbusinessName}
+            businessName={businessName}
+          />
+        );
+
+      default:
+        return "unknown step";
+    }
+  }
+
+  console.log("#domain_name", domain_name);
+
   const defaultOptions = {
     loop: true,
     autoplay: true,
@@ -60,30 +253,21 @@ const LinaerStepper = () => {
       preserveAspectRatio: "xMidYMid slice",
     },
   };
-  const classes = useStyles();
-  const [activeStep, setActiveStep] = useState(0);
-  const [skippedSteps, setSkippedSteps] = useState([]);
-  const steps = getSteps();
-
+  const navigate = useNavigate();
   const isStepSkipped = (step) => {
     return skippedSteps.includes(step);
-  };
-
-  const handleNext = () => {
-    setActiveStep(activeStep + 1);
-    setSkippedSteps(skippedSteps.filter((skipItem) => skipItem !== activeStep));
   };
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
 
-  const handleSkip = () => {
-    if (!isStepSkipped(activeStep)) {
-      setSkippedSteps([...skippedSteps, activeStep]);
-    }
-    setActiveStep(activeStep + 1);
-  };
+  // const handleSkip = () => {
+  //   if (!isStepSkipped(activeStep)) {
+  //     setSkippedSteps([...skippedSteps, activeStep]);
+  //   }
+  //   setActiveStep(activeStep + 1);
+  // };
   const QontoConnector = styled(StepConnector)(({ theme }) => ({
     [`&.${stepConnectorClasses.alternativeLabel}`]: {
       top: 10,
@@ -106,45 +290,28 @@ const LinaerStepper = () => {
       borderRadius: 14,
     },
   }));
+
   return (
     <div className="container-center-horizontal">
       <div className="stepper screen">
         <div className="flex-row">
-          {/* <div className="groupe-32">
-            <div className="groupe-19"> */}
-          {/* <div className="lg"> */}
-          <img className="rectangle" src={logo} />
-          {/* </div> */}
-          {/* </div>
-          </div> */}
-
-          {/* <div className="flex-col"> */}
+          <img className="rectangle" src={quizness} />
           <IconContext.Provider
             value={{
               color: "#570b03",
-              // display:"flex"
-              // marginLeft: "500px",
-              // alignItems: "flex-end",
               ".&:hover": {
                 color: "gold",
               },
             }}
           >
-            {/* <div style={{marginLeft:"500px"}}> */}
             <Button
               size="small"
               onClick={handleBack}
               disabled={activeStep === 0}
             >
-              <IoIosArrowDropleftCircle
-                className="x3"
-                // onMouseEnter={({target})=>target.style.color="gold"}
-              />
+              <IoIosArrowDropleftCircle className="x3" />
             </Button>
-            {/* </div> */}
-            {/* <div className="back-svgrepo-com"></div> */}
           </IconContext.Provider>
-          {/* </div> */}
         </div>
         <div className="border1 cerapro-bold-mahogany-45px border-5px-mahogany">
           <div className="content1">
@@ -163,11 +330,13 @@ const LinaerStepper = () => {
                 }
                 return (
                   <Step {...stepProps} key={index}>
-                    <StepLabel
-                    // style={{ fontFamily: "cerapro-bold ",fontSize:"" }}
-                    >
-                      {step}
-                    </StepLabel>
+                    <Notification
+                      notify={notify}
+                      setNotify={setNotify}
+                      vertical="top"
+                      horizontal="right"
+                    />
+                    <StepLabel>{step}</StepLabel>
                   </Step>
                 );
               })}
@@ -184,27 +353,41 @@ const LinaerStepper = () => {
                 }}
               >
                 <Lottie options={defaultOptions} height={400} width={400} />
-                <button
-                  className="btnVerif border-1px-dove-gray"
-                  variant="contained"
-                  // color="primary"
-                  type="submit"
-                  // onClick={handleNext}
+                <a
+                  href={
+                    window.location.protocol +
+                    "//" +
+                    domain_name +
+                    "." +
+                    window.location.host +
+                    "/home"
+                  }
+                  style={{ color: "var(--mahogany)" }}
                 >
-                  Continue To Login
-                </button>
+                  <button
+                    className="btnVerif border-1px-dove-gray"
+                    variant="contained"
+                    // type="submit"
+                    // onClick={navigate(
+                    //   `http://${domain_name}/localhost:3000/myHome`
+                    // )}
+                  >
+                    Continue
+                  </button>
+                </a>
               </div>
             ) : (
               <>
-                <form>{getStepContent(activeStep)}</form>
-                {/* <Button
+                <form onSubmit={handleChange}>
+                  {getStepContent(activeStep)}
+                  {/* <Button
                   className={classes.button}
                   disabled={activeStep === 0}
                   onClick={handleBack}
                 >
                   back
                 </Button> */}
-                {/* {isStepOptional(activeStep) && (
+                  {/* {isStepOptional(activeStep) && (
             <Button
               className={classes.button}
               variant="contained"
@@ -214,16 +397,19 @@ const LinaerStepper = () => {
               skip
             </Button>
           )} */}
-                <button
-                  className="btnVerif border-1px-dove-gray"
-                  variant="contained"
-                  type="submit"
-                  onClick={handleNext}
-                >
-                  {activeStep === steps.length - 1 ? "Finish" : "Verify"}
-                </button>
+
+                  <button
+                    className="btnVerif border-1px-dove-gray"
+                    variant="contained"
+                    type="submit"
+                    onClick={handleNext}
+                  >
+                    {activeStep === 1 ? "Continue" : "Verify"}
+                  </button>
+                </form>
               </>
             )}
+            {/* </form> */}
           </div>
         </div>
       </div>

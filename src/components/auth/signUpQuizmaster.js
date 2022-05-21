@@ -121,7 +121,7 @@ function SignUpQuizmaster() {
           },
         };
         const { data } = await axios.post(
-          "/auth/registerQuizMaster",
+          process.env.REACT_APP_BACKEND + "/auth/registerQuizMaster",
           { firstName, lastName, email, password },
           config
         );

@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 import NavBar from "./NavBar";
 import SideMenu from "./SideMenu";
 
-export default function Dashboard() {
+export default function Dashboard(companySettings) {
   return (
     <Grid
       container
@@ -12,14 +12,14 @@ export default function Dashboard() {
       // columns={{ xs: 4, sm: 8, md: 12 }}
     >
       <Grid item md={12}>
-        <NavBar />
+        <NavBar {...companySettings} />
       </Grid>
 
-      <Grid item  >
-        <SideMenu />
+      <Grid item>
+        <SideMenu {...companySettings} />
       </Grid>
       <Grid item>
-        <Outlet />
+        <Outlet {...companySettings} />
       </Grid>
     </Grid>
   );

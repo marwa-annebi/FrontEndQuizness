@@ -5,15 +5,10 @@
 
 .container-center-horizontal {
   display: flex;
-
-  /* top: 0;
-  margin: 0;
-  padding: 0; */
   flex-direction: row;
   justify-content: center;
   pointer-events: none;
   width: 100vw;
-  /* height: 100%; */
 }
 
 .container-center-horizontal>* {
@@ -23,12 +18,10 @@
 
 .home {
   align-items: flex-start;
-  /* background-color:red; */
   display: flex;
   height: 100vh;
   overflow: hidden;
   width: 100vw;
-  /* margin-left: -7px; */
 }
 
 .groupe-2 {
@@ -58,7 +51,7 @@
 .x2 {
   /* display: flex;  */
   height: 794px;
-  margin-top: 100px;
+  margin-top: 150px;
   width: 794px;
   /* padding: 0;
   margin: 0; */
@@ -88,7 +81,7 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-  margin-left: -310px;
+  margin-left: -180px;
   margin-top: 67px;
   width: 800px;
   min-height: 100vh;
@@ -102,7 +95,7 @@
   border-radius: 36px;
   display: flex;
   height: 42px;
-  margin-left: 149.75px;
+  margin-left: 80.75px;
   min-width: 222px;
   padding: 11.9px 4.4px;
   position: relative;
@@ -110,7 +103,6 @@
 
 
 .x4 {
-
   background-size: cover;
   height: 1000px;
   width: 1000px;
@@ -138,7 +130,7 @@
 .trac-1 {
   height: 200px;
   width: 200px;
-  left: 570px;
+  left: 620px;
   top: 373px;
   object-fit: cover;
   position: absolute;
@@ -147,10 +139,10 @@
 .groupe-6 {
   height: 60px;
   width: 60px;
-  left: 605px;
+  left: 645px;
   object-fit: cover;
   position: absolute;
-  top: 480px;
+  top: 490px;
 }
 
 .trac-84 {
@@ -166,9 +158,9 @@
 .trac-container {
   height: 44px;
   width: 44px;
-  left: 620px;
+  left: 659px;
   position: absolute;
-  top: 495px;
+  top: 505px;
   cursor: pointer;
 }
 
@@ -233,11 +225,11 @@
   /* left: 260px; */
   cursor: pointer;
   line-height: 32px;
-align-items: center;
-text-align: center;
+  align-items: center;
+  text-align: center;
   letter-spacing: 0;
   /* line-height: 25px;  */
-  position: absolute;  
+  position: absolute;
 }
 
 .ellipse-3 {
@@ -258,16 +250,18 @@ text-align: center;
   top: 777px;
   width: 28px;
 }
+
 .ellipse-4 {
   background-color: #570B03;
   border-radius: 25px;
   height: 43px;
-  left:400px;
+  left: 400px;
   position: absolute;
   top: 770.5px;
   width: 43px;
 }
-.chrono{
+
+.chrono {
   /* background-color: #570B03; */
   height: 32px;
   left: 408px;
@@ -293,9 +287,9 @@ text-align: center;
 
 
 .groupe-7 {
-  height: 55px;
+  height: 56px;
   position: absolute;
-  margin-top: 1020px;
+  margin-top: 1050px;
   object-fit: cover;
   width: 55px;
   cursor: pointer;

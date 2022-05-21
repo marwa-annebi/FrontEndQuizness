@@ -1,4 +1,4 @@
-import { Button, makeStyles } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import useTable from "../useTable";
@@ -19,14 +19,12 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import AddIcon from "@material-ui/icons/Add";
+
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import CloseIcon from "@material-ui/icons/Close";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import Checkbox from "../../controls/Checkbox";
-import { CheckBox } from "@mui/icons-material";
-import { FaPlus, FaRegListAlt } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
 import { CgPlayListCheck } from "react-icons/cg";
 import { GiChoice } from "react-icons/gi";
 const headCells = [
@@ -46,7 +44,7 @@ export default function QuestionsBank() {
     title: "",
     subTitle: "",
   });
-  const [checked, setChecked] = useState(true);
+
   const [questionList, setquestionList] = useState([]);
   const [notify, setNotify] = useState({
     isOpen: false,
@@ -61,7 +59,10 @@ export default function QuestionsBank() {
         Authorization: `Bearer ${quizmasterInfo.token}`,
       },
     };
-    const result = await axios.get("/quizmaster/getAllQuestions", config);
+    const result = await axios.get(
+      process.env.REACT_APP_BACKEND + "/quizmaster/getAllQuestions",
+      config
+    );
     console.log(result.data.reverse());
     setquestionList(result.data.reverse());
   };
@@ -84,7 +85,7 @@ export default function QuestionsBank() {
       ...confirmDialog,
       isOpen: false,
     });
-    await axios.delete(`/deleteQuestion/${id}`);
+    await axios.delete(process.env.REACT_APP_BACKEND + `/deleteQuestion/${id}`);
     loadUsers();
     setNotify({
       isOpen: true,
