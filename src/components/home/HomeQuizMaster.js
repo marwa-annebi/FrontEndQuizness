@@ -55,6 +55,7 @@ export default function HomeQuizMaster(company_colors) {
                 openLogin={openPopup}
                 setOpenPopupLogin={setopenPopup}
                 // {...companySettings}
+                companyInfo={company_colors}
               />
 
               <Trac85 className="trac-Q85" fill={color2} />

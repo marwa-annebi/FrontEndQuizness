@@ -23,6 +23,7 @@
     "react-dom": "^18.0.0",
     "react-icons": "^4.3.1",
     "react-lottie": "^1.2.3",
+    "react-messenger-customer-chat": "^0.8.0",
     "react-modal": "^3.14.4",
     "react-modal-video": "^1.2.8",
     "react-nice-input-password": "^2.7.0",

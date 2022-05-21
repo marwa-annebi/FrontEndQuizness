@@ -12,6 +12,8 @@ import msngr from "./../../assets/msngr.png";
 import PopupVideo from "../PopupVideo";
 import chronomater from "./../../assets/chronometer.svg";
 import PopUpRegisterQuizmaster from "../auth/PopUpRegisterQuizmaster";
+import MessengerCustomerChat from "react-messenger-customer-chat";
+
 export default function Home() {
   const [openPopup, setOpenPopup] = useState(false);
   const [openPopupLogin, setopenPopupLogin] = useState(false);
@@ -79,7 +81,13 @@ export default function Home() {
             </div>
             <PopupVideo open={openPopup} setOpenPopup={setOpenPopup} />
           </div>
-          <img className="groupe-7" src={msngr} />
+          {/* <img className="groupe-7" src={msngr} /> */}
+          <MessengerCustomerChat
+            pageId="112229544825811"
+            appId="1924851207702622"
+            // htmlRef="<REF_STRING>"
+          />
+          ,
         </div>
       </div>
       <PopUpRegisterQuizmaster
