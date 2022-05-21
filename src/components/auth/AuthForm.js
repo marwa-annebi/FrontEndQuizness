@@ -29,27 +29,33 @@ const customStylespopup = {
     backgroundColor: "transparent",
   },
 };
-const styles = {
-  backgroundRed: {
-    backgroundColor: "#560a02",
-  },
 
-  background: {
-    boxShadow: "0px 1px 4px gold",
-    border: "2px solid gold",
-    backgroundColor: "#560a02",
-    color: "gold",
-  },
-};
 function AuthForm(props) {
-  const { openLogin, setOpenPopupLogin } = props;
+  const { openLogin, setOpenPopupLogin, companyInfo } = props;
   const [welcome, setWelcome] = useState(false);
+
   const setBannerClass = () => {
     const classArr = ["banner-side cfb"];
     if (welcome) classArr.push("send-right");
     return classArr.join(" ");
   };
+  console.log("authh", companyInfo);
+  const color1 = companyInfo.company_colors.colors[0];
+  const color2 = companyInfo.company_colors.colors[1];
+  const styles = {
+    background: {
+      backgroundColor: welcome ? color2 : color1,
 
+      color: welcome ? color1 : color2,
+      border: welcome ? `2px solid ${color2}` : `2px solid ${color1}`,
+      boxShadow: welcome ? `0px 3px 6px ${color1}` : `0px 3px 6px ${color2}`,
+    },
+    backgroundRed: {
+      backgroundColor: welcome ? color2 : color1,
+    },
+  };
+  console.log(color1);
+  console.log(color2);
   // let color1 = companySettings.account.colors[0];
   const setFormClass = () => {
     const classArr = ["form-side cfb"];
@@ -66,14 +72,19 @@ function AuthForm(props) {
     >
       <div className="container">
         <div
+          style={styles.backgroundRed}
           className={`${welcome ? styles.backgroundRed : ""} rectangle-28`}
           // style={styles.backgroundRed}
         >
           <div className={setBannerClass()}>
             <button
               onClick={() => setWelcome(!welcome)}
-              className={`${welcome ? styles.background : ""} loginAs`}
-              // style={styles.background}
+              // style={{
+              //   backgroundColor: color1,
+
+              // }}
+              className="loginAs"
+              style={styles.background}
             >
               {welcome ? "Log in as Quiz Master" : "Log in as Candidate"}
             </button>
