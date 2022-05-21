@@ -20,7 +20,7 @@ export default function Home() {
     <div className="container-center-horizontal">
       <div className="home screen">
         <div className="flex-col">
-          <div className="overlap-group1">
+          <div className="overlap-group1" style={{ marginRight: "150px" }}>
             <Logo src={logo} />
           </div>
           <X2 src={x2} />
@@ -39,7 +39,6 @@ export default function Home() {
               <img className="trac-84" src={groupe84} />
               <img className="trac-85" src={trac85} />
             </div>
-            {/* <AuthForm openLogin={openPopupLogin} setOpenPopupLogin={setopenPopupLogin} /> */}
             <h1 className="why-do-we-use-iti">
               <span className="span0">
                 Why do we use it?
@@ -115,8 +114,4 @@ function X2(props) {
       <img width="712px" height="712px" src={src} />
     </div>
   );
-}
-
-function showDiv() {
-  document.getElementById("welcomeDiv").style.display = "block";
 }

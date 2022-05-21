@@ -1,4 +1,4 @@
-.container-center-horizontal {
+.container-center-horizontal1 {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -6,15 +6,136 @@
     width: 100vw;
 }
 
-.container-center-horizontal>* {
+.container-center-horizontal1>* {
     flex-shrink: 0;
     pointer-events: auto;
 }
 
-.home {
+.home1 {
     align-items: flex-start;
     display: flex;
     height: 100vh;
     overflow: hidden;
     width: 100vw;
+}
+
+
+.flex-col1 {
+    /* background-color: red; */
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    margin-left: -180px;
+    margin-top: 87px;
+    width: 700px;
+    min-height: 100vh;
+    /* background-color: red; */
+
+}
+
+
+
+.groupe-22 {
+    display: flex;
+    height: 46px;
+    width: 200px;
+    overflow: hidden;
+}
+
+
+
+.rectangle-11 {
+    border-radius: 39px;
+    flex: 1;
+    object-fit: cover;
+    margin-top: 10px;
+    width: 100px;
+    margin-bottom: 50px;
+    margin-left: 50px;
+}
+
+.divRight {
+    height: 1304px;
+    position: relative;
+    width: 1304px;
+
+}
+
+.bg {
+    background-size: cover;
+    height: 1000px;
+    width: 1000px;
+    left: 0;
+    position: absolute;
+    top: 0;
+}
+
+.group-container {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    margin-left: 120px;
+    margin-top: -410px;
+    min-height: 1510px;
+    width: 1304px;
+}
+
+.trac-Q1 {
+    height: 200px;
+    width: 200px;
+    left: 580px;
+    top: 373px;
+    object-fit: cover;
+    position: absolute;
+}
+
+.groupe-Q6 {
+    height: 60px;
+    width: 60px;
+    left: 610px;
+    object-fit: cover;
+    position: absolute;
+    top: 490px;
+}
+
+.trac-Qcontainer {
+    height: 44px;
+    width: 44px;
+    left: 625px;
+    position: absolute;
+    top: 505px;
+    cursor: pointer;
+}
+
+.trac-Q85 {
+    height: 34px;
+    left: -2px;
+    object-fit: cover;
+    position: absolute;
+    top: -1px;
+    width: 34px;
+}
+
+.why-do-we-use-itiQ {
+    /* color: #570B03; */
+    font-family: "cera_pro";
+    font-size: 20px;
+    font-weight: 500;
+    left: 190px;
+    letter-spacing: 0;
+    line-height: 25px;
+    position: absolute;
+    top: 552px;
+    white-space: nowrap;
+}
+
+.span0Q {
+    font-family: "cerapro-black";
+    font-weight: 900;
+    font-size: 25px;
+}
+
+.span1Q {
+    font-family: "cerapro-medium";
+
 }

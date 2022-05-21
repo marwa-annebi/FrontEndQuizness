@@ -2,19 +2,15 @@ import React from "react";
 import Modal from "react-modal";
 import SignUpQuizmaster from "./signUpQuizmaster";
 
-const customStyles = {
+const customStyles1 = {
   content: {
     top: "50%",
     left: "50%",
-    width: "650px",
+    width: "880px",
     backgroundColor: "transparent",
     justifyContent: "center",
-    textAlign: "center",
-    // border: "3px solid gold",
-    borderColor:"transparent",
-    
-    borderRadius: "30px",
-    height: "600px",
+    borderColor: "transparent",
+    height: "660px",
     right: "auto",
     bottom: "auto",
     marginRight: "-50%",
@@ -37,7 +33,7 @@ export default function PopUpRegisterQuizmaster(props) {
   return (
     <Modal
       isOpen={open}
-      style={customStyles}
+      style={customStyles1}
       onRequestClose={() => setOpenPopup(false)}
     >
       <SignUpQuizmaster />
