@@ -360,7 +360,7 @@ const LinaerStepper = () => {
                     domain_name +
                     "." +
                     window.location.host +
-                    "/dashboard"
+                    "/home"
                   }
                   style={{ color: "var(--mahogany)" }}
                 >

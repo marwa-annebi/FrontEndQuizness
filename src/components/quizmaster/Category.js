@@ -36,7 +36,7 @@ const styles = makeStyles((theme) => ({
     whiteSpace: "nowrap",
   },
 }));
-export default function Category() {
+export default function Category(companySettings) {
   const classes = styles();
   const [categories, setcategories] = useState([]);
   const [category_name, setcategory] = useState("");
@@ -54,7 +54,10 @@ export default function Category() {
       },
     };
     // console.log(quizmasterInfo.token);
-    const result = await axios.get("/quizmaster/getCategories", config);
+    const result = await axios.get(
+      process.env.REACT_APP_BACKEND + "/quizmaster/getCategories",
+      config
+    );
     setcategories(result.data.reverse());
   };
   useEffect(
@@ -74,7 +77,10 @@ export default function Category() {
           Authorization: `Bearer ${quizmasterInfo.token}`,
         },
       };
-      await axios.delete(`/quizmaster/category/${id}`, config);
+      await axios.delete(
+        process.env.REACT_APP_BACKEND + `/quizmaster/category/${id}`,
+        config
+      );
       loadCategories();
       setNotify({
         isOpen: true,
@@ -112,7 +118,7 @@ export default function Category() {
       };
       setloading(true);
       const { result } = await axios.post(
-        "/quizmaster/createCategory",
+        process.env.REACT_APP_BACKEND + "/quizmaster/createCategory",
         { category_name },
         config
       );
