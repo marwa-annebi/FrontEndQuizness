@@ -54,7 +54,7 @@ export default function Category() {
       },
     };
     // console.log(quizmasterInfo.token);
-    const result = await axios.get("/quizmaster/getCategories", config);
+    const result = await axios.get("/quizmaster/getSkills", config);
     setcategories(result.data.reverse());
   };
   useEffect(
@@ -112,7 +112,7 @@ export default function Category() {
       };
       setloading(true);
       const { result } = await axios.post(
-        "/quizmaster/createCategory",
+        "/quizmaster/createSkill",
         { category_name },
         config
       );
