@@ -10,7 +10,6 @@ const companyInfoStorage = localStorage.getItem("companyInfo")
   ? JSON.parse(localStorage.getItem("companyInfo"))
   : null;
 const initialState = { companySettings: { companyInfo: companyInfoStorage } };
-// userLogin: { userInfo: userInfoFromStorage },
 const middleware = [thunk];
 
 const store = createStore(
