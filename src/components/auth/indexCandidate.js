@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { AccountContext } from "../accountContext";
 import SignInFormCandidate from "./signInFormCandidate";
 import SignUpCandidate from "./signUpCandidate";
-export default function Index() {
+export default function Index(companyInfo) {
   const expandingTransition = {
     type: "spring",
     duration: 2.3,
@@ -10,7 +10,7 @@ export default function Index() {
   };
   const [isExpanded, setExpanded] = useState(false);
   const [active, setActive] = useState("signin");
-
+  console.log(companyInfo);
   const playExpandingAnimation = () => {
     setExpanded(true);
     setTimeout(() => {
@@ -36,8 +36,10 @@ export default function Index() {
     <AccountContext.Provider value={contextValue}>
       <div>
         {" "}
-        {active === "signin" && <SignInFormCandidate />}
-        {active === "signup" && <SignUpCandidate />}
+        {active === "signin" && (
+          <SignInFormCandidate companyInfo={companyInfo} />
+        )}
+        {active === "signup" && <SignUpCandidate companyInfo={companyInfo} />}
       </div>
     </AccountContext.Provider>
   );

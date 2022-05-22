@@ -1,13 +1,12 @@
-export default function Icon({ children, onclick }) {
+export default function Icon({ children, onclick, style }) {
   return (
-    <div className="a1" onClick={onclick}>
+    <div className="a1" onClick={onclick} style={style}>
       {children}
     </div>
   );
 }
 
 const StyledIcon = {
- 
   // cursor: "pointer",
   // svg: {
   //   width: "1.5rem",

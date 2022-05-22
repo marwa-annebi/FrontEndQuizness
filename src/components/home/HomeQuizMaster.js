@@ -12,10 +12,9 @@ export default function HomeQuizMaster(company_colors) {
   const [openPopup, setopenPopup] = useState(false);
 
   console.log("#colorrrrrrrr", company_colors);
-  const color1 = company_colors.company_colors.colors[0];
-  const color2 = company_colors.company_colors.colors[1];
-  console.log(color1);
-  console.log(color2);
+  const darkColor = company_colors.company_colors.darkColor;
+  const lightColor = company_colors.company_colors.lightColor;
+
   return (
     <div className="container-center-horizontal1">
       <div className="home1 screen">
@@ -30,21 +29,21 @@ export default function HomeQuizMaster(company_colors) {
             <img
               className="rectangle-11"
               src={company_colors.company_colors.logo}
-              style={{ width: "50%" }}
+              style={{ width: "30%" }}
             />
           </div>
           <div className="x21">
-            <Mybubble1 width="712px" height="712px" fill={color2} />
+            <Mybubble1 width="712px" height="712px" fill={darkColor} />
           </div>
         </div>
         <div className="group-container">
           <div className="divRight">
             {/* <div > */}
-            <Mybubble2 className="bg" fill={color1}></Mybubble2>
+            <Mybubble2 className="bg" fill={lightColor}></Mybubble2>
             {/* </div> */}
 
-            <Trac1 className="trac-Q1" fill={color2} />
-            <Groupe6 className="groupe-Q6" fill={color1} />
+            <Trac1 className="trac-Q1" fill={darkColor} />
+            <Groupe6 className="groupe-Q6" fill={lightColor} />
             <div
               className="trac-Qcontainer"
               onClick={() => {
@@ -58,9 +57,12 @@ export default function HomeQuizMaster(company_colors) {
                 companyInfo={company_colors}
               />
 
-              <Trac85 className="trac-Q85" fill={color2} />
+              <Trac85 className="trac-Q85" fill={darkColor} />
             </div>
-            <h1 className="why-do-we-use-itiQ">
+            <h1
+              className="why-do-we-use-itiQ"
+              style={{ color: darkColor, marginTop: "80px" }}
+            >
               <span className="span0Q">
                 Why do we use it?
                 <br />

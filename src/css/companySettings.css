@@ -99,9 +99,8 @@
 
 .selectColor {
     /* text-align: start; */
-    color:
-        #1c1312;
-    font-family: var(--font-family-cerapro-medium);
+    color: #1c1312;
+    font-family: var(--font-family-cerapro-bold);
     font-size: 20px;
     font-weight: 500;
     letter-spacing: 0;
@@ -119,7 +118,8 @@
 .png-or-jpg-only {
     color:
         #1c1312;
-    font-family: var(--font-family-cerapro-medium);
+    font-family: var(--font-family-cerapro-bold);
+
     font-size: 14px;
     font-weight: 500;
     letter-spacing: 0;
@@ -144,7 +144,6 @@
 
 .business-username {
     letter-spacing: 0;
-
     margin-top: 60px;
     white-space: nowrap;
     color:
@@ -152,6 +151,7 @@
     font-family: "cerapro-medium";
     font-size: 25px;
 }
-.check:checked{
+
+.check:checked {
     color: gold;
 }

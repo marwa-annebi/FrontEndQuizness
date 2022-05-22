@@ -1,11 +1,18 @@
 .divAdd {
-    width: 170px;
-    background: gold;
-    text-align: center;
-    margin-left: 350px;
-    border-radius: 18px
+  width: 170px;
+  background: gold;
+  /* text-align: center; */
+  margin-left: 350px;
+  border-radius: 33px;
+  height: 50px;
+  /* align-items: center; */
+  justify-content: center;
+  /* margin-bottom: 5px; */
+
 }
-.divMenu{
-  color: gold;
-    border-radius: 18px;
+
+.active {
+  transform: rotate(45deg);
+  color: var(--gold);
+
 }

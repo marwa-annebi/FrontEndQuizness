@@ -1,6 +1,7 @@
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Badge, Button, Grid, IconButton, makeStyles } from "@material-ui/core";
 import { AppBar, Box, Container, Toolbar, Typography } from "@mui/material";
-import React from "react";
 import logo from "./../../assets/Image.png";
 import { IoLogOut } from "react-icons/io5";
 import { IoMdAddCircle } from "react-icons/io";
@@ -75,14 +76,32 @@ const styles = makeStyles({
   },
 });
 export default function NavBar() {
+  const dispatch = useDispatch();
+  const [companySet, setcompanySet] = React.useState("");
+  const companySettings = useSelector((state) => state.companySettings);
+  const { companyInfo } = companySettings;
+  const company = companyInfo;
+  console.log("nav", company);
+  React.useEffect(() => {
+    setcompanySet(company);
+  }, [dispatch, companySet]);
   const navigate = useNavigate();
+  // const companySettings = useSelector((state) => state.companySettings);
+  // const { companyInfo } = companySettings;
+  // const company = companyInfo?.data;
+  // console.log(company);
+  // const lightColor = companySet.account.lightColor;
+  // const img = companySet.account.logo;
+
+  // console.log(lightColor);
+  // const img = company_settings.company_settings.account.logo;
   const logoutHandler = async () => {
     const config = {
       headers: {
         "Content-type": "application/json",
       },
     };
-    await axios.get("/auth/logout", config);
+    await axios.get(process.env.REACT_APP_BACKEND + "/auth/logout", config);
     localStorage.removeItem("quizmasterInfo");
     navigate("/");
   };
@@ -92,7 +111,10 @@ export default function NavBar() {
       <Container>
         <Toolbar>
           <div style={{ display: "flex", direction: "row", marginTop: "30px" }}>
-            <div className={classes.overlapGroup5}>
+            <div
+              className={classes.overlapGroup5}
+              style={{ backgroundColor: "gold" }}
+            >
               <img src={logo} className={classes.image1}></img>
             </div>
             <div className={classes.groupe9}>
@@ -100,7 +122,6 @@ export default function NavBar() {
             </div>
           </div>
           <Grid item xs></Grid>
-
           <div
             style={{
               display: "flex",
@@ -150,20 +171,3 @@ export default function NavBar() {
     </AppBar>
   );
 }
-// .overlap-group5 {
-//     align-items: center;
-//     background-color: var(--gold);
-//     border-radius: 38.5px;
-//     display: flex;
-//     height: 77px;
-//     margin-bottom: 4px;
-//     min-width: 77px;
-//     padding: 0 10px;
-//   }
-
-//   .image-1 {
-//     border-radius: 37px;
-//     height: 57px;
-//     object-fit: cover;
-//     width: 56px;
-//   }

@@ -23,7 +23,7 @@ export const CompanySettings = () => async (dispatch) => {
     let hostname = arr.toString();
     console.log(hostname);
     // console.log("hello");
-    const data = await axios.get(
+    const { data } = await axios.get(
       process.env.REACT_APP_BACKEND +
         `/auth/getCompanySettings?domain_name=${hostname}`,
       config

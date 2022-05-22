@@ -4,12 +4,12 @@ import {
   COMPANY_SETTINGS_SUCCESS,
 } from "../constants/quizmasterConstant";
 
-export const companySettingsReducer = (state = { settings: {} }, action) => {
+export const companySettingsReducer = (state = {}, action) => {
   switch (action.type) {
     case COMPANY_SETTINGS_REQUEST:
       return { loading: false };
     case COMPANY_SETTINGS_SUCCESS:
-      return { loading: false, notes: action.payload };
+      return { loading: false, companyInfo: action.payload };
     case COMPANY_SETTINGS_FAIL:
       return { loading: false, error: action.payload };
 

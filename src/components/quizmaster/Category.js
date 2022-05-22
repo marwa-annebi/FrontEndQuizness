@@ -4,14 +4,17 @@ import React, { useEffect, useState } from "react";
 import ContentMenuItem from "./../ContentMenuItem";
 import { AiOutlineClose } from "react-icons/ai";
 import { IconContext } from "react-icons";
-import { Box } from "@mui/material";
+import { Box, CardContent, Collapse } from "@mui/material";
 import { GrAdd } from "react-icons/gr";
 import Notification from "../Notification";
 import ConfirmDialog from "../ConfirmDialog";
 import Loading from "../Loading";
+import TextareaAutosize from "@mui/base/TextareaAutosize";
+import { ExpandMore } from "@mui/icons-material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 const styles = makeStyles((theme) => ({
   h5: {
-    fontFamily: "cerapro-bold",
+    fontFamily: "cerapro-Medium",
     textAlign: "center",
     paddingTop: "30px",
     fontWeight: 700,
@@ -36,11 +39,16 @@ const styles = makeStyles((theme) => ({
     whiteSpace: "nowrap",
   },
 }));
-export default function Category(companySettings) {
+export default function Category() {
   const classes = styles();
+  const [expanded, setExpanded] = React.useState(false);
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
   const [categories, setcategories] = useState([]);
-  const [category_name, setcategory] = useState("");
+  const [skill_name, setcategory] = useState("");
   const [loading, setloading] = useState(false);
+  const [requirements, setrequirements] = useState("");
   const [notify, setNotify] = useState({
     isOpen: false,
     message: "",
@@ -55,7 +63,7 @@ export default function Category(companySettings) {
     };
     // console.log(quizmasterInfo.token);
     const result = await axios.get(
-      process.env.REACT_APP_BACKEND + "/quizmaster/getCategories",
+      process.env.REACT_APP_BACKEND + "/quizmaster/getSkills",
       config
     );
     setcategories(result.data.reverse());
@@ -78,7 +86,7 @@ export default function Category(companySettings) {
         },
       };
       await axios.delete(
-        process.env.REACT_APP_BACKEND + `/quizmaster/category/${id}`,
+        process.env.REACT_APP_BACKEND + `/quizmaster/skill/${id}`,
         config
       );
       loadCategories();
@@ -118,8 +126,8 @@ export default function Category(companySettings) {
       };
       setloading(true);
       const { result } = await axios.post(
-        process.env.REACT_APP_BACKEND + "/quizmaster/createCategory",
-        { category_name },
+        process.env.REACT_APP_BACKEND + "/quizmaster/createSkill",
+        { skill_name, requirements },
         config
       );
       loadCategories();
@@ -147,7 +155,7 @@ export default function Category(companySettings) {
   };
   return (
     <div style={{ height: "100vh" }}>
-      {loading && <Loading />}
+      {/* {loading && <Loading />} */}
       <ContentMenuItem>
         <Box
           sx={{
@@ -156,7 +164,7 @@ export default function Category(companySettings) {
             "& > :not(style)": {
               m: 1,
               width: 200,
-              height: 100,
+              height: 150,
               borderRadius: "18px",
               fontFamily: "cerapro-Medium",
             },
@@ -169,9 +177,9 @@ export default function Category(companySettings) {
           >
             <div style={{ display: "inline" }}>
               <TextField
-                id="category_name"
+                id="skill_name"
                 label="category Name"
-                value={category_name}
+                value={skill_name}
                 onChange={(e) => setcategory(e.target.value)}
                 InputProps={{
                   className: classes.input,
@@ -196,10 +204,33 @@ export default function Category(companySettings) {
                 </div>
               </IconContext.Provider>
             </div>
+            <TextareaAutosize
+              maxRows={4}
+              // placeholder="Maximum 4 rows"
+              // id="outlined-multiline-static"
+              aria-label="maximum height"
+              placeholder="Maximum 4 rows"
+              label="requirements"
+              style={{
+                fontFamily: "cerapro-Medium",
+                marginTop: "20px",
+                border: "2px solid #560a02",
+                borderRadius: "15px",
+                // width: "120px",
+              }}
+              value={requirements}
+              onChange={(e) => setrequirements(e.target.value)}
+              // variant="outlined"
+            />
           </Paper>
 
           {categories?.map((key, id) => (
-            <Paper elevation={3} key={id} className={classes.paper}>
+            <Paper
+              elevation={3}
+              key={id}
+              className={classes.paper}
+              style={{ height: "100px" }}
+            >
               <IconContext.Provider
                 value={{
                   size: "20px",
@@ -235,8 +266,25 @@ export default function Category(companySettings) {
                 </div>
               </IconContext.Provider>
               <Typography variant="h5" className={classes.h5}>
-                {key.category_name}
+                {key.skill_name}
               </Typography>
+
+              <ExpandMore
+                expand={expanded}
+                onClick={handleExpandClick}
+                aria-expanded={expanded}
+                aria-label="show more"
+                style={{ marginTop: "15px", color: "gold" }}
+              >
+                <ExpandMoreIcon
+                  style={{ marginRight: "-20px", color: "gold" }}
+                />
+              </ExpandMore>
+              <Collapse in={expanded} timeout="auto" unmountOnExit>
+                <CardContent>
+                  <Typography paragraph>{key.requirements}</Typography>
+                </CardContent>
+              </Collapse>
               {/* </Box>   */}
             </Paper>
           ))}

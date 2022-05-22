@@ -16,7 +16,7 @@ import Loading from "../Loading";
 const styles = makeStyles({
   textField: {
     width: "70%",
-    marginLeft: "-20px",
+    marginLeft: "60px",
     // marginRight: 'auto',
     paddingBottom: 0,
     marginTop: 0,
@@ -38,10 +38,6 @@ const styles = makeStyles({
   input: {
     color: "black",
     fontFamily: "cerapro-Medium",
-
-    // letterSpacing: ".2rem",
-
-    // font-size: var(--font-size-m);
   },
   label: {
     fontFamily: "cerapro-bold",
@@ -60,7 +56,7 @@ const styles = makeStyles({
     backgroundColor: "white",
     border: "3px solid gold",
     borderRadius: "30px",
-    marginLeft: "120px",
+    marginLeft: "170px",
     height: "550px",
     marginTop: "28px",
   },
@@ -184,7 +180,9 @@ function SignUpQuizmaster() {
       {loading && <Loading />}
       {/* ) : ( */}
       <div className={classes.rectanglewhite}>
-        <h1 className="title1">Register as Quiz master</h1>
+        <h1 className="title1" style={{ marginLeft: "70px" }}>
+          Register as Quiz master
+        </h1>
         <form onSubmit={submitHandler} style={{ flexDirection: "column" }}>
           <TextField
             type="text"
@@ -282,7 +280,7 @@ function SignUpQuizmaster() {
           />
           <br />
           <Button type="submit">
-            <FaPlay className="iconPlay1" />
+            <FaPlay className="iconPlay1" style={{ marginLeft: "380px" }} />
           </Button>
         </form>
         <div className="IconsContainer1">
