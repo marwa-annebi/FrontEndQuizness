@@ -16,9 +16,6 @@ function getItem(label, key) {
   return {
     label,
     key,
-    // icon,
-    // children,
-    // type,
   };
 }
 
@@ -39,7 +36,7 @@ const items = [
       className={({ isActive }) => (isActive ? "link-active" : "link")}
       to="/dashboard/quizMaster/category"
     >
-      Category{" "}
+      Skills{" "}
     </NavLink>,
     "2"
   ),
@@ -59,7 +56,7 @@ const items = [
       className={({ isActive }) => (isActive ? "link-active" : "link")}
       to="/dashboard/quizMaster/quizHistory"
     >
-      Quiz history
+      Quizzes
     </NavLink>,
     "4"
   ),
@@ -79,7 +76,7 @@ export default function SideMenu() {
   return (
     <div className="menu">
       <Menu
-        defaultSelectedKeys={["1"]} 
+        defaultSelectedKeys={["1"]}
         defaultOpenKeys={["1"]}
         mode="inline"
         // theme="light"

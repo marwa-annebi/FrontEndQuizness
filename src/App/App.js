@@ -14,64 +14,31 @@ import QuizHistory from "../components/quizmaster/QuizHistory";
 import UpdateProfile from "../components/quizmaster/UpdateProfile";
 import LinaerStepper from "../components/stepper/LinearStepper";
 import { CompanySettings } from "./../actions/quizmasterAction";
-import axios from "axios";
 
 function App() {
-  // const [companySettings, setcompanySettings] = useState({});
-  const getCompanySettings = async () => {
-    // const config = {
-    //   headers: {
-    //     "Content-type": "application/json",
-    //   },
-    // };
-    // const host = window.location.host;
-    // console.log(host);
-    // const arr = host.split(".").slice(0, host.includes("localhost") ? -1 : -2);
-    // let hostname = arr.toString();
-    // console.log(hostname);
-    // console.log("hello");
-    // try {
-    //   const { data } = await axios.get(
-    //     process.env.REACT_APP_BACKEND +
-    //       `/auth/getCompanySettings?domain_name=${hostname}`,
-    //     config
-    //   );
-    //   console.log(data);
-    //   // const { name, value } = data;
-    //   setcompanySettings((companySettings) => {
-    //     return {
-    //       ...companySettings,
-    //       data,
-    //     };
-    //   });
-    //   console.log("*companySettings", companySettings);
-    //   // console.log("#result", re);
-    // } catch (error) {
-    //   console.log(error);
-    // }
-  };
   const [companyColors, setcompanyColors] = React.useState("");
   const [subdomain, setSubDomain] = React.useState(null);
   const dispatch = useDispatch();
   const companySettings = useSelector((state) => state.companySettings);
   const { companyInfo } = companySettings;
-  // console.log("#companyInfo", companyInfo);
-  const company = companyInfo?.data;
+  const company = companyInfo;
 
-  useEffect(() => {
-    const host = window.location.host; // gets the full domain of the app
-    // console.log(host);
-    // console.log(window.history);
-    const arr = host.split(".").slice(0, host.includes("localhost") ? -1 : -2);
-    if (arr.length > 0) setSubDomain(arr[0]);
-    dispatch(CompanySettings());
-    // console.log("......bla bla...", company);
-    if (company) {
-      console.log("#color", company.account.colors[0]);
-      // alert(company.firstName);
-      setcompanyColors(company.account);
-    }
-  }, [dispatch, company]);
+  useEffect(
+    () => {
+      const host = window.location.host; // gets the full domain of the app
+      const arr = host
+        .split(".")
+        .slice(0, host.includes("localhost") ? -1 : -2);
+      if (arr.length > 0) setSubDomain(arr[0]);
+      dispatch(CompanySettings());
+      console.log("......bla bla...", company);
+      if (company) {
+        setcompanyColors(company.account);
+      }
+    },
+    [],
+    [dispatch, company]
+  );
 
   return (
     <div>
@@ -83,7 +50,12 @@ function App() {
               path="/"
               exact
             />
-            <Route element={<Dashboard />} path="/dashboard/quizMaster/*" exact>
+            <Route
+              element={<Dashboard />}
+              path="/dashboard/quizMaster/*"
+              // company_colors={companyColors}
+              exact
+            >
               <Route path="updateProfile" element={<UpdateProfile />} />
               <Route path="quizHistory" element={<QuizHistory />} />
               <Route path="questionsBank" element={<QuestionsBank />} />

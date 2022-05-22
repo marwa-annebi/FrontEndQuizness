@@ -40,23 +40,22 @@ function AuthForm(props) {
     return classArr.join(" ");
   };
   console.log("authh", companyInfo);
-  const color1 = companyInfo.company_colors.colors[0];
-  const color2 = companyInfo.company_colors.colors[1];
+  const darkColor = companyInfo.company_colors.darkColor;
+  const lightColor = companyInfo.company_colors.lightColor;
   const styles = {
     background: {
-      backgroundColor: welcome ? color2 : color1,
-
-      color: welcome ? color1 : color2,
-      border: welcome ? `2px solid ${color2}` : `2px solid ${color1}`,
-      boxShadow: welcome ? `0px 3px 6px ${color1}` : `0px 3px 6px ${color2}`,
+      backgroundColor: welcome ? darkColor : lightColor,
+      color: welcome ? lightColor : darkColor,
+      border: welcome ? `2px solid ${lightColor}` : `2px solid ${darkColor}`,
+      boxShadow: welcome
+        ? `0px 3px 6px ${lightColor}`
+        : `0px 3px 6px ${darkColor}`,
     },
     backgroundRed: {
-      backgroundColor: welcome ? color2 : color1,
+      backgroundColor: welcome ? darkColor : lightColor,
     },
   };
-  console.log(color1);
-  console.log(color2);
-  // let color1 = companySettings.account.colors[0];
+
   const setFormClass = () => {
     const classArr = ["form-side cfb"];
     if (welcome) classArr.push("send-left");
@@ -73,16 +72,12 @@ function AuthForm(props) {
       <div className="container">
         <div
           style={styles.backgroundRed}
-          className={`${welcome ? styles.backgroundRed : ""} rectangle-28`}
+          className="rectangle-28"
           // style={styles.backgroundRed}
         >
           <div className={setBannerClass()}>
             <button
               onClick={() => setWelcome(!welcome)}
-              // style={{
-              //   backgroundColor: color1,
-
-              // }}
               className="loginAs"
               style={styles.background}
             >
@@ -90,7 +85,11 @@ function AuthForm(props) {
             </button>
           </div>
           <div className={setFormClass()}>
-            {welcome ? <Index /> : <SigInForm />}
+            {welcome ? (
+              <Index companyInfo={companyInfo} />
+            ) : (
+              <SigInForm companyInfo={companyInfo} />
+            )}
           </div>
           {/* </div> */}
         </div>

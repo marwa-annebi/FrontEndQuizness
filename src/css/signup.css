@@ -178,7 +178,8 @@
     color: #560a02;
     font-family: "cerapro-bold";
     font-weight: 700;
-    margin-top: 10px;
+    /* margin-top: 10px; */
+    font-size: 20px;
 
 }
 

@@ -91,17 +91,16 @@ const styles = makeStyles((theme) => ({
 }));
 export default function CompanySettings({
   pic,
-  setPic,
   postDetails,
   handleSubmit,
-  check,
-  setcheck,
+  darkColor,
+  setdarkColor,
+  lightColor,
+  setlightColor,
   domain_name,
   setdomain_name,
   businessName,
   setbusinessName,
-  setSubDomain,
-  subdomain
 }) {
   const classes = styles();
   const [colors, setcolors] = useState([]);
@@ -114,13 +113,27 @@ export default function CompanySettings({
 
     // console.log(check);
     if (checked) {
-      if (check.length <= 1) {
-        setcheck((prev) => [...prev, value]);
+      if (darkColor.length < 1) {
+        setdarkColor((prev) => [...prev, value]);
       }
-      console.log(check);
+      // console.log(check);
     } else {
       //  console.log(check);
-      setcheck((prev) => prev.filter((x) => value !== x));
+      setdarkColor((prev) => prev.filter((x) => value !== x));
+    }
+  };
+  const handleChangeLight = (e) => {
+    const { value, checked } = e.target;
+
+    // console.log(check);
+    if (checked) {
+      if (lightColor.length < 1) {
+        setlightColor((prev) => [...prev, value]);
+      }
+      // console.log(check);
+    } else {
+      //  console.log(check);
+      setlightColor((prev) => prev.filter((x) => value !== x));
     }
   };
   // const handleChange = (e) => {
@@ -176,12 +189,13 @@ export default function CompanySettings({
             <div
               style={{
                 backgroundColor: color,
-                width: 50,
-                height: 50,
+                width: 40,
+                height: 40,
                 borderRadius: "31px",
                 border: "1px solid var(--mahogany-3)",
-                marginLeft: "-3px",
-                marginTop: "-15px",
+                marginLeft: "4px",
+                marginTop: "-25px",
+                marginBottom: "-10px",
                 // flex:"start"
                 // justifyContent:"space-around"
               }}
@@ -195,7 +209,62 @@ export default function CompanySettings({
               }}
               value={color}
               onChange={handleChange}
-              checked={check.indexOf(color) >= 0}
+              checked={darkColor.indexOf(color) >= 0}
+              // disabled={shouldDisableCheckbox(color)}
+            />
+          </div>
+        </div>
+      );
+    });
+  };
+  const renderSwatchesLight = (type, id) => {
+    // const id=2;
+    // console.log(check);
+
+    const nb = colors.length;
+    return colors?.map((color, index) => {
+      console.log(nb);
+      const normalizeColorValue =
+        Array.isArray(color) && type === "rgb"
+          ? `rgb(${color[0]}, ${color[1]}})`
+          : color;
+
+      return (
+        <div>
+          <div key={id} style={{ color }}>
+            <div
+              className="swatches"
+              style={{
+                backgroundColor: normalizeColorValue,
+                color: normalizeColorValue,
+              }}
+            />
+            {/* <Checkbox onChange={checkColors(color)} /> */}
+
+            <div
+              style={{
+                backgroundColor: color,
+                width: 40,
+                height: 40,
+                borderRadius: "31px",
+                border: "1px solid var(--mahogany-3)",
+                marginLeft: "4px",
+                marginTop: "-25px",
+                marginBottom: "-10px",
+                // flex:"start"
+                // justifyContent:"space-around"
+              }}
+              className="divColor"
+            ></div>
+            <Checkbox
+              // checked={checked.indexOf(color) !== -1}
+              className="check"
+              style={{
+                color: "var(--gold)",
+              }}
+              value={color}
+              onChange={handleChangeLight}
+              checked={lightColor.indexOf(color) >= 0}
               // disabled={shouldDisableCheckbox(color)}
             />
           </div>
@@ -303,9 +372,9 @@ export default function CompanySettings({
               {/* <img src={pic} style={{ width: 200, height: 200 }} /> */}
             </ColorExtractor>
             <div
-              style={{ marginTop: 60, textAlign: "start", marginLeft: "10px" }}
+              style={{ marginTop: 40, textAlign: "start", marginLeft: "10px" }}
             >
-              <h4 className="selectColor">select two colors :</h4>
+              <h4 className="selectColor">select one dark color :</h4>
 
               <div className="display-swatches">
                 {/* <br /> */}
@@ -313,7 +382,22 @@ export default function CompanySettings({
               </div>
               {/* <h6>Selected colors: {check.length ? check.join(", ") : null}</h6> */}
             </div>
-            <Grid xs={12} style={{ marginTop: "48px" }}>
+            <div
+              style={{
+                marginTop: "-25px",
+                textAlign: "start",
+                marginLeft: "10px",
+              }}
+            >
+              <h4 className="selectColor">select one light color :</h4>
+
+              <div className="display-swatches">
+                {/* <br /> */}
+                {renderSwatchesLight("hex")}
+              </div>
+              {/* <h6>Selected colors: {check.length ? check.join(", ") : null}</h6> */}
+            </div>
+            <Grid xs={12} style={{ marginTop: "-25px" }}>
               <div className="png-or-jpg-only">PNG OR JPG ONLY</div>
             </Grid>
           </Paper>
@@ -337,7 +421,7 @@ export default function CompanySettings({
                   classes: { input: classes.input },
                 }}
                 value={businessName}
-                onChange={(e)=>setbusinessName(e.target.value)}
+                onChange={(e) => setbusinessName(e.target.value)}
               />
             </Grid>
             <Grid xs={12}>

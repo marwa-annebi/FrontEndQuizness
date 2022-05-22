@@ -46,7 +46,8 @@ function getSteps() {
 const LinaerStepper = () => {
   const params = useParams();
   const [otp, setotp] = useState();
-  const [check, setcheck] = useState([]);
+  const [darkColor, setdarkColor] = useState("");
+  const [lightColor, setlightColor] = useState("");
   const [logo, setlogo] = useState();
   const classes = useStyles();
   const [domain_name, setdomain_name] = useState("");
@@ -152,7 +153,8 @@ const LinaerStepper = () => {
             account: {
               domain_name: domain_name,
               logo: logo,
-              colors: check,
+              darkColor: darkColor.toString(),
+              lightColor: lightColor.toString(),
               businessName: businessName,
             },
           },
@@ -228,12 +230,14 @@ const LinaerStepper = () => {
             handleSubmit={handleChange}
             // // onChange={onChange}
             postDetails={postDetails}
-            check={check}
-            setcheck={setcheck}
             domain_name={domain_name}
             setdomain_name={setdomain_name}
             setbusinessName={setbusinessName}
             businessName={businessName}
+            darkColor={darkColor}
+            setdarkColor={setdarkColor}
+            lightColor={lightColor}
+            setlightColor={setlightColor}
           />
         );
 
@@ -359,8 +363,7 @@ const LinaerStepper = () => {
                     "//" +
                     domain_name +
                     "." +
-                    window.location.host +
-                    "/home"
+                    window.location.host
                   }
                   style={{ color: "var(--mahogany)" }}
                 >

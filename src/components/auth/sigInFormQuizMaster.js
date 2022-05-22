@@ -1,15 +1,16 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./../../css/siginFormQuizMaster.css";
-import iconPlay from "./../../assets/polygone-2-1@1x.png";
 import Icon from "../icon";
 import { FaGoogle, FaLinkedinIn, FaMicrosoft, FaPlay } from "react-icons/fa";
-import { AccountContext } from "../accountContext";
 import { Button, makeStyles, TextField } from "@material-ui/core";
 import axios from "axios";
 import Loading from "../Loading";
 import Notification from "../Notification";
 import { Link, useNavigate } from "react-router-dom";
-
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import IconButton from "@material-ui/core/IconButton";
 const styles = makeStyles({
   textField: {
     width: "70%",
@@ -22,21 +23,21 @@ const styles = makeStyles({
 
   input: {
     color: "black",
-    fontFamily: "cera_pro",
+    fontFamily: "var(--font-family-cerapro-bold)",
     letterSpacing: "inherit",
     // font-size: var(--font-size-m);
   },
   label: {
     fontFamily: "cerapro-bold",
-    color: "#560a02",
+    // color: "#560a02",
     fontSize: "20px",
     fontWeight: 700,
-    opacity: 0.48,
+    // opacity: 0.48,
     whiteSpace: "nowrap",
   },
 });
 
-export default function SigInForm() {
+export default function SigInForm(companyInfo) {
   const google = () => {
     window.open("http://localhost:5000/auth/google/Quizmaster", "_self");
   };
@@ -71,7 +72,7 @@ export default function SigInForm() {
       setloading(true);
       console.log("hello");
       const { data } = await axios.post(
-        "/auth/loginUser",
+        process.env.REACT_APP_BACKEND + "/auth/loginUser",
         { email, password, type: "3" },
         config
       );
@@ -79,7 +80,7 @@ export default function SigInForm() {
       // console.log(userInfo);
       console.log("hello");
       if (data) {
-        navigate("/dashboard/quizMaster");
+        navigate("/dashboard/quizMaster", { ...companyInfo });
       }
       window.location.reload(true);
       setloading(false);
@@ -99,24 +100,28 @@ export default function SigInForm() {
       }
     }
   };
-  // useEffect(() => {
-  //   const quizmasterInfo = localStorage.getItem("quizmasterInfo");
-  //   if (!quizmasterInfo) {
-  //   }
-  //   // console.log(quizmasterInfo);
-  //   else if (quizmasterInfo) {
-  //     navigate("/dashboard/quizMaster");
-  //   }
-  //   window.location.reload(true);
-  // }, [navigate]);
-
+  console.log("siginnn", companyInfo);
+  const darkColor = companyInfo.companyInfo.company_colors.darkColor;
+  const lightColor = companyInfo.companyInfo.company_colors.lightColor;
+  const [showPassword, setshowPassword] = useState(false);
+  const handleClickShowPassword = () => {
+    setshowPassword(true);
+  };
+  const handleMouseDownPassword = () => {
+    setshowPassword(false);
+  };
   return (
     // <div>
     <div className="rectangle-white">
       {loading && <Loading />}
       <Notification notify={notify} setNotify={setNotify} />
-      <h1 className="title">log in as Quiz master </h1>
-      <form onSubmit={submitHandler} style={{ flexDirection: "column" }}>
+      <h1 className="title" style={{ color: darkColor }}>
+        log in as Quiz master{" "}
+      </h1>
+      <form
+        onSubmit={submitHandler}
+        style={{ flexDirection: "column", marginTop: "35px" }}
+      >
         <TextField
           type="email"
           // class="form__field"
@@ -142,28 +147,62 @@ export default function SigInForm() {
           onChange={(e) => setPassword(e.target.value)}
           className={classes.textField}
           InputProps={{
-            className: classes.input,
+            className: classes.inputPassword,
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  style={{ color: darkColor }}
+                >
+                  {showPassword && <Visibility />}
+                  {!showPassword && <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            ),
           }}
           InputLabelProps={{ className: classes.label }}
         />
         <br />
-        <Button type="submit">
-          <FaPlay className="iconPlay1" style={{ color: "red" }} />
+        <Button type="submit" style={{ marginTop: "25px" }}>
+          <FaPlay className="iconPlay1" style={{ color: darkColor }} />
         </Button>
-        <Link to="/lostPassword/3">
-          <h4 className="lost-your-password" style={{ marginTop: "150px" }}>
+        <Link to="/lostPassword/3" style={{ color: darkColor }}>
+          <h4
+            className="lost-your-password"
+            style={{ marginTop: "120px", color: darkColor }}
+          >
             Lost your password ?
           </h4>
         </Link>
-        <div className="IconsContainer" style={{ marginTop: "80px" }}>
-          <Icon onclick={google}>
-            <FaGoogle size={"40px"} />
+        <div className="IconsContainer" style={{ marginTop: "50px" }}>
+          <Icon
+            onclick={google}
+            style={{
+              backgroundColor: lightColor,
+              border: `1px solid ${darkColor}`,
+            }}
+          >
+            <FaGoogle size={"40px"} color={darkColor} />
           </Icon>
-          <Icon onclick={linkedin}>
-            <FaLinkedinIn size={"40px"} />
+          <Icon
+            onclick={linkedin}
+            style={{
+              backgroundColor: lightColor,
+              border: `1px solid ${darkColor}`,
+            }}
+          >
+            <FaLinkedinIn size={"40px"} color={darkColor} />
           </Icon>
-          <Icon onclick={microsoft}>
-            <FaMicrosoft size={"40px"} />
+          <Icon
+            onclick={microsoft}
+            style={{
+              backgroundColor: lightColor,
+              border: `1px solid ${darkColor}`,
+            }}
+          >
+            <FaMicrosoft size={"40px"} color={darkColor} />
           </Icon>
         </div>
         {/* <div style={{ marginTop: "50px" }}>
