@@ -161,141 +161,133 @@ function SignUpQuizmaster() {
   };
 
   return (
-    <div
-    // style={{
-    //   backgroundColor: "transparent",
-    //   width: "100vw",
-    //   height: "100vh",
-    //   marginLeft: "210px",
-    //   marginTop: "57px",
-    // }}
-    >
-      <Notification
-        notify={notify}
-        setNotify={setNotify}
-        vertical="top"
-        horizontal="center"
-      />
-      {/* {!done ? ( */}
-      {loading && <Loading />}
-      {/* ) : ( */}
-      <div className={classes.rectanglewhite}>
-        <h1 className="title1" style={{ marginLeft: "70px" }}>
-          Register as Quiz master
-        </h1>
-        <form onSubmit={submitHandler} style={{ flexDirection: "column" }}>
-          <TextField
-            type="text"
-            // class="form__field"
-            label="first Name"
-            id="firstName"
-            // required
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            className={classes.textField}
-            InputProps={{
-              className: classes.input,
-            }}
-            InputLabelProps={{ className: classes.label }}
+    <div>
+      {loading ? (
+        <Loading />
+      ) : (
+        <div className={classes.rectanglewhite}>
+          <Notification
+            notify={notify}
+            setNotify={setNotify}
+            vertical="top"
+            horizontal="center"
           />
-          <TextField
-            type="text"
-            // class="form__field"
-            label="last Name"
-            value={lastName}
-            id="lastName"
-            // required
-            className={classes.textField}
-            onChange={(e) => setlastName(e.target.value)}
-            InputProps={{
-              className: classes.input,
-            }}
-            InputLabelProps={{ className: classes.label }}
-          />
-          <TextField
-            type="email"
-            // class="form__field"
-            label="email"
-            value={email}
-            id="email"
-            error={dirty && isValid === false}
-            onBlur={() => setDirty(true)}
-            onChange={(e) => handleChange(e)}
-            className={classes.textField}
-            InputProps={{
-              className: classes.input,
-            }}
-            InputLabelProps={{ className: classes.label }}
-          />
-          <TextField
-            type={showPassword ? "text" : "password"}
-            // class="form__field"
-            label="password"
-            value={password}
-            id="filled-adornment-password"
-            // required
-            onChange={(e) => setPassword(e.target.value)}
-            className={classes.textField}
-            InputLabelProps={{ className: classes.label }}
-            InputProps={{
-              className: classes.inputPassword,
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    style={{ color: "#560a02" }}
-                  >
-                    {showPassword && <Visibility />}
-                    {!showPassword && <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-          <PasswordStrengthBar
-            password={password}
-            style={{
-              width: "300px",
-              marginLeft: "60px",
-              marginBottom: "-20px",
-              fontFamily: "cerapro-bold",
-            }}
-          />
+          <h1 className="title1" style={{ marginLeft: "70px" }}>
+            Register as Quiz master
+          </h1>
+          <form onSubmit={submitHandler} style={{ flexDirection: "column" }}>
+            <TextField
+              type="text"
+              // class="form__field"
+              label="first Name"
+              id="firstName"
+              // required
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              className={classes.textField}
+              InputProps={{
+                className: classes.input,
+              }}
+              InputLabelProps={{ className: classes.label }}
+            />
+            <TextField
+              type="text"
+              // class="form__field"
+              label="last Name"
+              value={lastName}
+              id="lastName"
+              // required
+              className={classes.textField}
+              onChange={(e) => setlastName(e.target.value)}
+              InputProps={{
+                className: classes.input,
+              }}
+              InputLabelProps={{ className: classes.label }}
+            />
+            <TextField
+              type="email"
+              // class="form__field"
+              label="email"
+              value={email}
+              id="email"
+              error={dirty && isValid === false}
+              onBlur={() => setDirty(true)}
+              onChange={(e) => handleChange(e)}
+              className={classes.textField}
+              InputProps={{
+                className: classes.input,
+              }}
+              InputLabelProps={{ className: classes.label }}
+            />
+            <TextField
+              type={showPassword ? "text" : "password"}
+              // class="form__field"
+              label="password"
+              value={password}
+              id="filled-adornment-password"
+              // required
+              onChange={(e) => setPassword(e.target.value)}
+              className={classes.textField}
+              InputLabelProps={{ className: classes.label }}
+              InputProps={{
+                className: classes.inputPassword,
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      style={{ color: "#560a02" }}
+                    >
+                      {showPassword && <Visibility />}
+                      {!showPassword && <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <PasswordStrengthBar
+              password={password}
+              style={{
+                width: "300px",
+                marginLeft: "60px",
+                marginBottom: "-20px",
+                fontFamily: "cerapro-bold",
+              }}
+            />
 
-          <TextField
-            type={showPassword ? "text" : "password"}
-            // class="form__field"
-            label="confirm password"
-            value={confirmpassword}
-            id="filled-adornment-password"
-            // required
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className={classes.textField}
-            InputProps={{
-              className: classes.inputPassword,
-            }}
-            InputLabelProps={{ className: classes.label }}
-          />
-          <br />
-          <Button type="submit">
-            <FaPlay className="iconPlay1" style={{ marginLeft: "380px" }} />
-          </Button>
-        </form>
-        <div className="IconsContainer1">
-          <Icon onclick={google}>
-            <FaGoogle size={"40px"} className="google" />
-          </Icon>
-          <Icon onclick={linkedin}>
-            <FaLinkedinIn size={"40px"} className="google" />
-          </Icon>
-          <Icon onclick={microsoft}>
-            <FaMicrosoft size={"40px"} className="google" />
-          </Icon>
+            <TextField
+              type={showPassword ? "text" : "password"}
+              // class="form__field"
+              label="confirm password"
+              value={confirmpassword}
+              id="filled-adornment-password"
+              // required
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className={classes.textField}
+              InputProps={{
+                className: classes.inputPassword,
+              }}
+              InputLabelProps={{ className: classes.label }}
+            />
+            <br />
+            <Button type="submit">
+              <FaPlay className="iconPlay1" style={{ marginLeft: "380px" }} />
+            </Button>
+          </form>
+          <div className="IconsContainer1">
+            <Icon onclick={google}>
+              <FaGoogle size={"40px"} className="google" />
+            </Icon>
+            <Icon onclick={linkedin}>
+              <FaLinkedinIn size={"40px"} className="google" />
+            </Icon>
+            <Icon onclick={microsoft}>
+              <FaMicrosoft size={"40px"} className="google" />
+            </Icon>
+          </div>
         </div>
-      </div>
-      {/* )} */}
+      )}
     </div>
   );
 }

@@ -1,14 +1,16 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Badge, Button, Grid, IconButton, makeStyles } from "@material-ui/core";
-import { AppBar, Box, Container, Toolbar, Typography } from "@mui/material";
+import { AppBar, Container, Toolbar } from "@mui/material";
 import logo from "./../../assets/Image.png";
 import { IoLogOut } from "react-icons/io5";
 import { IoMdAddCircle } from "react-icons/io";
 import { RiNotification2Fill } from "react-icons/ri";
 import { IconContext } from "react-icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import ChooseTypeQuiz from "./ChooseTypeQuiz";
+
 const styles = makeStyles({
   overlapGroup5: {
     alignItems: "center",
@@ -46,6 +48,7 @@ const styles = makeStyles({
     height: "55px",
     justifyContent: "flex-end",
     width: "190px",
+    boxShadow: "0px 3px 6px #00000029",
   },
   iconLogout: {
     backgroundColor: "gold",
@@ -70,6 +73,7 @@ const styles = makeStyles({
     paddingRight: "50px",
     justifyContent: "flex-end",
     paddingLeft: "0px",
+    boxShadow: "0px 3px 6px #00000029",
   },
   iconAdd: {
     paddingLeft: "0px",
@@ -77,6 +81,13 @@ const styles = makeStyles({
 });
 export default function NavBar() {
   const dispatch = useDispatch();
+  const [modalIsOpen, setIsOpen] = React.useState(false);
+  function openModal() {
+    setIsOpen(true);
+  }
+  function closeModal() {
+    setIsOpen(false);
+  }
   const [companySet, setcompanySet] = React.useState("");
   const companySettings = useSelector((state) => state.companySettings);
   const { companyInfo } = companySettings;
@@ -115,7 +126,14 @@ export default function NavBar() {
               className={classes.overlapGroup5}
               style={{ backgroundColor: "gold" }}
             >
-              <img src={logo} className={classes.image1}></img>
+              <Link to="/dashboard/quizMaster">
+                {" "}
+                <img
+                  src={logo}
+                  // onClick={window.location("/dashboard/quizMaster")}
+                  className={classes.image1}
+                ></img>
+              </Link>
             </div>
             <div className={classes.groupe9}>
               <h2 className={classes.title}>DASHBOARD</h2>
@@ -145,6 +163,7 @@ export default function NavBar() {
                   </IconContext.Provider>
                 }
                 className={classes.btn}
+                onClick={openModal}
               >
                 <h3 className={classes.addQuiz}>Add Quiz</h3>
               </Button>
@@ -168,6 +187,13 @@ export default function NavBar() {
           </div>
         </Toolbar>
       </Container>
+      <ChooseTypeQuiz
+        modalIsOpen={modalIsOpen}
+        // onAfterOpen={afterOpenModal}
+        closeModal={closeModal}
+      >
+        {/* <ChooseTypeQuiz /> */}
+      </ChooseTypeQuiz>
     </AppBar>
   );
 }

@@ -1,0 +1,12 @@
+.borderQuiz {
+    border: 5px solid var(--mahogany);
+    border-radius: 36px;
+    /* background-color: red; */
+    width: 1000px;
+    height: 500px;
+    margin-left: 13%;
+    padding: 31px 15px;
+
+    /* justify-content: flex-start; */
+    /* text-align: start; */
+}

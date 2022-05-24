@@ -15,16 +15,16 @@ const useStyles = makeStyles((theme) => ({
   dialog: {
     padding: theme.spacing(2),
     position: "absolute",
+    webkitBackdropFilter: "blur(15px) brightness(105%)",
+    backdropFilter: " blur(15px) brightness(105%)",
+    backgroundColor: "transparent",
     top: theme.spacing(5),
-
   },
   dialogTitle: {
     textAlign: "center",
-
   },
   dialogContent: {
     textAlign: "center",
-
   },
   dialogAction: {
     justifyContent: "center",
@@ -63,11 +63,7 @@ export default function ConfirmDialog(props) {
           color="default"
           onClick={() => setConfirmDialog({ ...confirmDialog, isOpen: false })}
         />
-        <Button
-          text="Yes"
-          
-          onClick={confirmDialog.onConfirm}
-        />
+        <Button text="Yes" onClick={confirmDialog.onConfirm} />
       </DialogActions>
     </Dialog>
   );

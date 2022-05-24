@@ -117,111 +117,115 @@ function SignInFormCandidate(companyInfo) {
     setshowPassword(false);
   };
   return (
-    // <div>
-    <div className="rectangle-white">
-      {" "}
-      {loading && <Loading />}
-      <Notification notify={notify} setNotify={setNotify} />
-      <h1 className="title" style={{ color: darkColor }}>
-        log in as Candidate{" "}
-      </h1>
-      <form onSubmit={submitHandler} style={{ flexDirection: "column" }}>
-        <TextField
-          type="email"
-          // class="form__field"
-          label="Email"
-          value={email}
-          id="email"
-          required
-          onChange={(e) => setEmail(e.target.value)}
-          className={classes.textField}
-          InputProps={{
-            className: classes.input,
-          }}
-          InputLabelProps={{ className: classes.label }}
-        />
-        <br />
-        <TextField
-          type={showPassword ? "text" : "password"}
-          // class="form__field"
-          label="Password"
-          value={password}
-          id="password"
-          required
-          onChange={(e) => setPassword(e.target.value)}
-          className={classes.textField}
-          InputProps={{
-            className: classes.inputPassword,
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  style={{ color: darkColor }}
-                >
-                  {showPassword && <Visibility />}
-                  {!showPassword && <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-          InputLabelProps={{ className: classes.label }}
-          // margin="normal"
-        />
-        <br />
-        <Button type="submit">
-          <FaPlay className="iconPlay1" style={{ color: darkColor }} />
+    <div>
+      {loading ? (
+        <Loading />
+      ) : (
+        <div className="rectangle-white">
+          {" "}
+          {/* {loading && <Loading />} */}
+          <Notification notify={notify} setNotify={setNotify} />
+          <h1 className="title" style={{ color: darkColor }}>
+            log in as Candidate{" "}
+          </h1>
+          <form onSubmit={submitHandler} style={{ flexDirection: "column" }}>
+            <TextField
+              type="email"
+              // class="form__field"
+              label="Email"
+              value={email}
+              id="email"
+              required
+              onChange={(e) => setEmail(e.target.value)}
+              className={classes.textField}
+              InputProps={{
+                className: classes.input,
+              }}
+              InputLabelProps={{ className: classes.label }}
+            />
+            <br />
+            <TextField
+              type={showPassword ? "text" : "password"}
+              // class="form__field"
+              label="Password"
+              value={password}
+              id="password"
+              required
+              onChange={(e) => setPassword(e.target.value)}
+              className={classes.textField}
+              InputProps={{
+                className: classes.inputPassword,
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      style={{ color: darkColor }}
+                    >
+                      {showPassword && <Visibility />}
+                      {!showPassword && <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              InputLabelProps={{ className: classes.label }}
+              // margin="normal"
+            />
+            <br />
+            <Button type="submit">
+              <FaPlay className="iconPlay1" style={{ color: darkColor }} />
 
-          {/* <img src={iconPlay} className="iconPlay" style={{ color: color2 }} /> */}
-        </Button>
-        <Link to="/lostPassword/2" style={{ color: darkColor }}>
-          <h4 className="lost-your-password" style={{ color: darkColor }}>
-            Lost your password ?
-          </h4>
-        </Link>
-        <div className="IconsContainer">
-          <Icon
-            onclick={google}
-            style={{
-              backgroundColor: lightColor,
-              border: `1px solid ${darkColor}`,
-            }}
-          >
-            <FaGoogle size={"40px"} color={darkColor} />
-          </Icon>
-          <Icon
-            onclick={linkedin}
-            style={{
-              backgroundColor: lightColor,
-              border: `1px solid ${darkColor}`,
-            }}
-          >
-            <FaLinkedinIn size={"40px"} color={darkColor} />
-          </Icon>
-          <Icon
-            onclick={microsoft}
-            style={{
-              backgroundColor: lightColor,
-              border: `1px solid ${darkColor}`,
-            }}
-          >
-            <FaMicrosoft size={"40px"} color={darkColor} />
-          </Icon>
+              {/* <img src={iconPlay} className="iconPlay" style={{ color: color2 }} /> */}
+            </Button>
+            <Link to="/lostPassword/2" style={{ color: darkColor }}>
+              <h4 className="lost-your-password" style={{ color: darkColor }}>
+                Lost your password ?
+              </h4>
+            </Link>
+            <div className="IconsContainer">
+              <Icon
+                onclick={google}
+                style={{
+                  backgroundColor: lightColor,
+                  border: `1px solid ${darkColor}`,
+                }}
+              >
+                <FaGoogle size={"40px"} color={darkColor} />
+              </Icon>
+              <Icon
+                onclick={linkedin}
+                style={{
+                  backgroundColor: lightColor,
+                  border: `1px solid ${darkColor}`,
+                }}
+              >
+                <FaLinkedinIn size={"40px"} color={darkColor} />
+              </Icon>
+              <Icon
+                onclick={microsoft}
+                style={{
+                  backgroundColor: lightColor,
+                  border: `1px solid ${darkColor}`,
+                }}
+              >
+                <FaMicrosoft size={"40px"} color={darkColor} />
+              </Icon>
+            </div>
+            <div style={{ marginTop: "50px" }}>
+              <a
+                href="#"
+                className="btn-sign-up"
+                onClick={switchToSignup}
+                style={{ color: darkColor }}
+              >
+                sign up
+              </a>
+            </div>{" "}
+          </form>
         </div>
-        <div style={{ marginTop: "50px" }}>
-          <a
-            href="#"
-            className="btn-sign-up"
-            onClick={switchToSignup}
-            style={{ color: darkColor }}
-          >
-            sign up
-          </a>
-        </div>{" "}
-      </form>
+      )}
     </div>
-    // </div>
   );
 }
 

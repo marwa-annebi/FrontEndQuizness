@@ -15,9 +15,7 @@ import UpdateProfile from "../components/quizmaster/UpdateProfile";
 import LinaerStepper from "../components/stepper/LinearStepper";
 import { CompanySettings } from "./../actions/quizmasterAction";
 import Loading from "./../components/Loading";
-import AddQuizBySelection from "./../components/quizmaster/AddQuizBySelection";
-import AddQuizRandomly from "./../components/quizmaster/AddQuizRandomly";
-function App() {
+function Routing() {
   const [companyColors, setcompanyColors] = React.useState("");
   const [subdomain, setSubDomain] = React.useState(null);
   const dispatch = useDispatch();
@@ -63,6 +61,12 @@ function App() {
             <Route path="category" element={<Category />} />
             <Route path="candidate" element={<Candidate />} />
           </Route>
+        </Routes>
+      ) : (
+        <Routes>
+          <Route path="/" element={<Home />} exact />
+          <Route element={<LinaerStepper />} path="/quizmaster/:id" exact />
+
           <Route
             element={<ForgotPasswordScreen />}
             path="/lostPassword/:type"
@@ -73,17 +77,10 @@ function App() {
             path="/setNewPassword/:id/:resetToken/:type"
             exact
           />
-          <Route element={<AddQuizBySelection />} path="/QuizBySelection" />
-          <Route element={<AddQuizRandomly />} path="/QuizRandomly" />
-        </Routes>
-      ) : (
-        <Routes>
-          <Route path="/" element={<Home />} exact />
-          <Route element={<LinaerStepper />} path="/quizmaster/:id" exact />
         </Routes>
       )}
     </BrowserRouter>
   );
 }
 
-export default App;
+export default Routing;
