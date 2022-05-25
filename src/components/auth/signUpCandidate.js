@@ -133,161 +133,164 @@ export default function SignUpCandidate(companyInfo) {
 
   return (
     <div>
-      {loading && <Loading />}
-      <Notification notify={notify} setNotify={setNotify} />
-      <div className="rectangle-white">
-        <h1 className="title1" style={{ color: darkColor }}>
-          Register as Candidate
-        </h1>
-        <form onSubmit={submitHandler} style={{ flexDirection: "column" }}>
-          <TextField
-            type="text"
-            // class="form__field"
-            label="first Name"
-            id="firstName"
-            // required
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            className={classes.textField}
-            InputProps={{
-              className: classes.input,
-            }}
-            InputLabelProps={{ className: classes.label }}
-          />
-          <br />
-          <TextField
-            type="text"
-            // class="form__field"
-            label="last Name"
-            value={lastName}
-            id="lastName"
-            // required
-            className={classes.textField}
-            onChange={(e) => setlastName(e.target.value)}
-            InputProps={{
-              className: classes.input,
-            }}
-            InputLabelProps={{ className: classes.label }}
-          />
+      {loading ? (
+        <Loading />
+      ) : (
+        <div className="rectangle-white">
+          <Notification notify={notify} setNotify={setNotify} />
+          <h1 className="title1" style={{ color: darkColor }}>
+            Register as Candidate
+          </h1>
+          <form onSubmit={submitHandler} style={{ flexDirection: "column" }}>
+            <TextField
+              type="text"
+              // class="form__field"
+              label="first Name"
+              id="firstName"
+              // required
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              className={classes.textField}
+              InputProps={{
+                className: classes.input,
+              }}
+              InputLabelProps={{ className: classes.label }}
+            />
+            <br />
+            <TextField
+              type="text"
+              // class="form__field"
+              label="last Name"
+              value={lastName}
+              id="lastName"
+              // required
+              className={classes.textField}
+              onChange={(e) => setlastName(e.target.value)}
+              InputProps={{
+                className: classes.input,
+              }}
+              InputLabelProps={{ className: classes.label }}
+            />
 
-          <br />
+            <br />
 
-          <TextField
-            type="email"
-            // class="form__field"
-            label="email"
-            value={email}
-            id="email"
-            // onError={error.email}
-            // required
-            onChange={(e) => setEmail(e.target.value)}
-            className={classes.textField}
-            InputProps={{
-              className: classes.input,
-            }}
-            InputLabelProps={{ className: classes.label }}
-          />
-          <br />
+            <TextField
+              type="email"
+              // class="form__field"
+              label="email"
+              value={email}
+              id="email"
+              // onError={error.email}
+              // required
+              onChange={(e) => setEmail(e.target.value)}
+              className={classes.textField}
+              InputProps={{
+                className: classes.input,
+              }}
+              InputLabelProps={{ className: classes.label }}
+            />
+            <br />
 
-          <TextField
-            type={showPassword ? "text" : "password"}
-            // class="form__field"
-            label="password"
-            value={password}
-            id="filled-adornment-password"
-            // required
-            onChange={(e) => setPassword(e.target.value)}
-            className={classes.textField}
-            InputProps={{
-              className: classes.inputPassword,
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    style={{ color: darkColor }}
-                  >
-                    {showPassword && <Visibility />}
-                    {!showPassword && <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-            InputLabelProps={{ className: classes.label }}
-          />
+            <TextField
+              type={showPassword ? "text" : "password"}
+              // class="form__field"
+              label="password"
+              value={password}
+              id="filled-adornment-password"
+              // required
+              onChange={(e) => setPassword(e.target.value)}
+              className={classes.textField}
+              InputProps={{
+                className: classes.inputPassword,
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      style={{ color: darkColor }}
+                    >
+                      {showPassword && <Visibility />}
+                      {!showPassword && <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              InputLabelProps={{ className: classes.label }}
+            />
 
-          <PasswordStrengthBar
-            password={password}
-            style={{
-              width: "300px",
-              marginLeft: "60px",
-              marginBottom: "-20px",
-              fontFamily: "cerapro-bold",
-            }}
-          />
+            <PasswordStrengthBar
+              password={password}
+              style={{
+                width: "300px",
+                marginLeft: "60px",
+                marginBottom: "-20px",
+                fontFamily: "cerapro-bold",
+              }}
+            />
 
-          <TextField
-            type={showPassword ? "text" : "password"}
-            // class="form__field"
-            label="confirm password"
-            value={confirmpassword}
-            id="confirmpassword"
-            // required
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className={classes.textField}
-            InputProps={{
-              className: classes.inputPassword,
-            }}
-            InputLabelProps={{ className: classes.label }}
-          />
-          <br />
+            <TextField
+              type={showPassword ? "text" : "password"}
+              // class="form__field"
+              label="confirm password"
+              value={confirmpassword}
+              id="confirmpassword"
+              // required
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className={classes.textField}
+              InputProps={{
+                className: classes.inputPassword,
+              }}
+              InputLabelProps={{ className: classes.label }}
+            />
+            <br />
 
-          <Button variant="primary" type="submit">
-            <FaPlay className="iconPlay1" style={{ color: darkColor }} />
-          </Button>
-        </form>
-        <div className="IconsContainer1">
-          <Icon
-            onclick={google}
-            style={{
-              backgroundColor: lightColor,
-              border: `1px solid ${darkColor}`,
-            }}
-          >
-            <FaGoogle size={"40px"} color={darkColor} />
-          </Icon>
-          <Icon
-            onclick={linkedin}
-            style={{
-              backgroundColor: lightColor,
-              border: `1px solid ${darkColor}`,
-            }}
-          >
-            <FaLinkedinIn size={"40px"} color={darkColor} />
-          </Icon>
-          <Icon
-            onclick={microsoft}
-            style={{
-              backgroundColor: lightColor,
-              border: `1px solid ${darkColor}`,
-            }}
-          >
-            <FaMicrosoft size={"40px"} color={darkColor} />
-          </Icon>
+            <Button variant="primary" type="submit">
+              <FaPlay className="iconPlay1" style={{ color: darkColor }} />
+            </Button>
+          </form>
+          <div className="IconsContainer1">
+            <Icon
+              onclick={google}
+              style={{
+                backgroundColor: lightColor,
+                border: `1px solid ${darkColor}`,
+              }}
+            >
+              <FaGoogle size={"40px"} color={darkColor} />
+            </Icon>
+            <Icon
+              onclick={linkedin}
+              style={{
+                backgroundColor: lightColor,
+                border: `1px solid ${darkColor}`,
+              }}
+            >
+              <FaLinkedinIn size={"40px"} color={darkColor} />
+            </Icon>
+            <Icon
+              onclick={microsoft}
+              style={{
+                backgroundColor: lightColor,
+                border: `1px solid ${darkColor}`,
+              }}
+            >
+              <FaMicrosoft size={"40px"} color={darkColor} />
+            </Icon>
+          </div>
+
+          <div style={{ marginTop: "25px" }}>
+            <a
+              href="#"
+              className="btn-sign-up1"
+              onClick={switchToSignin}
+              style={{ color: darkColor }}
+            >
+              sign in
+            </a>
+          </div>
         </div>
-
-        <div style={{ marginTop: "25px" }}>
-          <a
-            href="#"
-            className="btn-sign-up1"
-            onClick={switchToSignin}
-            style={{ color: darkColor }}
-          >
-            sign in
-          </a>
-        </div>
-      </div>
+      )}
     </div>
   );
 }

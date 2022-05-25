@@ -75,19 +75,7 @@ const items = [
 export default function SideMenu() {
   return (
     <div className="menu">
-      <Menu
-        defaultSelectedKeys={["1"]}
-        defaultOpenKeys={["1"]}
-        mode="inline"
-        // theme="light"
-        items={items}
-        className="sidemenu"
-        // onOpenChange={routes}
-      >
-        {/* <Menu.Item key="1"  >
-          <Link to="/dashboard/quizMaster/category" className="link"> Account</Link>
-        </Menu.Item> */}
-      </Menu>
+      <Menu mode="inline" items={items} className="sidemenu"></Menu>
     </div>
   );
 }

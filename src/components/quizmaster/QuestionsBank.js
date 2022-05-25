@@ -1,24 +1,21 @@
-import { Button, Checkbox, makeStyles } from "@material-ui/core";
+import { Button, makeStyles } from "@material-ui/core";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import useTable from "../useTable";
 import ContentMenuItem from "./../ContentMenuItem";
-import { IconContext } from "react-icons";
+import ConfirmDialog from "../ConfirmDialog";
 import "./../../css/questionBank.css";
 import mcq from "./../../assets/check-svgrepo-com (2).svg";
 import tfq from "./../../assets/yes or no.svg";
 import {
   Box,
-  Grid,
+  Checkbox,
   Collapse,
-  FormControl,
+  Grid,
   IconButton,
-  InputLabel,
   Menu,
-  TextField,
   MenuItem,
   Radio,
-  Select,
   Table,
   TableBody,
   TableCell,
@@ -225,7 +222,6 @@ export default function QuestionsBank({ active }) {
         },
       };
       // if (userInfo.id == 0)
-      console.log("helloooooooooo");
       try {
         const { data } = await axios.post(
           process.env.REACT_APP_BACKEND + "/quizmaster/finishQuestion",
@@ -245,18 +241,32 @@ export default function QuestionsBank({ active }) {
           config
         );
         console.log("#questionadd", data);
+        loadQuestions();
+        if (data) {
+          setNotify({
+            isOpen: true,
+            message: "Submitted Successfully",
+            type: "success",
+          });
+        }
       } catch (error) {
-        console.log(error);
+        if (
+          error.response &&
+          error.response.status >= 400 &&
+          error.response.status <= 500
+        ) {
+          setNotify({
+            isOpen: true,
+            message: error.response.data.message,
+            type: "error",
+          });
+        }
       }
     } else {
-      axios.put(process.env.REACT_APP_BACKEND + `quizmaster/${id}`, values);
+      await axios.put(
+        process.env.REACT_APP_BACKEND + `quizmaster/${recordForEdit._id}`
+      );
     }
-    loadQuestions();
-    setNotify({
-      isOpen: true,
-      message: "Submitted Successfully",
-      type: "success",
-    });
   };
 
   //delete question
@@ -286,6 +296,9 @@ export default function QuestionsBank({ active }) {
               <TableCell>
                 <IconButton
                   aria-label="expand row"
+                  style={{
+                    color: "gold",
+                  }}
                   size="small"
                   onClick={() => setOpen(!open)}
                 >
@@ -297,7 +310,13 @@ export default function QuestionsBank({ active }) {
               <TableCell>{item.skill.skill_name}</TableCell>
 
               <TableCell>
-                <Button color="primary">
+                <Button
+                  color="primary"
+                  onClick={() => {
+                    openModal();
+                    setRecordForEdit(item);
+                  }}
+                >
                   <EditOutlinedIcon fontSize="small" />
                 </Button>
                 <Button
@@ -341,20 +360,28 @@ export default function QuestionsBank({ active }) {
                           <TableCell>
                             {historyRow.propositions.map((prop) => (
                               <div>
-                                {prop.content}{" "}
-                                <Radio
-                                  checked={prop.veracity}
-                                  value={prop.veracity}
-                                  name="radio-buttons"
-                                  // inputProps={{ "aria-label": "A" }}
-                                />
+                                <Grid xs={12}>
+                                  {prop.content}{" "}
+                                  {prop.typeQuestion === "MCQ" ? (
+                                    <Radio
+                                      checked={prop.veracity}
+                                      value={prop.veracity}
+                                      name="radio-buttons"
+                                      // inputProps={{ "aria-label": "A" }}
+                                    />
+                                  ) : (
+                                    <Checkbox
+                                      checked={prop.veracity}
+                                      value={prop.veracity}
+                                      name="checkbox"
+                                      // inputProps={{ "aria-label": "A" }}
+                                    />
+                                  )}
+                                </Grid>
                               </div>
                             ))}
                           </TableCell>
-                          {/* <TableCell align="right">{historyRow.amount}</TableCell> */}
-                          {/* <TableCell align="right">
-                        {Math.round(historyRow.amount * row.price * 100) / 100}
-                      </TableCell> */}
+                 
                         </TableRow>
                       ))}
                     </TableBody>
@@ -367,13 +394,6 @@ export default function QuestionsBank({ active }) {
       </TblContainer>
       <TblPagination />
       <div className={`divAdd ${openMenu ? "activeAdd" : ""}`}>
-        {/* <IconContext.Provider
-          value={{
-            color: "var(--mahogany)",
-            size: "30px",
-          }}
-          // className={openMenu ? "activeIcon" : ""}
-        > */}
         <Button
           id="basic-button"
           aria-controls={openMenu ? "basic-menu" : undefined}
@@ -433,7 +453,8 @@ export default function QuestionsBank({ active }) {
               // marginLeft: "0px",
             }}
           >
-            <img src={mcq} style={{ marginRight: "10px" }} /> MultiChoice
+            <img alt="MCQ" src={mcq} style={{ marginRight: "10px" }} />{" "}
+            MultiChoice
           </MenuItem>
           <MenuItem
             className="divMenu"
@@ -447,7 +468,7 @@ export default function QuestionsBank({ active }) {
               fontFamily: "var(--font-family-cerapro-bold)",
             }}
           >
-            <img src={tfq} style={{ marginRight: "10px" }} />
+            <img alt="TFQ" src={tfq} style={{ marginRight: "10px" }} />
             Yes or No
           </MenuItem>
         </Menu>
@@ -461,6 +482,7 @@ export default function QuestionsBank({ active }) {
         >
           <QuestionForm recordForEdit={recordForEdit} addOrEdit={create} />
         </Modal>
+
         {/* </div> */}
       </div>
       <Notification
@@ -468,6 +490,10 @@ export default function QuestionsBank({ active }) {
         setNotify={setNotify}
         vertical="top"
         horizontal="right"
+      />
+      <ConfirmDialog
+        confirmDialog={confirmDialog}
+        setConfirmDialog={setConfirmDialog}
       />
     </ContentMenuItem>
   );

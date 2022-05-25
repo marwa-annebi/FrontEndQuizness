@@ -13,22 +13,29 @@ const useStyles = makeStyles((theme) => ({
   table: {
     // marginTop: theme.spacing(3),
     fontFamily: "cerapro-Medium",
-
+    borderCollapse: "separate",
+    borderSpacing: "0px 6px",
     "& thead th": {
       fontWeight: "600",
-      // color: theme.palette.primary.main,
-      // color:"#"
-
-      //   background: "rgba(255, 215, 0, 0.33)",
+      color: "var(--mahogany)",
       background: "rgba(87, 11, 3, 0.05)",
-      fontFamily: "cerapro-Medium",
+      fontFamily: "cerapro-bold",
+      marginBottom: "10px",
     },
     "& tbody td": {
-      fontWeight: "300",
+      fontWeight: "500",
+      fontFamily: "cerapro-Medium",
+      background: "rgba(87, 11, 3, 0.05)",
+      // transition: "width 2s, height 4s",
     },
     "& tbody tr:hover": {
-      backgroundColor: "#fffbf2",
+      // width: "150px",
+      // height: "100px",
+      // backgroundColor: "red",
       cursor: "pointer",
+    },
+    "$ tbody tr": {
+      marginTop: "30px",
     },
   },
 }));
@@ -36,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 export default function useTable(records, headCells, filterFn) {
   const classes = useStyles();
 
-  const pages = [1, 5, 10, 25];
+  const pages = [5, 10, 25];
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(pages[page]);
   const [order, setOrder] = useState();

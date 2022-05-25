@@ -70,20 +70,21 @@ export default function SigInForm(companyInfo) {
         },
       };
       setloading(true);
-      console.log("hello");
       const { data } = await axios.post(
         process.env.REACT_APP_BACKEND + "/auth/loginUser",
         { email, password, type: "3" },
         config
       );
+
       localStorage.setItem("quizmasterInfo", JSON.stringify(data));
       // console.log(userInfo);
-      console.log("hello");
+      // console.log("hello");
       if (data) {
-        navigate("/dashboard/quizMaster", { ...companyInfo });
+        setloading(true);
+        navigate("/dashboard/quizMaster/questionsBank");
+        window.location.reload(true);
       }
-      window.location.reload(true);
-      setloading(false);
+      // setloading(false);
     } catch (error) {
       setloading(false);
       console.log(error.response.data.message);
@@ -111,107 +112,110 @@ export default function SigInForm(companyInfo) {
     setshowPassword(false);
   };
   return (
-    // <div>
-    <div className="rectangle-white">
-      {loading && <Loading />}
-      <Notification notify={notify} setNotify={setNotify} />
-      <h1 className="title" style={{ color: darkColor }}>
-        log in as Quiz master{" "}
-      </h1>
-      <form
-        onSubmit={submitHandler}
-        style={{ flexDirection: "column", marginTop: "35px" }}
-      >
-        <TextField
-          type="email"
-          // class="form__field"
-          label="Email"
-          value={email}
-          id="email"
-          required
-          onChange={(e) => setEmail(e.target.value)}
-          className={classes.textField}
-          InputProps={{
-            className: classes.input,
-          }}
-          InputLabelProps={{ className: classes.label }}
-        />
-        <br />
-        <TextField
-          type="password"
-          // class="form__field"
-          label="Password"
-          value={password}
-          id="password"
-          required
-          onChange={(e) => setPassword(e.target.value)}
-          className={classes.textField}
-          InputProps={{
-            className: classes.inputPassword,
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  style={{ color: darkColor }}
-                >
-                  {showPassword && <Visibility />}
-                  {!showPassword && <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-          InputLabelProps={{ className: classes.label }}
-        />
-        <br />
-        <Button type="submit" style={{ marginTop: "25px" }}>
-          <FaPlay className="iconPlay1" style={{ color: darkColor }} />
-        </Button>
-        <Link to="/lostPassword/3" style={{ color: darkColor }}>
-          <h4
-            className="lost-your-password"
-            style={{ marginTop: "120px", color: darkColor }}
+    <div>
+      {loading ? (
+        <Loading />
+      ) : (
+        <div className="rectangle-white">
+          <Notification notify={notify} setNotify={setNotify} />
+          <h1 className="title" style={{ color: darkColor }}>
+            log in as Quiz master{" "}
+          </h1>
+          <form
+            onSubmit={submitHandler}
+            style={{ flexDirection: "column", marginTop: "35px" }}
           >
-            Lost your password ?
-          </h4>
-        </Link>
-        <div className="IconsContainer" style={{ marginTop: "50px" }}>
-          <Icon
-            onclick={google}
-            style={{
-              backgroundColor: lightColor,
-              border: `1px solid ${darkColor}`,
-            }}
-          >
-            <FaGoogle size={"40px"} color={darkColor} />
-          </Icon>
-          <Icon
-            onclick={linkedin}
-            style={{
-              backgroundColor: lightColor,
-              border: `1px solid ${darkColor}`,
-            }}
-          >
-            <FaLinkedinIn size={"40px"} color={darkColor} />
-          </Icon>
-          <Icon
-            onclick={microsoft}
-            style={{
-              backgroundColor: lightColor,
-              border: `1px solid ${darkColor}`,
-            }}
-          >
-            <FaMicrosoft size={"40px"} color={darkColor} />
-          </Icon>
-        </div>
-        {/* <div style={{ marginTop: "50px" }}>
+            <TextField
+              type="email"
+              // class="form__field"
+              label="Email"
+              value={email}
+              id="email"
+              required
+              onChange={(e) => setEmail(e.target.value)}
+              className={classes.textField}
+              InputProps={{
+                className: classes.input,
+              }}
+              InputLabelProps={{ className: classes.label }}
+            />
+            <br />
+            <TextField
+              type={showPassword ? "text" : "password"}
+              // class="form__field"
+              label="Password"
+              value={password}
+              id="password"
+              required
+              onChange={(e) => setPassword(e.target.value)}
+              className={classes.textField}
+              InputProps={{
+                className: classes.inputPassword,
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      style={{ color: darkColor }}
+                    >
+                      {showPassword && <Visibility />}
+                      {!showPassword && <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              InputLabelProps={{ className: classes.label }}
+            />
+            <br />
+            <Button type="submit" style={{ marginTop: "25px" }}>
+              <FaPlay className="iconPlay1" style={{ color: darkColor }} />
+            </Button>
+            <Link to="/lostPassword/3" style={{ color: darkColor }}>
+              <h4
+                className="lost-your-password"
+                style={{ marginTop: "120px", color: darkColor }}
+              >
+                Lost your password ?
+              </h4>
+            </Link>
+            <div className="IconsContainer" style={{ marginTop: "50px" }}>
+              <Icon
+                onclick={google}
+                style={{
+                  backgroundColor: lightColor,
+                  border: `1px solid ${darkColor}`,
+                }}
+              >
+                <FaGoogle size={"40px"} color={darkColor} />
+              </Icon>
+              <Icon
+                onclick={linkedin}
+                style={{
+                  backgroundColor: lightColor,
+                  border: `1px solid ${darkColor}`,
+                }}
+              >
+                <FaLinkedinIn size={"40px"} color={darkColor} />
+              </Icon>
+              <Icon
+                onclick={microsoft}
+                style={{
+                  backgroundColor: lightColor,
+                  border: `1px solid ${darkColor}`,
+                }}
+              >
+                <FaMicrosoft size={"40px"} color={darkColor} />
+              </Icon>
+            </div>
+            {/* <div style={{ marginTop: "50px" }}>
           <a href="#" className="btn-sign-up" onClick={switchToSignup}>
             sign up
           </a>
         </div> */}
-      </form>
+          </form>
+        </div>
+      )}
     </div>
-    // </div>
   );
 }

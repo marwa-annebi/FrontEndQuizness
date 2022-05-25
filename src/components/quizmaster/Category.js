@@ -178,7 +178,7 @@ export default function Category() {
             <div style={{ display: "inline" }}>
               <TextField
                 id="skill_name"
-                label="category Name"
+                label="Skill Name"
                 value={skill_name}
                 onChange={(e) => setcategory(e.target.value)}
                 InputProps={{
@@ -204,23 +204,28 @@ export default function Category() {
                 </div>
               </IconContext.Provider>
             </div>
-            <TextareaAutosize
-              maxRows={4}
-              // placeholder="Maximum 4 rows"
-              // id="outlined-multiline-static"
-              aria-label="maximum height"
-              placeholder="Maximum 4 rows"
+
+            <TextField
+              id="outlined-basic"
+              variant="outlined"
+              // placeholder="requirements"
               label="requirements"
-              style={{
-                fontFamily: "cerapro-Medium",
-                marginTop: "20px",
-                border: "2px solid #560a02",
-                borderRadius: "15px",
-                // width: "120px",
-              }}
+              // style={{
+              //   fontFamily: "cerapro-Medium",
+              //   marginTop: "20px",
+              //   border: "2px solid #560a02",
+              //   borderRadius: "15px",
+              //   // width: "120px",
+              // }}
               value={requirements}
               onChange={(e) => setrequirements(e.target.value)}
-              // variant="outlined"
+              multiline
+              rows={2}
+              maxRows={8}
+              InputProps={{
+                className: classes.input,
+              }}
+              InputLabelProps={{ className: classes.label }}
             />
           </Paper>
 

@@ -1,6 +1,5 @@
-import { Container, Grid } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { Grid } from "@mui/material";
+import React from "react";
 import { Outlet } from "react-router-dom";
 import NavBar from "./NavBar";
 import SideMenu from "./SideMenu";
@@ -17,19 +16,18 @@ export default function Dashboard() {
   // }, [companySet]);
 
   return (
-    <Grid
-      container
-      spacing={{ xs: 6, md: 12 }}
-      // columns={{ xs: 4, sm: 8, md: 12 }}
-    >
-      <Grid item md={12}>
+    <Grid container spacing={{ xs: 6, md: 12 }}>
+      <Grid item md={2}>
+        {/* <NavBar /> */}
+      </Grid>
+      <Grid item md={10}>
         <NavBar />
       </Grid>
 
-      <Grid item>
+      <Grid item xs={8}>
         <SideMenu />
       </Grid>
-      <Grid item>
+      <Grid item xs={4}>
         <Outlet />
       </Grid>
     </Grid>
