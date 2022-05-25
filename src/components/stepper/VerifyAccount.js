@@ -45,9 +45,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function VerifyAccount({ handleChange,  otp ,setValue}) {
+export default function VerifyAccount({ handleChange, otp, setValue }) {
   // const [otp, setotp] = useState();
-  const [error, seterror] = useState(null);
+  // const [error, seterror] = useState(null);
   const [open, setopen] = React.useState(false);
   // const [otp, setotp] = useState("");
   const handleClick = () => {
@@ -63,7 +63,7 @@ export default function VerifyAccount({ handleChange,  otp ,setValue}) {
   const classes = useStyles();
   return (
     <div>
-      {error && (
+      {/* {error && (
         <Snackbar
           open={open}
           autoHideDuration={6000}
@@ -74,7 +74,7 @@ export default function VerifyAccount({ handleChange,  otp ,setValue}) {
             {error}
           </Alert>
         </Snackbar>
-      )}
+      )} */}
 
       {/* <div> */}
       <Grid
@@ -97,13 +97,18 @@ export default function VerifyAccount({ handleChange,  otp ,setValue}) {
               color: "var(--mahogany)",
               fontFamily: "var(--font-family-cerapro-bold)",
               fontSize: "var(--font-size-l)",
-              marginBottom:"5px"
+              marginBottom: "5px",
             }}
           >
             Email Verification Code
           </h1>
-        <hr style={{ width: "400px", boxShadow: "0px 3px 6px #00000029",marginTop:"0px" }} />
-
+          <hr
+            style={{
+              width: "400px",
+              boxShadow: "0px 3px 6px #00000029",
+              marginTop: "0px",
+            }}
+          />
         </Grid>
 
         <Grid
@@ -137,8 +142,8 @@ export default function VerifyAccount({ handleChange,  otp ,setValue}) {
                 }}
                 numInputs={6}
                 value={otp}
-                onChange={(otp)=>{
-                  setValue(otp)
+                onChange={(otp) => {
+                  setValue(otp);
                 }}
                 // name="otp"
                 // onSubmit={handleChange}

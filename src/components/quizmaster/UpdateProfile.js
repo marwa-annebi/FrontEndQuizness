@@ -115,8 +115,6 @@ export default function UpdateProfile() {
       } else {
         setdomain_name(companyInfo.account.domain_name);
         setbusinessName(companyInfo.account.businessName);
-        setdarkColor(companyInfo.account.darkColor);
-        setlightColor(companyInfo.account.lightColor);
         setpic(companyInfo.account.logo);
       }
     },
@@ -126,7 +124,7 @@ export default function UpdateProfile() {
   const handleChange = (e) => {
     const { value, checked } = e.target;
 
-    // console.log(check);
+    console.log(darkColor);
     if (checked) {
       if (darkColor.length < 1) {
         setdarkColor((prev) => [...prev, value]);
@@ -299,7 +297,7 @@ export default function UpdateProfile() {
       const { data } = await axios.put(
         process.env.REACT_APP_BACKEND + "/auth/updateAccount",
         {
-          id: companyInfo.id,
+          id: companyInfo._id,
           account: {
             domain_name: domain_name,
             logo: pic,
@@ -311,7 +309,7 @@ export default function UpdateProfile() {
         config
       );
       setNotify({
-        isOpen: false,
+        isOpen: true,
         message: data.message,
         type: "success",
       });

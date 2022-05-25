@@ -100,52 +100,47 @@ function SignUpQuizmaster() {
   };
   const navigate = useNavigate();
   const submitHandler = async (e) => {
-    setloading(false);
     // setDone(undefined);
     e.preventDefault();
-    if (password !== confirmpassword) {
-      setNotify({
-        isOpen: true,
-        message: "passwords do not match",
-        type: "error",
-      });
-    } else {
-      try {
-        const config = {
-          headers: {
-            "Content-type": "application/json",
-          },
-        };
-        const { data } = await axios.post(
-          process.env.REACT_APP_BACKEND + "/auth/registerQuizMaster",
-          { firstName, lastName, email, password },
-          config
-        );
-        setloading(true);
-        // setTimeout(() => {
-        // }, 1000)
-        localStorage.setItem("quizmasterInfo", JSON.stringify(data));
-        const quizmasterInfo = JSON.parse(
-          localStorage.getItem("quizmasterInfo")
-        );
-        console.log(quizmasterInfo);
-        if (quizmasterInfo) {
-          navigate(`/quizmaster/${quizmasterInfo.userId}`);
-        }
-      } catch (error) {
-        if (
-          error.response &&
-          error.response.status >= 400 &&
-          error.response.status <= 500
-        ) {
-          setNotify({
-            isOpen: true,
-            message: error.response.data.message,
-            type: "error",
-          });
-          setloading(false);
-        }
+    // if (password !== confirmpassword) {
+    //   setNotify({
+    //     isOpen: true,
+    //     message: "passwords do not match",
+    //     type: "error",
+    //   });
+    // } else {
+    try {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
+      const { data } = await axios.post(
+        process.env.REACT_APP_BACKEND + "/auth/registerQuizMaster",
+        { firstName, lastName, email, password, confirmpassword },
+        config
+      );
+
+      localStorage.setItem("quizmasterInfo", JSON.stringify(data));
+      const quizmasterInfo = JSON.parse(localStorage.getItem("quizmasterInfo"));
+      console.log(quizmasterInfo);
+      if (quizmasterInfo) {
+        navigate(`/quizmaster/${quizmasterInfo.userId}`);
       }
+    } catch (error) {
+      if (
+        error.response &&
+        error.response.status >= 400 &&
+        error.response.status <= 500
+      ) {
+        setNotify({
+          isOpen: true,
+          message: error.response.data.message,
+          type: "error",
+        });
+        setloading(false);
+      }
+      // }
     }
   };
   const handleChange = (event) => {

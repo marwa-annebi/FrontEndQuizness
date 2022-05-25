@@ -6,7 +6,7 @@ import axios from "axios";
 export default function AddQuizRandomly() {
   const [nbQuestion, setnbQuestion] = useState();
   const [creation_date, setcreation_date] = useState();
-  const [questions, setquestions] = useState([]);
+  const [questionsRandomly, setquestionsRandomly] = useState([]);
   const [validation_date, setvalidation_date] = useState();
   const [questionList, setquestionList] = useState([]);
   const loadQuestions = async () => {
@@ -25,33 +25,39 @@ export default function AddQuizRandomly() {
     setquestionList(result.data.reverse());
   };
 
+  // function getRandom() {
+
+  // }
+
+  // setquestionsRandomly(list);
+  function getRandom() {
+    let list = [];
+    list = questionList
+      .sort(function () {
+        return 0.5 - Math.random();
+      })
+      .slice(0, nbQuestion);
+
+    console.log("*list", list);
+    return list;
+  }
+  React.useEffect(
+    () => {
+      let result = getRandom();
+      console.log("result", result);
+      // setquestionsRandomly(result);
+    },
+    [],
+    [questionsRandomly]
+  );
   React.useEffect(
     () => {
       loadQuestions();
-      console.log(questionList);
     },
     [],
     [questionList]
   );
-  console.log("#question list ", questionList);
-  console.log("*nbQuestion", nbQuestion);
-
-  // function getRandom() {
-  //   // var result = new Array(n),
-  //   var len = questionList.length;
-  //   var taken = new Array(len);
-  //   // questions = new Array(nbQuestion);
-  //   if (nbQuestion > len)
-  //     throw new RangeError("getRandom: more elements taken than available");
-  //   while (nbQuestion) {
-  //     var x = Math.floor(Math.random() * len);
-  //     questions[nbQuestion] = questionList[x in taken ? taken[x] : x];
-  //     taken[x] = --len in taken ? taken[len] : len;
-  //   }
-  //   return questions;
-  // }
-  // console.log("*--------listrandom", getRandom());
-
+  console.log("*randommmm", questionsRandomly);
   return (
     <Grid container spacing={{ xs: 6, md: 12 }}>
       <Grid item md={2}>

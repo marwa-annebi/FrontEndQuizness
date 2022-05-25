@@ -77,7 +77,7 @@ const LinaerStepper = () => {
       setSkippedSteps(
         skippedSteps.filter((skipItem) => skipItem !== activeStep)
       );
-    } else if (notify.type === "error") {
+    } else if (activeStep && notify.type === "error") {
       setActiveStep(activeStep);
     }
   };
@@ -218,6 +218,7 @@ const LinaerStepper = () => {
           <VerifyAccount
             handleChange={handleChange}
             // onChange={onChange}
+            // error={error}
             otp={otp}
             setValue={setotp}
           />
