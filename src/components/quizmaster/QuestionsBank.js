@@ -31,6 +31,7 @@ import { FaPlus } from "react-icons/fa";
 import Modal from "react-modal";
 import Notification from "../Notification";
 import QuestionForm from "./QuestionForm";
+import { Rowing } from "@material-ui/icons";
 
 const customStyles = {
   content: {
@@ -119,33 +120,29 @@ const styles = makeStyles(() => ({
 const headCells = [
   { id: "", label: "" },
   { id: "_id_question", label: "Id" },
-  { id: "tronc", label: "tronc" },
   { id: "skill", label: "skill" },
   { id: "actions", label: "Actions", disableSorting: true },
 ];
-const historyRow = [
-  { id: "mark", label: "mark" },
-  { id: "propositions", label: "propositions" },
-];
+// const historyRow = [
+//   { id: "mark", label: "mark" },
+//   { id: "propositions", label: "propositions" },
+// ];
 
 export default function QuestionsBank({ active }) {
   let subtitle;
   const [modalIsOpen, setIsOpen] = React.useState(false);
-  // const [tronc, settronc] = useState("");
-  // const [skill, setskill] = useState("");
-  // const [option1, setoption1] = useState("");
-  // const [option2, setoption2] = useState("");
-  // const [option3, setoption3] = useState("");
-  // const [option4, setoption4] = useState("");
-  // const [veracity1, setveracity1] = useState(false);
-  // const [veracity2, setveracity2] = useState(false);
-  // const [veracity3, setveracity3] = useState(false);
-  // const [veracity4, setveracity4] = useState(false);
+
   const [recordForEdit, setRecordForEdit] = useState(null);
   function openModal() {
+    // console.log("#item", item);
+    // let item2 = item.propositions;
+    // console.log("#item2", item2);
+
+    // setRecordForEdit({ ...item, ...item2 });
     setIsOpen(true);
     setAnchorEl(false);
   }
+  console.log("#record", recordForEdit);
 
   function afterOpenModal() {
     // references are now sync'd and can be accessed.
@@ -214,13 +211,13 @@ export default function QuestionsBank({ active }) {
   const create = async (values, resetForm, id) => {
     const quizmasterInfo = JSON.parse(localStorage.getItem("quizmasterInfo"));
     // console.log(userInfo);
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${quizmasterInfo.token}`,
+      },
+    };
     if (values.id == 0) {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${quizmasterInfo.token}`,
-        },
-      };
       // if (userInfo.id == 0)
       try {
         const { data } = await axios.post(
@@ -232,10 +229,22 @@ export default function QuestionsBank({ active }) {
               typeQuestion: "MCQ",
             },
             proposition: [
-              { content: values.option1, veracity: values.veracity1 },
-              { content: values.option2, veracity: values.veracity2 },
-              { content: values.option3, veracity: values.veracity3 },
-              { content: values.option4, veracity: values.veracity4 },
+              {
+                content: values.propositions[0].veracity,
+                veracity: values.propositions[0].content,
+              },
+              {
+                content: values.propositions[1].content,
+                veracity: values.propositions[1].veracity,
+              },
+              {
+                content: values.propositions[2].content,
+                veracity: values.propositions[2].veracity,
+              },
+              {
+                content: values.propositions[3].content,
+                veracity: values.propositions[3].veracity,
+              },
             ],
           },
           config
@@ -264,7 +273,21 @@ export default function QuestionsBank({ active }) {
       }
     } else {
       await axios.put(
-        process.env.REACT_APP_BACKEND + `quizmaster/${recordForEdit._id}`
+        process.env.REACT_APP_BACKEND + `quizmaster/${recordForEdit._id}`,
+        {
+          question: {
+            tronc: values.tronc,
+            skill: values.skill,
+            typeQuestion: "MCQ",
+          },
+          proposition: [
+            { content: values.option1, veracity: values.veracity1 },
+            { content: values.option2, veracity: values.veracity2 },
+            { content: values.option3, veracity: values.veracity3 },
+            { content: values.option4, veracity: values.veracity4 },
+          ],
+        },
+        config
       );
     }
   };
@@ -285,111 +308,120 @@ export default function QuestionsBank({ active }) {
     });
   };
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
-    useTable(questionList, headCells, filterFn, historyRow);
+    useTable(questionList, headCells, filterFn);
+
+  function Row(props) {
+    const { row } = props;
+    const [open, setOpen] = React.useState(false);
+
+    return (
+      <React.Fragment>
+        <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
+          <TableCell>
+            <IconButton
+              aria-label="expand row"
+              style={{
+                color: "gold",
+              }}
+              size="small"
+              onClick={() => setOpen(!open)}
+            >
+              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            </IconButton>
+          </TableCell>
+          <TableCell>{row._id_question}</TableCell>
+          <TableCell>{row.skill.skill_name}</TableCell>
+          <TableCell>
+            <Button
+              color="primary"
+              onClick={() => {
+                openModal();
+                setRecordForEdit(row);
+              }}
+            >
+              <EditOutlinedIcon fontSize="small" />
+            </Button>
+            <Button
+              color="secondary"
+              onClick={() => {
+                setConfirmDialog({
+                  isOpen: true,
+                  title: "Are you sure to delete this record?",
+                  subTitle: "You can't undo this operation",
+                  onConfirm: () => {
+                    deleteQuestion(row._id);
+                  },
+                });
+              }}
+            >
+              <CloseIcon fontSize="small" />
+            </Button>
+          </TableCell>
+        </TableRow>
+
+        <TableRow>
+          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+            <Collapse in={open} timeout="auto" unmountOnExit>
+              <Box sx={{ margin: 1 }}>
+                <Typography variant="h6" gutterBottom component="div">
+                  Details
+                </Typography>
+                <Table size="small" aria-label="purchases">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>mark</TableCell>
+                      <TableCell>Tronc</TableCell>
+                      <TableCell>Propositions</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell component="th" scope="row">
+                        {row.mark}
+                      </TableCell>
+                      <TableCell>{row.tronc}</TableCell>
+                      <TableCell>
+                        {row.propositions.map((prop) => (
+                          <div>
+                            <Grid xs={12}>
+                              {prop.content}{" "}
+                              {prop.typeQuestion === "MCQ" ? (
+                                <Radio
+                                  checked={prop.veracity}
+                                  value={prop.veracity}
+                                  name="radio-buttons"
+                                  // inputProps={{ "aria-label": "A" }}
+                                />
+                              ) : (
+                                <Checkbox
+                                  checked={prop.veracity}
+                                  value={prop.veracity}
+                                  name="checkbox"
+                                  // inputProps={{ "aria-label": "A" }}
+                                />
+                              )}
+                            </Grid>
+                          </div>
+                        ))}
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </Box>
+            </Collapse>
+          </TableCell>
+        </TableRow>
+      </React.Fragment>
+    );
+  }
   return (
     <ContentMenuItem>
       <TblContainer>
         <TblHead />
         <TableBody>
-          {recordsAfterPagingAndSorting().map((item) => (
-            <TableRow key={item.id}>
-              <TableCell>
-                <IconButton
-                  aria-label="expand row"
-                  style={{
-                    color: "gold",
-                  }}
-                  size="small"
-                  onClick={() => setOpen(!open)}
-                >
-                  {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                </IconButton>
-              </TableCell>
-              <TableCell>{item._id_question}</TableCell>
-              <TableCell>{item.tronc}</TableCell>
-              <TableCell>{item.skill.skill_name}</TableCell>
-
-              <TableCell>
-                <Button
-                  color="primary"
-                  onClick={() => {
-                    openModal();
-                    setRecordForEdit(item);
-                  }}
-                >
-                  <EditOutlinedIcon fontSize="small" />
-                </Button>
-                <Button
-                  color="secondary"
-                  onClick={() => {
-                    setConfirmDialog({
-                      isOpen: true,
-                      title: "Are you sure to delete this record?",
-                      subTitle: "You can't undo this operation",
-                      onConfirm: () => {
-                        deleteQuestion(item._id);
-                      },
-                    });
-                  }}
-                >
-                  <CloseIcon fontSize="small" />
-                </Button>
-              </TableCell>
-            </TableRow>
+          {recordsAfterPagingAndSorting().map((row) => (
+            <Row key={row.id} row={row} />
           ))}
-          <TableRow>
-            <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-              <Collapse in={open} timeout="auto" unmountOnExit>
-                <Box sx={{ margin: 1 }}>
-                  <Typography variant="h6" gutterBottom component="div">
-                    Details
-                  </Typography>
-                  <Table size="small" aria-label="purchases">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>mark</TableCell>
-                        <TableCell>propositions</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {recordsAfterPagingAndSorting().map((historyRow) => (
-                        <TableRow key={historyRow.id}>
-                          <TableCell component="th" scope="row">
-                            {historyRow.mark}
-                          </TableCell>
-                          <TableCell>
-                            {historyRow.propositions.map((prop) => (
-                              <div>
-                                <Grid xs={12}>
-                                  {prop.content}{" "}
-                                  {prop.typeQuestion === "MCQ" ? (
-                                    <Radio
-                                      checked={prop.veracity}
-                                      value={prop.veracity}
-                                      name="radio-buttons"
-                                      // inputProps={{ "aria-label": "A" }}
-                                    />
-                                  ) : (
-                                    <Checkbox
-                                      checked={prop.veracity}
-                                      value={prop.veracity}
-                                      name="checkbox"
-                                      // inputProps={{ "aria-label": "A" }}
-                                    />
-                                  )}
-                                </Grid>
-                              </div>
-                            ))}
-                          </TableCell>
-                 
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </Box>
-              </Collapse>
-            </TableCell>
-          </TableRow>
         </TableBody>
       </TblContainer>
       <TblPagination />

@@ -67,15 +67,12 @@ export default function QuestionForm(props) {
     id: 0,
     tronc: "",
     skill: "",
-    option1: "",
-    option2: "",
-    option3: "",
-    option4: "",
-    option5: "",
-    veracity1: false,
-    veracity2: false,
-    veracity3: false,
-    veracity4: false,
+    propositions: [
+      { content: "", veracity: false },
+      { content: "", veracity: false },
+      { content: "", veracity: false },
+      { content: "", veracity: false },
+    ],
   };
 
   const { addOrEdit, recordForEdit } = props;
@@ -167,64 +164,64 @@ export default function QuestionForm(props) {
           {/* <div style={{ direction: "row" }}> */}
 
           <Checkbox
-            name="veracity1"
-            defaultValue={values.veracity1}
+            name="values.propositions[0].veracity"
+            defaultValue={values.propositions[0].veracity}
             onChange={handleInputChange}
           ></Checkbox>
           {/* <Grid xs={2}>  */}
 
           <TextField
-            name="option1"
+            name="values.propositions[0].content"
             id="standard-basic"
             label="Option 1"
             variant="standard"
-            value={values.option1}
+            value={values.propositions[0].content}
             onChange={handleInputChange}
           />
           {/* </div> */}
         </Grid>
         <Grid xs={6}>
           <Checkbox
-            name="veracity2"
-            defaultValue={values.veracity2}
+            name="values.propositions[1].veracity"
+            defaultValue={values.propositions[1].veracity}
             onChange={handleInputChange}
           ></Checkbox>
           <TextField
-            name="option2"
+            name="values.propositions[1].content"
             id="standard-basic"
             label="Option 2"
             variant="standard"
-            value={values.option2}
+            value={values.propositions[1].content}
             onChange={handleInputChange}
           />
         </Grid>
         <Grid xs={6}>
           <Checkbox
-            name="veracity3"
-            defaultValue={values.veracity3}
+            name="values.propositions[2].veracity"
+            defaultValue={values.propositions[2].veracity}
             onChange={handleInputChange}
           ></Checkbox>
           <TextField
-            name="option3"
+            name="values.propositions[3].content"
             id="standard-basic"
             label="Option 3"
             variant="standard"
-            value={values.option3}
+            value={values.propositions[2].content}
             onChange={handleInputChange}
           />
         </Grid>
         <Grid xs={6}>
           <Checkbox
-            name="veracity4"
-            defaultValue={values.veracity4}
+            name="values.propositions[3].veracity"
+            defaultValue={values.propositions[3].veracity}
             onChange={handleInputChange}
           ></Checkbox>
           <TextField
-            name="option4"
+            name="values.propositions[3].content"
             id="standard-basic"
             label="Option 4"
             variant="standard"
-            value={values.option4}
+            value={values.propositions[3].content}
             onChange={handleInputChange}
           />
         </Grid>
