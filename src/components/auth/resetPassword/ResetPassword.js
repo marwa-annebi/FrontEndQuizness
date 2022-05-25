@@ -143,7 +143,6 @@ export default function ResetPassword() {
       {loading && <Loading />}
       <Notification notify={notify} setNotify={setNotify} />
       <Paper className="form form--wrapper" elevation={8}>
-        <CssBaseline />
         <form className="form" onSubmit={handleSubmit}>
           <h1 className="header4">Reset password</h1>
 
