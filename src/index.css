@@ -32,13 +32,37 @@ body {
 
 }
 
+:root {
+  --cod-gray:
+    rgba(9, 9, 9, 1);
+  --mahogany-3:
+    rgba(86, 10, 2, 1);
+  --mahogany-2:
+    rgba(87, 11, 3, 0.051);
+  --mahogany:
+    rgba(87, 11, 3, 1);
+  --dove-gray:
+    rgba(112, 112, 112, 1);
+  --gold-2:
+    rgba(255, 214, 0, 0.329);
+  --gold:
+    rgba(255, 214, 0, 1);
+  --white:
+    rgba(255, 255, 255, 1);
+
+  --font-size-m: 24px;
+  --font-size-l: 25px;
+  --font-size-xl: 35px;
+
+  --font-family-cerapro-bold: "CeraPro-Bold";
+}
 
 .menu {
   border-radius: 35px;
   box-shadow: 0px 3px 6px #00000029;
   border: 5px solid gold;
   width: 257px;
-  min-height: 460px;
+  min-height: 500px;
   position: relative;
   padding: 31px 25px;
   align-items: flex-start;
@@ -110,13 +134,14 @@ body {
   justify-content: flex-start;
   margin-left: -600px;
   width: 920px;
-  min-height: 460px;
+  /* min-height: 560px; */
   padding: 31px 15px;
-
+  height: auto;
 }
 
 .content {
-  min-height: 460px;
+  /* min-height: 500px; */
+  height: 500px;
   width: 1000px;
 }
 
@@ -156,3 +181,21 @@ body {
     justify-content: center;
     align-items: center;
   } */
+
+
+
+.rectangle-44 {
+  background-color: var(--white-2);
+  border-radius: 35px;
+  height: 223px;
+  /* left: 0; */
+  position: absolute;
+  /* top: 0; */
+  width: 237px;
+}
+
+.border-4px-gold {
+  border-width: 5px;
+  border-style: solid;
+  border-color: var(--gold);
+}

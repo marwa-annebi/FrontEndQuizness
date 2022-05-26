@@ -2,9 +2,9 @@
     border: 5px solid var(--mahogany);
     border-radius: 36px;
     /* background-color: red; */
-    width: 1000px;
-    height: 500px;
-    margin-left: 13%;
+    width: 900px;
+    min-height: 500px;
+    margin-left: -600px;
     padding: 31px 15px;
 
     /* justify-content: flex-start; */
