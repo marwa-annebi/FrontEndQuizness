@@ -50,7 +50,23 @@ export default function useTable(records, headCells, filterFn) {
   const [orderBy, setOrderBy] = useState();
 
   const TblContainer = (props) => (
-    <Table className={classes.table}>{props.children}</Table>
+    <Table
+      sx={{
+        "&::-webkit-scrollbar": {
+          width: 20,
+        },
+        "&::-webkit-scrollbar-track": {
+          backgroundColor: "orange",
+        },
+        "&::-webkit-scrollbar-thumb": {
+          backgroundColor: "red",
+          borderRadius: 2,
+        },
+      }}
+      className={classes.table}
+    >
+      {props.children}
+    </Table>
   );
 
   const TblHead = (props) => {

@@ -134,14 +134,17 @@ body {
   justify-content: flex-start;
   margin-left: -600px;
   width: 920px;
-  /* min-height: 560px; */
+  min-height: 460px;
   padding: 31px 15px;
   height: auto;
 }
 
 .content {
   /* min-height: 500px; */
-  height: 500px;
+  /* height: 500px; */
+  height: auto;
+  min-height: 500px;
+
   width: 1000px;
 }
 

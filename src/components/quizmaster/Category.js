@@ -1,4 +1,4 @@
-import { makeStyles, Paper } from "@material-ui/core";
+import { Collapse, makeStyles, Paper } from "@material-ui/core";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ContentMenuItem from "./../ContentMenuItem";
@@ -8,7 +8,13 @@ import Notification from "../Notification";
 import ConfirmDialog from "../ConfirmDialog";
 import AddSkill from "./addSkill";
 import Modal from "react-modal";
-
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import Typography from "@mui/material/Typography";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { ExpandMore } from "@material-ui/icons";
+import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 const styles = makeStyles((theme) => ({
   h5: {
     fontFamily: "cerapro-Medium",
@@ -70,18 +76,19 @@ const styles = makeStyles((theme) => ({
     borderRadius: 35,
     objectFit: "cover",
     // position: "absolute",
-    height: "162px",
+    height: "auto",
+    minHeight: "162px",
     width: "160px",
     backgroundColor: "white",
     marginTop: "-170px",
     textAlign: "center",
     color: "#2c2b2b",
     fontFamily: " var(--font-family-cerapro-bold)",
-    fontWeight: 700,
-    letterSpacing: 0,
-    lineHeight: "20px",
-    minHeight: "27px",
-    whiteSpace: "nowrap",
+    justifyContent: "start",
+    fontSize: "13px",
+    // lineHeight: "5px",
+    // minHeight: "0px",
+    // whiteSpace: "nowrap",
   },
   addskill: {
     color: "var(--licorice)",
@@ -133,7 +140,6 @@ const customStyles = {
 };
 export default function Category() {
   const classes = styles();
-  const [expanded, setExpanded] = React.useState(false);
   const [categories, setcategories] = useState([]);
   const [skill_name, setskill_name] = useState("");
   const [loading, setloading] = useState(false);
@@ -150,9 +156,7 @@ export default function Category() {
     title: "",
     subTitle: "",
   });
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
+
   const loadCategories = async () => {
     const quizmasterInfo = JSON.parse(localStorage.getItem("quizmasterInfo"));
     const config = {
@@ -255,6 +259,13 @@ export default function Category() {
   function closeModal() {
     setopenModal(false);
   }
+
+  const [expandedId, setExpandedId] = React.useState(-1);
+
+  const handleExpandClick = (i) => {
+    setExpandedId(expandedId === i ? -1 : i);
+  };
+
   return (
     <div style={{ height: "100vh" }}>
       {/* {loading && <Loading />} */}
@@ -287,22 +298,42 @@ export default function Category() {
             onRequestClose={closeModal}
             style={customStyles}
           >
-            <AddSkill
-              loadCategories={loadCategories()}
-              // add={add}
-              // skill_name={skill_name}
-              // setskill_name={setskill_name}
-              // requirements={requirements}
-            />
+            <AddSkill loadCategories={loadCategories} />
           </Modal>
-          {categories?.map((key, id) => (
-            <div style={{ display: "block" }}>
-              <Paper className={classes.paper1}>{key.skill_name}</Paper>
-              <Paper elevation={2} className={classes.paper2}>
-                {key.requirements}
-              </Paper>
-            </div>
-          ))}
+          {categories?.map((key, id) => {
+            const paragaraph1 = `${key.requirements}`.slice(0, 140);
+            const paragaraph2 = `${key.requirements}`.slice(140);
+            return (
+              <div style={{ display: "block" }}>
+                <Paper className={classes.paper1}>{key.skill_name}</Paper>
+                <Paper className={classes.paper2}>
+                  <p>{paragaraph1}</p>
+                  {/* <div style={{ bottom: "0px" }}> */}
+                  {/* {expandedId ? ( */}
+                  <FaAngleDown
+                    size={25}
+                    onClick={() => handleExpandClick(id)}
+                    aria-expanded={expandedId === id}
+                    aria-label="show more"
+                    style={{
+                      cursor: "pointer",
+                      // marginTop: "0px",
+                      // marginBotyom: "10px",
+                    }}
+                  ></FaAngleDown>
+
+                  {/* </div> */}
+                  <Collapse
+                    // style={{ height: "20px" }}
+                    in={expandedId === id}
+                    key={key.id}
+                  >
+                    {paragaraph2}
+                  </Collapse>
+                </Paper>
+              </div>
+            );
+          })}
 
           <ConfirmDialog
             confirmDialog={confirmDialog}

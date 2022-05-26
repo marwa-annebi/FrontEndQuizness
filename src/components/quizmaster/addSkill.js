@@ -33,7 +33,7 @@ const styles = makeStyles((theme) => ({
   },
 }));
 export default function AddSkill(props) {
-  const { loadCategories } = props;
+  const { loadCategories, setOpenPopup } = props;
   const classes = styles();
   const [skill_name, setskill_name] = useState("");
   const [requirements, setrequirements] = useState("");
@@ -67,10 +67,9 @@ export default function AddSkill(props) {
         type: "success",
       });
 
-      //   setOpenPopup(false);
+      setOpenPopup(false);
       loadCategories();
       setloading(false);
-      //   }
     } catch (error) {
       setloading(false);
       if (

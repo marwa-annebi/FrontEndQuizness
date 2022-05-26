@@ -137,7 +137,6 @@ export default function QuestionsBank({ active }) {
     // console.log("#item", item);
     // let item2 = item.propositions;
     // console.log("#item2", item2);
-
     // setRecordForEdit({ ...item, ...item2 });
     setIsOpen(true);
     setAnchorEl(false);
@@ -166,8 +165,10 @@ export default function QuestionsBank({ active }) {
     type: "",
   });
   const [open, setOpen] = React.useState(false);
+  const [openEditPopup, setopenEditPopup] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openMenu = Boolean(anchorEl);
+  // const [open, setopen] = useState(false);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -200,90 +201,6 @@ export default function QuestionsBank({ active }) {
   });
 
   // create Question
-
-  const create = async (values, resetForm, id) => {
-    const quizmasterInfo = JSON.parse(localStorage.getItem("quizmasterInfo"));
-    // console.log(userInfo);
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${quizmasterInfo.token}`,
-      },
-    };
-    if (values.id == 0) {
-      // if (userInfo.id == 0)
-      try {
-        const { data } = await axios.post(
-          process.env.REACT_APP_BACKEND + "/quizmaster/finishQuestion",
-          {
-            question: {
-              tronc: values.tronc,
-              skill: values.skill,
-              typeQuestion: "MCQ",
-            },
-            proposition: [
-              {
-                content: values.propositions[0].veracity,
-                veracity: values.propositions[0].content,
-              },
-              {
-                content: values.propositions[1].content,
-                veracity: values.propositions[1].veracity,
-              },
-              {
-                content: values.propositions[2].content,
-                veracity: values.propositions[2].veracity,
-              },
-              {
-                content: values.propositions[3].content,
-                veracity: values.propositions[3].veracity,
-              },
-            ],
-          },
-          config
-        );
-        console.log("#questionadd", data);
-        loadQuestions();
-        if (data) {
-          setNotify({
-            isOpen: true,
-            message: "Submitted Successfully",
-            type: "success",
-          });
-        }
-      } catch (error) {
-        if (
-          error.response &&
-          error.response.status >= 400 &&
-          error.response.status <= 500
-        ) {
-          setNotify({
-            isOpen: true,
-            message: error.response.data.message,
-            type: "error",
-          });
-        }
-      }
-    } else {
-      await axios.put(
-        process.env.REACT_APP_BACKEND + `/quizmaster/${recordForEdit._id}`,
-        {
-          question: {
-            tronc: values.tronc,
-            skill: values.skill,
-            typeQuestion: "MCQ",
-          },
-          proposition: [
-            { content: values.option1, veracity: values.veracity1 },
-            { content: values.option2, veracity: values.veracity2 },
-            { content: values.option3, veracity: values.veracity3 },
-            { content: values.option4, veracity: values.veracity4 },
-          ],
-        },
-        config
-      );
-    }
-  };
 
   //delete question
 
@@ -361,12 +278,23 @@ export default function QuestionsBank({ active }) {
             <Button
               color="primary"
               onClick={() => {
-                openModal();
+                setopenEditPopup(true);
                 setRecordForEdit(row);
               }}
             >
               <EditOutlinedIcon fontSize="small" />
+              <Modal
+                isOpen={openEditPopup}
+                onRequestClose={() => setopenEditPopup(false)}
+                style={customStyles}
+              >
+                <QuestionForm
+                  // loadQuestions={loadQuestions}
+                  questionId={recordForEdit}
+                />
+              </Modal>
             </Button>
+
             <Button
               color="secondary"
               onClick={() => {
@@ -442,20 +370,7 @@ export default function QuestionsBank({ active }) {
   }
   return (
     <ContentMenuItem>
-      <TblContainer
-        sx={{
-          "&::-webkit-scrollbar": {
-            width: 20,
-          },
-          "&::-webkit-scrollbar-track": {
-            backgroundColor: "orange",
-          },
-          "&::-webkit-scrollbar-thumb": {
-            backgroundColor: "red",
-            borderRadius: 2,
-          },
-        }}
-      >
+      <TblContainer>
         <TblHead />
         <TableBody>
           {recordsAfterPagingAndSorting().map((row) => (
@@ -463,6 +378,7 @@ export default function QuestionsBank({ active }) {
           ))}
         </TableBody>
       </TblContainer>
+
       {/* <TblPagination /> */}
       <div className={`divAdd ${openMenu ? "activeAdd" : ""}`}>
         <Button
@@ -505,7 +421,6 @@ export default function QuestionsBank({ active }) {
             className="divMenu"
             onClick={() => {
               openModal();
-              setRecordForEdit(null);
             }}
             style={{
               justifyContent: "start",
@@ -546,7 +461,7 @@ export default function QuestionsBank({ active }) {
           style={customStyles}
           contentLabel="Example Modal"
         >
-          <QuestionForm recordForEdit={recordForEdit} addOrEdit={create} />
+          <QuestionForm loadQuestions={loadQuestions} questionId={null} />
         </Modal>
 
         {/* </div> */}

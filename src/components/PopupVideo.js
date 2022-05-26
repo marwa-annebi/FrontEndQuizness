@@ -32,20 +32,12 @@ const icon = {};
 export default function PopupVideo(props) {
   const { open, setOpenPopup } = props;
   return (
-    <div >
-    <IconContext.Provider
-          value={{ color: "red", fontSize: "20px",style:{ position: "absolute", top: "-10px", right: "10px" } }}
-        >
-          <div>
-            <AiOutlineClose  />
-          </div>
-        </IconContext.Provider>
+    <div>
       <Modal
         isOpen={open}
         style={customStyles}
         onRequestClose={() => setOpenPopup(false)}
       >
-        
         <div className="video">
           <ReactPlayer
             url="https://vimeo.com/3155182"
@@ -53,7 +45,6 @@ export default function PopupVideo(props) {
             className="react-player"
             width="1000px"
             height="550px"
-            
           />
         </div>
       </Modal>
