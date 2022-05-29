@@ -15,6 +15,7 @@ import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { ExpandMore } from "@material-ui/icons";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
+import Rectangl42 from "./../../assets/Rectangle 42.svg";
 const styles = makeStyles((theme) => ({
   h5: {
     fontFamily: "cerapro-Medium",
@@ -42,17 +43,18 @@ const styles = makeStyles((theme) => ({
     whiteSpace: "nowrap",
   },
   paperAdd: {
-    border: "4px solid #1c1312",
+    border: "4px dashed  #1c1312",
     borderRadius: 35,
     height: "200px",
     width: "160px",
     backgroundColor: "#cccccc73",
+    borderSpacing: "5px",
+    borderSpacing: "1vw",
+    borderSpacing: "2em",
     // transition: "width 0s, height 0s,",
     "&:hover": {
-      elevation: "4px",
       cursor: "pointer",
       boxShadow: "6px 6px 6px #00000029",
-      padding: "5px",
     },
   },
   paper1: {
@@ -82,8 +84,9 @@ const styles = makeStyles((theme) => ({
     backgroundColor: "white",
     marginTop: "-170px",
     textAlign: "center",
-    color: "#2c2b2b",
-    fontFamily: " var(--font-family-cerapro-bold)",
+    // color: "linear-gradient(180deg, red 73.27%,  #ffffff 100%)",
+    fontFamily: "cerapro-Medium",
+
     justifyContent: "start",
     fontSize: "13px",
     // lineHeight: "5px",
@@ -98,10 +101,12 @@ const styles = makeStyles((theme) => ({
     // left: "10px",
     letterSpacing: 0,
     lineHeight: "31px",
-    textAlign: "center",
-    // position: absolute,
+    // position: "absolute",
     marginTop: "45px",
     whiteSpace: "nowrap",
+    textAlign: "center",
+    justifyContent: "center ",
+    // marginLeft: "-50px",
   },
 }));
 const customStyles = {
@@ -280,19 +285,32 @@ export default function Category() {
               // width: 200,
               // height: 150,
               borderRadius: "35px",
-              fontFamily: "cerapro-Medium",
             },
           }}
         >
-          <Paper className={classes.paperAdd} onClick={openModal}>
-            <div className={classes.addskill}>Add Skill</div>
+          {/* <Paper > */}
+          <div style={{ width: "160px", height: "200px" }}>
+            <img
+              src={Rectangl42}
+              onClick={openModal}
+              style={{ cursor: "pointer" }}
+            ></img>
             <div
-              className={classes.addskill}
-              style={{ marginTop: "5px", cursor: "pointer" }}
+              style={{
+                direction: "column",
+                // marginLeft: "-165px",
+                // paddingRight: "-5px",
+                marginTop: "-250px",
+              }}
             >
-              <GrAdd size="30px" />
+              <div className={classes.addskill}>Add Skill</div>
+
+              <div className={classes.addskill} style={{ marginTop: "5px" }}>
+                <GrAdd size="30px" />
+              </div>
             </div>
-          </Paper>
+          </div>
+          {/* </Paper> */}
           <Modal
             isOpen={isopenModal}
             onRequestClose={closeModal}
@@ -304,32 +322,59 @@ export default function Category() {
             const paragaraph1 = `${key.requirements}`.slice(0, 140);
             const paragaraph2 = `${key.requirements}`.slice(140);
             return (
-              <div style={{ display: "block" }}>
-                <Paper className={classes.paper1}>{key.skill_name}</Paper>
-                <Paper className={classes.paper2}>
-                  <p>{paragaraph1}</p>
-                  {/* <div style={{ bottom: "0px" }}> */}
-                  {/* {expandedId ? ( */}
-                  <FaAngleDown
-                    size={25}
-                    onClick={() => handleExpandClick(id)}
-                    aria-expanded={expandedId === id}
-                    aria-label="show more"
-                    style={{
-                      cursor: "pointer",
-                      // marginTop: "0px",
-                      // marginBotyom: "10px",
-                    }}
-                  ></FaAngleDown>
+              <div style={{ display: "block", marginLeft: "5px" }}>
+                <Paper className={classes.paper1}>
+                  {key.skill_name}{" "}
+                  {/* <div style={{ flexDirection: "row" }}>
+                    <img
+                      className="delete-svgrepo-com"
+                      src={deleteSvgrepo}
+                      style={{ width: "33px" }}
+                    />
+                  </div> */}
+                </Paper>
+                <Paper className={classes.paper2} id="paper">
+                  <div className="grid">
+                    <p
+                      style={{
+                        background:
+                          "-webkit-linear-gradient(var(--cod-gray),#eee)",
 
-                  {/* </div> */}
-                  <Collapse
-                    // style={{ height: "20px" }}
-                    in={expandedId === id}
-                    key={key.id}
-                  >
-                    {paragaraph2}
-                  </Collapse>
+                        // color: expandedId ? "" : "black",
+                        webkitBackgroundClip: "text",
+                        webkitTextFillColor: "transparent",
+                        textAlign: "start",
+                      }}
+                      className="para1"
+                    >
+                      {paragaraph1}
+                    </p>
+
+                    <FaAngleDown
+                      size={25}
+                      class="button"
+                      onClick={() => handleExpandClick(id)}
+                      aria-expanded={expandedId === id}
+                      aria-label="show more"
+                      style={{
+                        cursor: "pointer",
+                        color: "var(--mahogany-3)",
+                        // marginBottom: expandedId ? "" : "-70px",
+                        // transform: expandedId ? "" : "rotate(180deg)",
+                        marginTop: "-30px",
+                        // marginBotyom: "10px",
+                        textAlign: "center",
+                      }}
+                    ></FaAngleDown>
+                    <p
+                      class="text"
+                      style={{ marginTop: "-30px", marginBottom: "15px" }}
+                      in={expandedId === id}
+                      key={key.id}
+                    >
+                      {paragaraph2}
+                    </p>
+                  </div>
                 </Paper>
               </div>
             );

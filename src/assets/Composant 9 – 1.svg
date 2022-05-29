@@ -1,0 +1,10 @@
+<svg id="Composant_9_1" data-name="Composant 9 – 1" xmlns="http://www.w3.org/2000/svg" width="237" height="270" viewBox="0 0 237 270">
+  <path id="Rectangle_41" data-name="Rectangle 41" d="M32,0H205a32,32,0,0,1,32,32V198a25,25,0,0,1-25,25H32A32,32,0,0,1,0,191V32A32,32,0,0,1,32,0Z" fill="none"/>
+  <g id="Rectangle_42" data-name="Rectangle 42" fill="rgba(204,204,204,0.45)" stroke="#1c1312" stroke-linecap="round" stroke-width="4" stroke-dasharray="11 11">
+    <rect width="237" height="270" rx="35" stroke="none"/>
+    <rect x="2" y="2" width="233" height="266" rx="33" fill="none"/>
+  </g>
+  <path id="Tracé_130" data-name="Tracé 130" d="M-5214.917,2730.05h-30.121" transform="translate(5348.477 -2593.05)" fill="none" stroke="#1c1312" stroke-linecap="round" stroke-width="4"/>
+  <path id="Tracé_131" data-name="Tracé 131" d="M30.121,0H0" transform="translate(118.5 152.061) rotate(-90)" fill="none" stroke="#1c1312" stroke-linecap="round" stroke-width="4"/>
+  <text id="Add_Skill" data-name="Add Skill" transform="translate(55 97)" fill="#1c1312" font-size="31" font-family="CeraPro-Black, Cera Pro" font-weight="800"><tspan x="0" y="0">Add Skill</tspan></text>
+</svg>

@@ -32,7 +32,7 @@ import Modal from "react-modal";
 import Notification from "../Notification";
 import QuestionForm from "./QuestionForm";
 import { Rowing } from "@material-ui/icons";
-
+import { IoChevronDown, IoChevronUp } from "react-icons/io5";
 const customStyles = {
   content: {
     top: "50%",
@@ -118,9 +118,9 @@ const styles = makeStyles(() => ({
   },
 }));
 const headCells = [
-  { id: "", label: "" },
-  { id: "_id_question", label: "Id" },
-  { id: "skill", label: "skill" },
+  // { id: "", label: "" },
+  { id: "_id_question", label: "ID" },
+  { id: "skill", label: "Skill" },
   { id: "actions", label: "Actions", disableSorting: true },
 ];
 // const historyRow = [
@@ -259,22 +259,93 @@ export default function QuestionsBank({ active }) {
 
     return (
       <React.Fragment>
-        <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
-          <TableCell>
+        <TableRow
+          className={classes.tableRow}
+          // sx={{ "& > *": { borderBottom: "none" } }}
+        >
+          <div
+            style={{
+              backgroundColor: "white",
+              borderRadius: "40px",
+              width: "50px",
+              border: "4px solid var(--mahogany-3)",
+              textAlign: "center",
+              justifyContent: "center",
+              // marginLeft: "20px",
+              height: "50px",
+              marginTop: "5px",
+            }}
+          >
             <IconButton
               aria-label="expand row"
               style={{
                 color: "gold",
               }}
-              size="small"
+              // size="small"
               onClick={() => setOpen(!open)}
             >
-              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+              {open ? (
+                <IoChevronUp style={{ fontSize: "35px" }} />
+              ) : (
+                <IoChevronDown style={{ fontSize: "35px" }} />
+              )}
             </IconButton>
+          </div>
+          <TableCell
+            className={classes.tableCell}
+            style={{
+              backgroundColor: "white",
+              borderRadius: "40px",
+              width: "220px",
+              border: "4px solid var(--mahogany-3)",
+              textAlign: "center",
+              // marginLeft: "40px",
+              fontFamily: "var(--font-family-cerapro-medium)",
+              color: "#464646",
+              fontWeight: 500,
+              fontSize: "18px",
+              // marginBottom: "5px",
+              // padding: "0px 18px 0px 0px",
+              // height: "27px",
+              // lineHeight: "2px",
+            }}
+          >
+            {row._id_question}
           </TableCell>
-          <TableCell>{row._id_question}</TableCell>
-          <TableCell>{row.skill.skill_name}</TableCell>
-          <TableCell>
+          <TableCell
+            style={{
+              backgroundColor: "white",
+              borderRadius: "40px",
+              width: "220px",
+              fontSize: "18px",
+              border: "4px solid var(--mahogany-3)",
+              textAlign: "center",
+              color: "#464646",
+              fontWeight: 500,
+
+              fontFamily: "var(--font-family-cerapro-medium)",
+
+              // height: "30px",
+            }}
+          >
+            {row.skill.skill_name}
+          </TableCell>
+          <TableCell
+            // margin={10}
+            style={{
+              padding: "15px 15px",
+              backgroundColor: "white",
+              fontSize: "18px",
+              borderBottom: "none",
+              fontFamily: "var(--font-family-cerapro-medium)",
+              color: "#464646",
+              borderRadius: "40px",
+              width: "220px",
+              border: "4px solid var(--mahogany-3)",
+              textAlign: "center",
+              fontWeight: 500,
+            }}
+          >
             <Button
               color="primary"
               onClick={() => {
@@ -314,31 +385,106 @@ export default function QuestionsBank({ active }) {
         </TableRow>
 
         <TableRow>
-          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+          <TableCell
+            style={{
+              paddingBottom: 0,
+              paddingTop: 0,
+            }}
+            colSpan={6}
+          >
             <Collapse in={open} timeout="auto" unmountOnExit>
-              <Box sx={{ margin: 1 }}>
-                <Typography variant="h6" gutterBottom component="div">
+              <Box
+                style={{
+                  backgroundColor: "#fffdf2",
+                  border: "4px solid var(--mahogany-32)",
+                  borderRadius: "40px",
+                  padding: "20px 20px 20px 20px",
+                }}
+                sx={{ margin: 1 }}
+              >
+                {/* <Typography variant="h6" gutterBottom component="div">
                   Details
-                </Typography>
+                </Typography> */}
                 <Table size="small" aria-label="purchases">
-                  <TableHead>
+                  <TableHead
+                    style={{ borderBottom: "4px solid var(--mahogany-3)" }}
+                  >
                     <TableRow>
-                      <TableCell>mark</TableCell>
-                      <TableCell>Tronc</TableCell>
-                      <TableCell>Propositions</TableCell>
+                      <TableCell
+                        style={{
+                          // padding: "15px 15px",
+                          // backgroundColor: "var(--mahogany-3)",
+                          borderRadius: "39px",
+                          width: "180px",
+                          height: "10px",
+                          // textAlign: "center",
+                          fontSize: "20px",
+                          width: "10px",
+                        }}
+                      >
+                        mark
+                      </TableCell>
+                      <TableCell
+                        style={{
+                          borderRadius: "39px",
+                          width: "180px",
+                          height: "10px",
+                          fontSize: "20px",
+                          borderLeft: "4px solid var(--mahogany-3)",
+                        }}
+                      >
+                        Tronc
+                      </TableCell>
+                      <TableCell
+                        style={{
+                          // padding: "15px 15px",
+                          // backgroundColor: "var(--mahogany-3)",
+                          borderRadius: "39px",
+                          width: "180px",
+                          height: "10px",
+                          // textAlign: "center",
+                          fontSize: "20px",
+                          // border-radius: 39px;
+                          borderLeft: "4px solid var(--mahogany-3)",
+                        }}
+                      >
+                        Propositions
+                      </TableCell>
                     </TableRow>
                   </TableHead>
+
                   <TableBody>
                     <TableRow>
-                      <TableCell component="th" scope="row">
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        style={{
+                          fontFamily: "var(--font-family-cerapro-medium)",
+                          color: "var(--heavy-metal)",
+                          width: "30px",
+                        }}
+                      >
                         {row.mark}
                       </TableCell>
-                      <TableCell>{row.tronc}</TableCell>
-                      <TableCell>
+                      <TableCell
+                        style={{
+                          borderLeft: "4px solid var(--mahogany-3)",
+                          fontFamily: "var(--font-family-cerapro-medium)",
+                          color: "var(--heavy-metal)",
+                        }}
+                      >
+                        {row.tronc}
+                      </TableCell>
+                      <TableCell
+                        style={{
+                          borderLeft: "4px solid var(--mahogany-3)",
+                          fontFamily: "var(--font-family-cerapro-medium)",
+                          color: "var(--heavy-metal)",
+                        }}
+                      >
                         {row.propositions.map((prop) => (
                           <div>
                             <Grid xs={12}>
-                              {prop.content}{" "}
                               {prop.typeQuestion === "MCQ" ? (
                                 <Radio
                                   checked={prop.veracity}
@@ -351,9 +497,18 @@ export default function QuestionsBank({ active }) {
                                   checked={prop.veracity}
                                   value={prop.veracity}
                                   name="checkbox"
+                                  style={{
+                                    borderRadius: "10px",
+                                    color: "var(--mahogany-32)",
+
+                                    marginRight: "15px",
+                                    height: "20px",
+                                    width: "20px",
+                                  }}
                                   // inputProps={{ "aria-label": "A" }}
                                 />
                               )}
+                              {prop.content}{" "}
                             </Grid>
                           </div>
                         ))}
@@ -380,14 +535,16 @@ export default function QuestionsBank({ active }) {
       </TblContainer>
 
       {/* <TblPagination /> */}
-      <div className={`divAdd ${openMenu ? "activeAdd" : ""}`}>
+      <div className={`${openMenu ? "bg-blue-500" : "divAdd"}`}>
         <Button
           id="basic-button"
-          aria-controls={openMenu ? "basic-menu" : undefined}
+          // aria-controls={openMenu ? "basic-menu" : undefined}
           aria-haspopup="true"
-          aria-expanded={openMenu ? "true" : undefined}
+          // aria-expanded={openMenu ? "true" : undefined}
           onClick={handleClick}
           style={{ width: "170px", justifyContent: "center" }}
+          // className=
+          className={openMenu ? "btnAdd" : ""}
         >
           <FaPlus
             className={openMenu ? "active" : ""}
@@ -397,6 +554,7 @@ export default function QuestionsBank({ active }) {
           />
         </Button>
         <Menu
+          className={openMenu ? "menuactive" : ""}
           id="basic-menu"
           anchorEl={anchorEl}
           elevation={0}
