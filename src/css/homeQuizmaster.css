@@ -26,7 +26,7 @@
     display: flex;
     flex-direction: column;
     margin-left: -180px;
-    margin-top: 87px;
+    margin-top: 60px;
     width: 700px;
     min-height: 100vh;
     /* background-color: red; */
@@ -52,6 +52,10 @@
     width: 100px;
     margin-bottom: 50px;
     margin-left: 50px;
+    border-radius: 39px;
+    flex: 1;
+    object-fit: cover;
+    width: 214.75px;
 }
 
 .divRight {
@@ -138,4 +142,8 @@
 .span1Q {
     font-family: "cerapro-medium";
 
+}
+
+.x21 {
+    margin-top: 90px;
 }

@@ -210,6 +210,7 @@ export default function CompanySettings({
               value={color}
               onChange={handleChange}
               checked={darkColor.indexOf(color) >= 0}
+
               // disabled={shouldDisableCheckbox(color)}
             />
           </div>

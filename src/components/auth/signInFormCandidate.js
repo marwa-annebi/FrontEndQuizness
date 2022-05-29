@@ -124,7 +124,12 @@ function SignInFormCandidate(companyInfo) {
         <div className="rectangle-white">
           {" "}
           {/* {loading && <Loading />} */}
-          <Notification notify={notify} setNotify={setNotify} />
+          <Notification
+            notify={notify}
+            setNotify={setNotify}
+            vertical="top"
+            horizontal="right"
+          />
           <h1 className="title" style={{ color: darkColor }}>
             log in as Candidate{" "}
           </h1>

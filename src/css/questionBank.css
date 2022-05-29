@@ -4,15 +4,29 @@
   /* text-align: center; */
   margin-left: 350px;
   border-radius: 33px;
-  height: 50px;
+  /* height: 100px; */
   /* align-items: center; */
   justify-content: center;
-  /* margin-bottom: 5px; */
+  top: 85%;
+  /* margin-top: auto; */
+  position: fixed;
+  box-shadow: 0px 3px 6px #0000004d;
+  transition: background-color .5s;
+}
 
+.bg-blue-500 {
+  width: 170px;
+  background: gold;
+  border-radius: 33px;
+  justify-content: center;
+  box-shadow: 0px 3px 6px #0000004d;
+  justify-content: center;
+  margin-left: 350px;
+  margin-top: 90px;
 }
 
 .active {
   transform: rotate(45deg);
   color: var(--gold);
-
+  /* background-color: #000; */
 }

@@ -11,6 +11,9 @@ import {
   Select,
 } from "@mui/material";
 import axios from "axios";
+import Item from "antd/lib/list/Item";
+import PropositionCheckbox from "./PropositionCheckbox";
+import Notification from "../Notification";
 const styles = makeStyles(() => ({
   paper: {
     color: "transparent",
@@ -62,9 +65,9 @@ const styles = makeStyles(() => ({
   },
 }));
 export default function QuestionForm(props) {
+  const { loadQuestions, questionId } = props;
   const classes = styles();
-  const initialFValues = {
-    id: 0,
+  const [question, setquestion] = useState({
     tronc: "",
     skill: "",
     propositions: [
@@ -73,6 +76,19 @@ export default function QuestionForm(props) {
       { content: "", veracity: false },
       { content: "", veracity: false },
     ],
+
+  });
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
+  const handleCheckBoxAdd = () => {
+    const proposition = { content: "", veracity: "" };
+    const updateProposition = question;
+    updateProposition.propositions.push(proposition);
+    setquestion({ ...updateProposition });
+
   };
 
   const { addOrEdit, recordForEdit } = props;
@@ -92,6 +108,7 @@ export default function QuestionForm(props) {
     if (validate()) {
       addOrEdit(values, resetForm);
     }
+
   };
   const [categories, setcategories] = useState([]);
   const loadCategories = async () => {
@@ -108,17 +125,112 @@ export default function QuestionForm(props) {
     );
     setcategories(result.data.reverse());
   };
+
   useEffect(() => {
     loadCategories();
-    if (recordForEdit != null)
-      setValues({
-        ...recordForEdit,
-      });
-  }, [recordForEdit]);
-
+    if (questionId) setquestion({ ...questionId });
+  }, []);
+  const addQuestion = async () => {
+    const quizmasterInfo = JSON.parse(localStorage.getItem("quizmasterInfo"));
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${quizmasterInfo.token}`,
+      },
+    };
+    try {
+      const { data } = await axios.post(
+        process.env.REACT_APP_BACKEND + "/quizmaster/finishQuestion",
+        {
+          question: {
+            tronc: question.tronc,
+            skill: question.skill,
+            typeQuestion: "MCQ",
+          },
+          proposition: question.propositions,
+        },
+        config
+      );
+      loadQuestions();
+      if (data) {
+        setNotify({
+          isOpen: true,
+          message: "Submitted Successfully",
+          type: "success",
+        });
+      }
+    } catch (error) {
+      if (
+        error.response &&
+        error.response.status >= 400 &&
+        error.response.status <= 500
+      ) {
+        setNotify({
+          isOpen: true,
+          message: error.response.data.message,
+          type: "error",
+        });
+      }
+    }
+  };
+  const updateQuestion = async () => {
+    const quizmasterInfo = JSON.parse(localStorage.getItem("quizmasterInfo"));
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${quizmasterInfo.token}`,
+      },
+    };
+    try {
+      const { data } = await axios.put(
+        process.env.REACT_APP_BACKEND + "/quizmaster/",
+        {
+          question: {
+            tronc: question.tronc,
+            skill: question.skill,
+            typeQuestion: "MCQ",
+          },
+          proposition: question.propositions,
+        },
+        config
+      );
+      loadQuestions();
+      if (data) {
+        setNotify({
+          isOpen: true,
+          message: "Submitted Successfully",
+          type: "success",
+        });
+      }
+    } catch (error) {
+      if (
+        error.response &&
+        error.response.status >= 400 &&
+        error.response.status <= 500
+      ) {
+        setNotify({
+          isOpen: true,
+          message: error.response.data.message,
+          type: "error",
+        });
+      }
+    }
+  };
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setquestion({
+      ...question,
+      [name]: value,
+    });
+  };
   return (
-    <Form onSubmit={handleSubmit}>
-      {/* <div style={{ flexDirection: "column", display: "block" }}> */}{" "}
+    <form>
+      <Notification
+        notify={notify}
+        setNotify={setNotify}
+        vertical="top"
+        horizontal="right"
+      />
       <h2 className={classes.h2}>Add Multi Choice Question</h2>
       <Grid container spacing={2}>
         <Grid item xs={12}>
@@ -129,7 +241,7 @@ export default function QuestionForm(props) {
             <Select
               labelId="demo-simple-select-standard-label"
               id="demo-simple-select-standard"
-              value={values.skill}
+              value={question.skill}
               onChange={handleInputChange}
               label="Age"
               name="skill"
@@ -141,11 +253,10 @@ export default function QuestionForm(props) {
           </FormControl>
         </Grid>
         <Grid item xs={12}>
-          {/* <FormControl variant="standard" sx={{ m: 2, minWidth: 180 }}> */}
           <TextField
             id="outlined-basic"
             // label="Outlined"
-            value={values.tronc}
+            value={question.tronc}
             onChange={handleInputChange}
             name="tronc"
             placeholder="type your question here..."
@@ -160,96 +271,49 @@ export default function QuestionForm(props) {
             InputLabelProps={{ className: classes.label }}
           />
         </Grid>
-        <Grid xs={6}>
-          {/* <div style={{ direction: "row" }}> */}
 
-          <Checkbox
-            name="values.propositions[0].veracity"
-            defaultValue={values.propositions[0].veracity}
-            onChange={handleInputChange}
-          ></Checkbox>
-          {/* <Grid xs={2}>  */}
+        {question.propositions.map((item, index) => {
+          console.log("#item", item);
+          return (
+            <div key={index}>
+              <PropositionCheckbox
+                setquestion={setquestion}
+                index={index}
+                question={question}
+              />
+            </div>
+          );
+        })}
+        {question.propositions.length < 8 && (
+          <Grid xs={12}>
+            <Button onClick={handleCheckBoxAdd}>
+              add composant of checkbox
+            </Button>
+          </Grid>
+        )}
 
-          <TextField
-            name="values.propositions[0].content"
-            id="standard-basic"
-            label="Option 1"
-            variant="standard"
-            value={values.propositions[0].content}
-            onChange={handleInputChange}
-          />
-          {/* </div> */}
-        </Grid>
-        <Grid xs={6}>
-          <Checkbox
-            name="values.propositions[1].veracity"
-            defaultValue={values.propositions[1].veracity}
-            onChange={handleInputChange}
-          ></Checkbox>
-          <TextField
-            name="values.propositions[1].content"
-            id="standard-basic"
-            label="Option 2"
-            variant="standard"
-            value={values.propositions[1].content}
-            onChange={handleInputChange}
-          />
-        </Grid>
-        <Grid xs={6}>
-          <Checkbox
-            name="values.propositions[2].veracity"
-            defaultValue={values.propositions[2].veracity}
-            onChange={handleInputChange}
-          ></Checkbox>
-          <TextField
-            name="values.propositions[3].content"
-            id="standard-basic"
-            label="Option 3"
-            variant="standard"
-            value={values.propositions[2].content}
-            onChange={handleInputChange}
-          />
-        </Grid>
-        <Grid xs={6}>
-          <Checkbox
-            name="values.propositions[3].veracity"
-            defaultValue={values.propositions[3].veracity}
-            onChange={handleInputChange}
-          ></Checkbox>
-          <TextField
-            name="values.propositions[3].content"
-            id="standard-basic"
-            label="Option 4"
-            variant="standard"
-            value={values.propositions[3].content}
-            onChange={handleInputChange}
-          />
-        </Grid>
-        {/* </FormControl> */}
+
       </Grid>
       {/* </form> */}
       <br />
       <Grid>
         <Grid spacing={2} xs={12}>
           <Button
-            // variant="outlined"
-            // color="success"
             type="submit"
+            onClick={() => {
+              if (!questionId) {
+                addQuestion();
+              } else if (questionId) {
+                // updateQuestion();
+                console.log("helllooo edit ");
+              }
+            }}
             className={classes.btnSubmit}
           >
             Submit
           </Button>
-          <Button
-            // variant="outlined"
-            // color="success"
-            type="submit"
-            className={classes.btnSubmit}
-            onClick={resetForm}
-          >
-            Cancel
-          </Button>
         </Grid>
       </Grid>
-    </Form>
+    </form>
   );
 }

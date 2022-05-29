@@ -16,6 +16,7 @@ import useTable from "../useTable";
 import { Checkbox, TableBody, TableCell, TableRow } from "@mui/material";
 import { Button } from "@material-ui/core";
 import Notification from "../Notification";
+import SideMenu from "./SideMenu";
 const headCells = [
   { id: "", label: "" },
   { id: "_id_question", label: "Id" },
@@ -92,6 +93,7 @@ export default function AddQuizBySelection() {
       setquestions((prev) => prev.filter((x) => value !== x));
     }
   };
+
   console.log("#nb", nbQuestion);
   console.log("#ques", questions);
 
@@ -153,13 +155,21 @@ export default function AddQuizBySelection() {
       (singleQuestion) => singleQuestion.skill.skill_name === filterSkill
     );
   }
+  const checkedValues = { ...questions };
+  const checkedCount = Object.values(checkedValues).filter(
+    (value) => value
+  ).length;
 
+  console.log(...questions);
   return (
     <Grid container spacing={{ xs: 6, md: 12 }}>
       <Grid item xs={12}>
         <NavBar />
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={8}>
+        <SideMenu />
+      </Grid>
+      <Grid item xs={4}>
         <div className="borderQuiz">
           <Notification
             notify={notify}
@@ -249,6 +259,7 @@ export default function AddQuizBySelection() {
                             value={item._id}
                             onChange={handleChangeQuestion}
                             // onClick="this.checked"
+                            // checked={checked.indexOf(item) !== -1}
                             checked={questions.indexOf(item._id) >= 0}
                           />
                         </TableCell>

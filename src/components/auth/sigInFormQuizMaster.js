@@ -117,7 +117,12 @@ export default function SigInForm(companyInfo) {
         <Loading />
       ) : (
         <div className="rectangle-white">
-          <Notification notify={notify} setNotify={setNotify} />
+          <Notification
+            notify={notify}
+            setNotify={setNotify}
+            vertical="top"
+            horizontal="right"
+          />
           <h1 className="title" style={{ color: darkColor }}>
             log in as Quiz master{" "}
           </h1>

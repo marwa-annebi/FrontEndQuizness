@@ -32,6 +32,7 @@ import Modal from "react-modal";
 import Notification from "../Notification";
 import QuestionForm from "./QuestionForm";
 import { Rowing } from "@material-ui/icons";
+import { IoChevronDown, IoChevronUp } from "react-icons/io5";
 
 const customStyles = {
   content: {
@@ -69,7 +70,7 @@ const customStyles = {
 
 const styles = makeStyles(() => ({
   paper: {
-    color: "transparent",
+    background: "transparent",
     width: "170px",
     justifyContent: "space-between",
     marginTop: "3px",
@@ -118,9 +119,11 @@ const styles = makeStyles(() => ({
   },
 }));
 const headCells = [
-  { id: "", label: "" },
-  { id: "_id_question", label: "Id" },
-  { id: "skill", label: "skill" },
+
+  // { id: "", label: "" },
+  { id: "_id_question", label: "ID" },
+  { id: "skill", label: "Skill" },
+
   { id: "actions", label: "Actions", disableSorting: true },
 ];
 // const historyRow = [
@@ -166,8 +169,10 @@ export default function QuestionsBank({ active }) {
     type: "",
   });
   const [open, setOpen] = React.useState(false);
+  const [openEditPopup, setopenEditPopup] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openMenu = Boolean(anchorEl);
+  // const [open, setopen] = useState(false);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -193,13 +198,6 @@ export default function QuestionsBank({ active }) {
     setquestionList(result.data.reverse());
   };
 
-  useEffect(
-    () => {
-      loadQuestions();
-    },
-    [],
-    [questionList]
-  );
   const [filterFn, setFilterFn] = useState({
     fn: (items) => {
       return items;
@@ -208,91 +206,80 @@ export default function QuestionsBank({ active }) {
 
   // create Question
 
-  const create = async (values, resetForm, id) => {
-    const quizmasterInfo = JSON.parse(localStorage.getItem("quizmasterInfo"));
-    // console.log(userInfo);
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${quizmasterInfo.token}`,
-      },
-    };
-    if (values.id == 0) {
-      // if (userInfo.id == 0)
-      try {
-        const { data } = await axios.post(
-          process.env.REACT_APP_BACKEND + "/quizmaster/finishQuestion",
-          {
-            question: {
-              tronc: values.tronc,
-              skill: values.skill,
-              typeQuestion: "MCQ",
-            },
-            proposition: [
-              {
-                content: values.propositions[0].veracity,
-                veracity: values.propositions[0].content,
-              },
-              {
-                content: values.propositions[1].content,
-                veracity: values.propositions[1].veracity,
-              },
-              {
-                content: values.propositions[2].content,
-                veracity: values.propositions[2].veracity,
-              },
-              {
-                content: values.propositions[3].content,
-                veracity: values.propositions[3].veracity,
-              },
-            ],
-          },
-          config
-        );
-        console.log("#questionadd", data);
-        loadQuestions();
-        if (data) {
-          setNotify({
-            isOpen: true,
-            message: "Submitted Successfully",
-            type: "success",
-          });
-        }
-      } catch (error) {
-        if (
-          error.response &&
-          error.response.status >= 400 &&
-          error.response.status <= 500
-        ) {
-          setNotify({
-            isOpen: true,
-            message: error.response.data.message,
-            type: "error",
-          });
-        }
-      }
-    } else {
-      await axios.put(
-        process.env.REACT_APP_BACKEND + `quizmaster/${recordForEdit._id}`,
-        {
-          question: {
-            tronc: values.tronc,
-            skill: values.skill,
-            typeQuestion: "MCQ",
-          },
-          proposition: [
-            { content: values.option1, veracity: values.veracity1 },
-            { content: values.option2, veracity: values.veracity2 },
-            { content: values.option3, veracity: values.veracity3 },
-            { content: values.option4, veracity: values.veracity4 },
-          ],
+  //delete question
+
+  const deleteQuestion = async (id) => {
+    setConfirmDialog({
+      ...confirmDialog,
+      isOpen: false,
+    });
+    console.log("#id", id);
+    try {
+      const quizmasterInfo = JSON.parse(localStorage.getItem("quizmasterInfo"));
+      const config = {
+        headers: {
+          // "Content-Type": "application/json",
+          Authorization: `Bearer ${quizmasterInfo.token}`,
         },
+      };
+      await axios.delete(
+        process.env.REACT_APP_BACKEND + `/quizmaster/Question/${id}`,
         config
       );
+      loadQuestions();
+      setNotify({
+        isOpen: true,
+        message: "Deleted Successfully",
+        type: "success",
+      });
+    } catch (error) {
+      if (
+        error.response &&
+        error.response.status >= 400 &&
+        error.response.status <= 500
+      ) {
+        setNotify({
+          isOpen: true,
+          message: error.response.data.message,
+          type: "error",
+        });
+        // console.log(error.response.data.message);
+      }
     }
   };
+  const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
+    useTable(questionList, headCells, filterFn);
 
-  //delete question
+  useEffect(
+    () => {
+      loadQuestions();
+    },
+    [],
+    [questionList]
+  );
+  function Row(props) {
+    const { row } = props;
+    const [open, setOpen] = React.useState(false);
+
+    return (
+      <React.Fragment>
+        <TableRow
+          className={classes.tableRow}
+          // sx={{ "& > *": { borderBottom: "none" } }}
+        >
+          <div
+            style={{
+              backgroundColor: "white",
+              borderRadius: "40px",
+              width: "50px",
+              border: "4px solid var(--mahogany-3)",
+              textAlign: "center",
+              justifyContent: "center",
+              // marginLeft: "20px",
+              height: "50px",
+              marginTop: "5px",
+            }}
+          >
 
   const deleteQuestion = async (id) => {
     setConfirmDialog({
@@ -323,6 +310,76 @@ export default function QuestionsBank({ active }) {
               style={{
                 color: "gold",
               }}
+
+              // size="small"
+              onClick={() => setOpen(!open)}
+            >
+              {open ? (
+                <IoChevronUp style={{ fontSize: "35px" }} />
+              ) : (
+                <IoChevronDown style={{ fontSize: "35px" }} />
+              )}
+            </IconButton>
+          </div>
+          <TableCell
+            className={classes.tableCell}
+            style={{
+              backgroundColor: "white",
+              borderRadius: "40px",
+              width: "220px",
+              border: "4px solid var(--mahogany-3)",
+              textAlign: "center",
+              // marginLeft: "40px",
+              fontFamily: "var(--font-family-cerapro-medium)",
+              color: "#464646",
+              fontWeight: 500,
+              fontSize: "18px",
+              // marginBottom: "5px",
+              // padding: "0px 18px 0px 0px",
+              // height: "27px",
+              // lineHeight: "2px",
+            }}
+          >
+            {row._id_question}
+          </TableCell>
+          <TableCell
+            style={{
+              backgroundColor: "white",
+              borderRadius: "40px",
+              width: "220px",
+              fontSize: "18px",
+              border: "4px solid var(--mahogany-3)",
+              textAlign: "center",
+              color: "#464646",
+              fontWeight: 500,
+
+              fontFamily: "var(--font-family-cerapro-medium)",
+
+              // height: "30px",
+            }}
+          >
+            {row.skill.skill_name}
+          </TableCell>
+          <TableCell
+            // margin={10}
+            style={{
+              padding: "15px 15px",
+              backgroundColor: "white",
+              fontSize: "18px",
+              borderBottom: "none",
+              fontFamily: "var(--font-family-cerapro-medium)",
+              color: "#464646",
+              borderRadius: "40px",
+              width: "220px",
+              border: "4px solid var(--mahogany-3)",
+              textAlign: "center",
+              fontWeight: 500,
+            }}
+          >
+            <Button
+              color="primary"
+              onClick={() => {
+                setopenEditPopup(true);
               size="small"
               onClick={() => setOpen(!open)}
             >
@@ -340,7 +397,20 @@ export default function QuestionsBank({ active }) {
               }}
             >
               <EditOutlinedIcon fontSize="small" />
+
+              <Modal
+                isOpen={openEditPopup}
+                onRequestClose={() => setopenEditPopup(false)}
+                style={customStyles}
+              >
+                <QuestionForm
+                  // loadQuestions={loadQuestions}
+                  questionId={recordForEdit}
+                />
+              </Modal>
             </Button>
+
+
             <Button
               color="secondary"
               onClick={() => {
@@ -360,6 +430,106 @@ export default function QuestionsBank({ active }) {
         </TableRow>
 
         <TableRow>
+          <TableCell
+            style={{
+              paddingBottom: 0,
+              paddingTop: 0,
+            }}
+            colSpan={6}
+          >
+            <Collapse in={open} timeout="auto" unmountOnExit>
+              <Box
+                style={{
+                  backgroundColor: "#fffdf2",
+                  border: "4px solid var(--mahogany-32)",
+                  borderRadius: "40px",
+                  padding: "20px 20px 20px 20px",
+                }}
+                sx={{ margin: 1 }}
+              >
+                {/* <Typography variant="h6" gutterBottom component="div">
+                  Details
+                </Typography> */}
+                <Table size="small" aria-label="purchases">
+                  <TableHead
+                    style={{ borderBottom: "4px solid var(--mahogany-3)" }}
+                  >
+                    <TableRow>
+                      <TableCell
+                        style={{
+                          // padding: "15px 15px",
+                          // backgroundColor: "var(--mahogany-3)",
+                          borderRadius: "39px",
+                          width: "180px",
+                          height: "10px",
+                          // textAlign: "center",
+                          fontSize: "20px",
+                          width: "10px",
+                        }}
+                      >
+                        mark
+                      </TableCell>
+                      <TableCell
+                        style={{
+                          borderRadius: "39px",
+                          width: "180px",
+                          height: "10px",
+                          fontSize: "20px",
+                          borderLeft: "4px solid var(--mahogany-3)",
+                        }}
+                      >
+                        Tronc
+                      </TableCell>
+                      <TableCell
+                        style={{
+                          // padding: "15px 15px",
+                          // backgroundColor: "var(--mahogany-3)",
+                          borderRadius: "39px",
+                          width: "180px",
+                          height: "10px",
+                          // textAlign: "center",
+                          fontSize: "20px",
+                          // border-radius: 39px;
+                          borderLeft: "4px solid var(--mahogany-3)",
+                        }}
+                      >
+                        Propositions
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+
+                  <TableBody>
+                    <TableRow>
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        style={{
+                          fontFamily: "var(--font-family-cerapro-medium)",
+                          color: "var(--heavy-metal)",
+                          width: "30px",
+                        }}
+                      >
+                        {row.mark}
+                      </TableCell>
+                      <TableCell
+                        style={{
+                          borderLeft: "4px solid var(--mahogany-3)",
+                          fontFamily: "var(--font-family-cerapro-medium)",
+                          color: "var(--heavy-metal)",
+                        }}
+                      >
+                        {row.tronc}
+                      </TableCell>
+                      <TableCell
+                        style={{
+                          borderLeft: "4px solid var(--mahogany-3)",
+                          fontFamily: "var(--font-family-cerapro-medium)",
+                          color: "var(--heavy-metal)",
+                        }}
+                      >
+                        {row.propositions.map((prop) => (
+                          <div>
+                            <Grid xs={12}>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
             <Collapse in={open} timeout="auto" unmountOnExit>
               <Box sx={{ margin: 1 }}>
@@ -385,6 +555,7 @@ export default function QuestionsBank({ active }) {
                           <div>
                             <Grid xs={12}>
                               {prop.content}{" "}
+
                               {prop.typeQuestion === "MCQ" ? (
                                 <Radio
                                   checked={prop.veracity}
@@ -397,9 +568,22 @@ export default function QuestionsBank({ active }) {
                                   checked={prop.veracity}
                                   value={prop.veracity}
                                   name="checkbox"
+
+                                  style={{
+                                    borderRadius: "10px",
+                                    color: "var(--mahogany-32)",
+
+                                    marginRight: "15px",
+                                    height: "20px",
+                                    width: "20px",
+                                  }}
                                   // inputProps={{ "aria-label": "A" }}
                                 />
                               )}
+                              {prop.content}{" "}
+                                  // inputProps={{ "aria-label": "A" }}
+                                />
+
                             </Grid>
                           </div>
                         ))}
@@ -424,15 +608,18 @@ export default function QuestionsBank({ active }) {
           ))}
         </TableBody>
       </TblContainer>
-      <TblPagination />
-      <div className={`divAdd ${openMenu ? "activeAdd" : ""}`}>
+
+      {/* <TblPagination /> */}
+      <div className={`${openMenu ? "bg-blue-500" : "divAdd"}`}>
         <Button
           id="basic-button"
-          aria-controls={openMenu ? "basic-menu" : undefined}
+          // aria-controls={openMenu ? "basic-menu" : undefined}
           aria-haspopup="true"
-          aria-expanded={openMenu ? "true" : undefined}
+          // aria-expanded={openMenu ? "true" : undefined}
           onClick={handleClick}
           style={{ width: "170px", justifyContent: "center" }}
+          // className=
+          className={openMenu ? "btnAdd" : ""}
         >
           <FaPlus
             className={openMenu ? "active" : ""}
@@ -441,17 +628,13 @@ export default function QuestionsBank({ active }) {
             size="30px"
           />
         </Button>
-        {/* </IconContext.Provider> */}
-
         <Menu
+          className={openMenu ? "menuactive" : ""}
           id="basic-menu"
           anchorEl={anchorEl}
           elevation={0}
           open={openMenu}
           onClose={handleClose}
-          // MenuListProps={{
-          //   "aria-labelledby": "basic-button",
-          // }}
           PopoverClasses={{
             paper: classes.paper,
           }}
@@ -466,18 +649,17 @@ export default function QuestionsBank({ active }) {
             },
             getContentAnchorEl: null,
           }}
-          // style={{ backgroundColor: "transparent" }}
         >
           <MenuItem
             className="divMenu"
             onClick={() => {
               openModal();
-              setRecordForEdit(null);
             }}
             style={{
               justifyContent: "start",
               border: "4px solid var(--mahogany)",
               borderRadius: "33px",
+              // marginTop: "50px",
               marginBottom: "10px",
               backgroundColor: "var(--gold)",
               color: "var(--mahogany)",
@@ -512,7 +694,7 @@ export default function QuestionsBank({ active }) {
           style={customStyles}
           contentLabel="Example Modal"
         >
-          <QuestionForm recordForEdit={recordForEdit} addOrEdit={create} />
+          <QuestionForm loadQuestions={loadQuestions} questionId={null} />
         </Modal>
 
         {/* </div> */}

@@ -20,16 +20,13 @@ export default function HomeQuizMaster(company_colors) {
       <div className="home1 screen">
         <div className="flex-col1">
           <div
-            style={{
-              marginLeft: "-180px",
-              minWidth: "auto",
-              marginTop: "-70px",
-            }}
+            className="overlap-group1"
+            style={{ marginRight: "150px", background: "white" }}
           >
-            <img
-              className="rectangle-11"
+            <Logo
+              // className="rectangle-11"
               src={company_colors.company_colors.logo}
-              style={{ width: "30%" }}
+              // style={{ width: "30%" }}
             />
           </div>
           <div className="x21">
@@ -97,4 +94,15 @@ function X4(props) {
   const { src } = props;
 
   return <div className="x4" style={{ backgroundImage: `url(${src})` }}></div>;
+}
+function Logo(props) {
+  const { src } = props;
+
+  return (
+    <div className="groupe-22">
+      {/* <div className="groupe-1"> */}
+      <img className="rectangle-1" src={src} />
+      {/* </div> */}
+    </div>
+  );
 }

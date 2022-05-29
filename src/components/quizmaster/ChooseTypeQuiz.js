@@ -9,8 +9,8 @@ const customStyles = {
     top: "50%",
     left: "50%",
     width: "350px",
-    backgroundColor: "gold",
-    borderRadius: "25px",
+    backgroundColor: "white",
+    borderRadius: "20px",
     height: "300px",
     right: "auto",
     bottom: "auto",
@@ -18,6 +18,7 @@ const customStyles = {
     transform: "translate(-50%, -50%)",
     direction: "column",
     justifyContent: "center",
+    border: "4px solid gold",
   },
   overlay: {
     position: "fixed",

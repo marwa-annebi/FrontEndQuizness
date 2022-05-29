@@ -8,34 +8,29 @@ import {
   TablePagination,
   TableSortLabel,
 } from "@material-ui/core";
+import { TableContainer } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
   table: {
-    // marginTop: theme.spacing(3),
-    fontFamily: "cerapro-Medium",
     borderCollapse: "separate",
-    borderSpacing: "0px 6px",
+    borderSpacing: "15px 6px",
+    background: "white",
+
     "& thead th": {
-      fontWeight: "600",
-      color: "var(--mahogany)",
-      background: "rgba(87, 11, 3, 0.05)",
+      fontWeight: 700,
+      color: "var(--gold)",
       fontFamily: "cerapro-bold",
       marginBottom: "10px",
     },
     "& tbody td": {
       fontWeight: "500",
-      fontFamily: "cerapro-Medium",
-      background: "rgba(87, 11, 3, 0.05)",
-      // transition: "width 2s, height 4s",
+      border: 0,
     },
     "& tbody tr:hover": {
-      // width: "150px",
-      // height: "100px",
-      // backgroundColor: "red",
       cursor: "pointer",
     },
-    "$ tbody tr": {
-      marginTop: "30px",
+    "& tbody tr": {
+      marginBottom: "-10px",
     },
   },
 }));
@@ -50,7 +45,11 @@ export default function useTable(records, headCells, filterFn) {
   const [orderBy, setOrderBy] = useState();
 
   const TblContainer = (props) => (
-    <Table className={classes.table}>{props.children}</Table>
+    <TableContainer style={{ maxHeight: 450 }}>
+      <Table className={classes.table} stickyHeader>
+        {props.children}
+      </Table>
+    </TableContainer>
   );
 
   const TblHead = (props) => {
@@ -63,25 +62,50 @@ export default function useTable(records, headCells, filterFn) {
     return (
       <TableHead>
         <TableRow>
+          <TableCell
+            style={{
+              padding: "15px 15px",
+              backgroundColor: "white",
+              // borderRadius: "39px",
+              width: "70px",
+              // textAlign: "center",
+              borderColor: "transparent",
+              // border-radius: 39px;
+            }}
+            // key={headCell.id}
+            // sortDirection={orderBy === headCell.id ? order : false}
+          ></TableCell>
           {headCells.map((headCell) => (
-            <TableCell
-              key={headCell.id}
-              sortDirection={orderBy === headCell.id ? order : false}
-            >
-              {headCell.disableSorting ? (
-                headCell.label
-              ) : (
-                <TableSortLabel
-                  active={orderBy === headCell.id}
-                  direction={orderBy === headCell.id ? order : "asc"}
-                  onClick={() => {
-                    handleSortRequest(headCell.id);
-                  }}
-                >
-                  {headCell.label}
-                </TableSortLabel>
-              )}
-            </TableCell>
+            <>
+              <TableCell
+                style={{
+                  padding: "15px 15px",
+                  backgroundColor: "var(--mahogany-3)",
+                  borderRadius: "40px",
+                  width: "220px",
+                  height: "10px",
+                  textAlign: "center",
+                  fontSize: "26px",
+                  // border-radius: 39px;
+                }}
+                key={headCell.id}
+                sortDirection={orderBy === headCell.id ? order : false}
+              >
+                {headCell.disableSorting ? (
+                  headCell.label
+                ) : (
+                  <TableSortLabel
+                    active={orderBy === headCell.id}
+                    direction={orderBy === headCell.id ? order : "asc"}
+                    onClick={() => {
+                      handleSortRequest(headCell.id);
+                    }}
+                  >
+                    {headCell.label}
+                  </TableSortLabel>
+                )}
+              </TableCell>
+            </>
           ))}
         </TableRow>
       </TableHead>

@@ -137,7 +137,12 @@ export default function SignUpCandidate(companyInfo) {
         <Loading />
       ) : (
         <div className="rectangle-white">
-          <Notification notify={notify} setNotify={setNotify} />
+          <Notification
+            notify={notify}
+            setNotify={setNotify}
+            vertical="top"
+            horizontal="right"
+          />
           <h1 className="title1" style={{ color: darkColor }}>
             Register as Candidate
           </h1>
