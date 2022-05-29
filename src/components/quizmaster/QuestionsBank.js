@@ -33,7 +33,6 @@ import Notification from "../Notification";
 import QuestionForm from "./QuestionForm";
 import { Rowing } from "@material-ui/icons";
 import { IoChevronDown, IoChevronUp } from "react-icons/io5";
-
 const customStyles = {
   content: {
     top: "50%",
@@ -119,11 +118,9 @@ const styles = makeStyles(() => ({
   },
 }));
 const headCells = [
-
   // { id: "", label: "" },
   { id: "_id_question", label: "ID" },
   { id: "skill", label: "Skill" },
-
   { id: "actions", label: "Actions", disableSorting: true },
 ];
 // const historyRow = [
@@ -140,7 +137,6 @@ export default function QuestionsBank({ active }) {
     // console.log("#item", item);
     // let item2 = item.propositions;
     // console.log("#item2", item2);
-
     // setRecordForEdit({ ...item, ...item2 });
     setIsOpen(true);
     setAnchorEl(false);
@@ -280,37 +276,11 @@ export default function QuestionsBank({ active }) {
               marginTop: "5px",
             }}
           >
-
-  const deleteQuestion = async (id) => {
-    setConfirmDialog({
-      ...confirmDialog,
-      isOpen: false,
-    });
-    await axios.delete(process.env.REACT_APP_BACKEND + `/Question/${id}`);
-    loadQuestions();
-    setNotify({
-      isOpen: true,
-      message: "Deleted Successfully",
-      type: "error",
-    });
-  };
-  const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
-    useTable(questionList, headCells, filterFn);
-
-  function Row(props) {
-    const { row } = props;
-    const [open, setOpen] = React.useState(false);
-
-    return (
-      <React.Fragment>
-        <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
-          <TableCell>
             <IconButton
               aria-label="expand row"
               style={{
                 color: "gold",
               }}
-
               // size="small"
               onClick={() => setOpen(!open)}
             >
@@ -380,24 +350,10 @@ export default function QuestionsBank({ active }) {
               color="primary"
               onClick={() => {
                 setopenEditPopup(true);
-              size="small"
-              onClick={() => setOpen(!open)}
-            >
-              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-            </IconButton>
-          </TableCell>
-          <TableCell>{row._id_question}</TableCell>
-          <TableCell>{row.skill.skill_name}</TableCell>
-          <TableCell>
-            <Button
-              color="primary"
-              onClick={() => {
-                openModal();
                 setRecordForEdit(row);
               }}
             >
               <EditOutlinedIcon fontSize="small" />
-
               <Modal
                 isOpen={openEditPopup}
                 onRequestClose={() => setopenEditPopup(false)}
@@ -409,7 +365,6 @@ export default function QuestionsBank({ active }) {
                 />
               </Modal>
             </Button>
-
 
             <Button
               color="secondary"
@@ -530,32 +485,6 @@ export default function QuestionsBank({ active }) {
                         {row.propositions.map((prop) => (
                           <div>
                             <Grid xs={12}>
-          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-            <Collapse in={open} timeout="auto" unmountOnExit>
-              <Box sx={{ margin: 1 }}>
-                <Typography variant="h6" gutterBottom component="div">
-                  Details
-                </Typography>
-                <Table size="small" aria-label="purchases">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>mark</TableCell>
-                      <TableCell>Tronc</TableCell>
-                      <TableCell>Propositions</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell component="th" scope="row">
-                        {row.mark}
-                      </TableCell>
-                      <TableCell>{row.tronc}</TableCell>
-                      <TableCell>
-                        {row.propositions.map((prop) => (
-                          <div>
-                            <Grid xs={12}>
-                              {prop.content}{" "}
-
                               {prop.typeQuestion === "MCQ" ? (
                                 <Radio
                                   checked={prop.veracity}
@@ -568,7 +497,6 @@ export default function QuestionsBank({ active }) {
                                   checked={prop.veracity}
                                   value={prop.veracity}
                                   name="checkbox"
-
                                   style={{
                                     borderRadius: "10px",
                                     color: "var(--mahogany-32)",
@@ -581,9 +509,6 @@ export default function QuestionsBank({ active }) {
                                 />
                               )}
                               {prop.content}{" "}
-                                  // inputProps={{ "aria-label": "A" }}
-                                />
-
                             </Grid>
                           </div>
                         ))}
