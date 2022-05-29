@@ -76,6 +76,7 @@ export default function QuestionForm(props) {
       { content: "", veracity: false },
       { content: "", veracity: false },
     ],
+
   });
   const [notify, setNotify] = useState({
     isOpen: false,
@@ -87,6 +88,27 @@ export default function QuestionForm(props) {
     const updateProposition = question;
     updateProposition.propositions.push(proposition);
     setquestion({ ...updateProposition });
+
+  };
+
+  const { addOrEdit, recordForEdit } = props;
+  const validate = (fieldValues = values) => {
+    let temp = { ...errors };
+    setErrors({
+      ...temp,
+    });
+
+    if (fieldValues == values) return Object.values(temp).every((x) => x == "");
+  };
+  const { values, setValues, errors, setErrors, handleInputChange, resetForm } =
+    useForm(initialFValues, true, validate);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validate()) {
+      addOrEdit(values, resetForm);
+    }
+
   };
   const [categories, setcategories] = useState([]);
   const loadCategories = async () => {
@@ -249,6 +271,7 @@ export default function QuestionForm(props) {
             InputLabelProps={{ className: classes.label }}
           />
         </Grid>
+
         {question.propositions.map((item, index) => {
           console.log("#item", item);
           return (
@@ -268,6 +291,8 @@ export default function QuestionForm(props) {
             </Button>
           </Grid>
         )}
+
+
       </Grid>
       {/* </form> */}
       <br />
