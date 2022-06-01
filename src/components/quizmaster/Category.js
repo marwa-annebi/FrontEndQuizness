@@ -1,21 +1,19 @@
-import { Collapse, makeStyles, Paper } from "@material-ui/core";
+import { Collapse, makeStyles, Paper, styled } from "@material-ui/core";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ContentMenuItem from "./../ContentMenuItem";
-import { Box } from "@mui/material";
+import imgdelete from "./../../assets/delete-svgrepo-com@1x.png";
+import { Box, Grid } from "@mui/material";
 import { GrAdd } from "react-icons/gr";
 import Notification from "../Notification";
 import ConfirmDialog from "../ConfirmDialog";
 import AddSkill from "./addSkill";
 import Modal from "react-modal";
-import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { ExpandMore } from "@material-ui/icons";
-import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import Rectangl42 from "./../../assets/Rectangle 42.svg";
+import rectangle43 from "./../../assets/Rectangle 42.png";
+import deleteHover from "./../../assets/Composant 12 – 1.svg";
+import pen from "./../../assets/pen-svgrepo-com.svg";
+import trac from "./../../assets/trac--136@1x.png";
 const styles = makeStyles((theme) => ({
   h5: {
     fontFamily: "cerapro-Medium",
@@ -62,7 +60,7 @@ const styles = makeStyles((theme) => ({
     borderRadius: 35,
     height: "200px",
     width: "160px",
-    textAlign: "center",
+    textAlign: "start",
     backgroundColor: "white",
     color: "var(--mahogany-3)",
     fontFamily: "var(--font-family-cerapro-bold)",
@@ -70,23 +68,26 @@ const styles = makeStyles((theme) => ({
     fontWeight: 700,
     letterSpacing: 0,
     lineHeight: "35px",
-    minHeight: "46px",
+    justifyContent: "center",
+    paddingLeft: "15px",
+    // minHeight: "46px",
     whiteSpace: "nowrap",
+    direction: "row",
   },
   paper2: {
+    paddingLeft: "15px",
     border: "4px solid gold",
     borderRadius: 35,
     objectFit: "cover",
     // position: "absolute",
     height: "auto",
     minHeight: "162px",
-    width: "160px",
+    width: "145px",
     backgroundColor: "white",
     marginTop: "-170px",
     textAlign: "center",
     // color: "linear-gradient(180deg, red 73.27%,  #ffffff 100%)",
     fontFamily: "cerapro-Medium",
-
     justifyContent: "start",
     fontSize: "13px",
     // lineHeight: "5px",
@@ -111,17 +112,17 @@ const styles = makeStyles((theme) => ({
 }));
 const customStyles = {
   content: {
-    top: "50%",
+    top: "55%",
     left: "51.5%",
     // right: "auto",
     bottom: "auto",
     marginRight: "-50%",
     transform: "translate(-34%, -50%)",
-    borderRadius: "25px",
-    // borderColor: "transparent",
+    // borderRadius: "25px",
+    borderColor: "transparent",
     // backgroundColor: "var(--gold-2)",
-    backgroundColor: "white",
-    width: "907px",
+    backgroundColor: "transparent",
+    width: "950px",
     // opacity: "1",
     fontFamily: "var(--font-family-cerapro-bold)",
     justifyContent: "center",
@@ -129,19 +130,22 @@ const customStyles = {
     boxShadow: " 0px 3px 6px  #00000029",
     direction: "column",
     marginTop: "50px",
-    border: "5px solid var(--mahogany)",
+    // border: "4px dashed var(--mahogany)",
+    // backgroundImage: ` url(${Rectangl42})`,
+    // background: `url(${rectangle43})`,
+    height: "550px",
     // height: "450px",
   },
-  // overlay: {
-  //   position: "fixed",
-  //   top: 0,
-  //   left: 0,
-  //   right: 0,
-  //   bottom: 0,
-  //   webkitBackdropFilter: "blur(30px) brightness(115%)",
-  //   backdropFilter: " blur(30px) brightness(115%)",
-  //   backgroundColor: "transparent",
-  // },
+  overlay: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    webkitBackdropFilter: "blur(13px) brightness(115%)",
+    backdropFilter: " blur(13px) brightness(115%)",
+    backgroundColor: "transparent",
+  },
 };
 export default function Category() {
   const classes = styles();
@@ -149,7 +153,13 @@ export default function Category() {
   const [skill_name, setskill_name] = useState("");
   const [loading, setloading] = useState(false);
   const [requirements, setrequirements] = useState("");
-
+  const [openPopup, setOpenPopup] = useState(false);
+  const [recordforedit, setrecordforedit] = useState(null);
+  const [openAdd, setopenAdd] = useState(false);
+  const openAddModal = () => {
+    setopenAdd(true);
+    setrecordforedit(null);
+  };
   const [notify, setNotify] = useState({
     isOpen: false,
     message: "",
@@ -180,7 +190,7 @@ export default function Category() {
       loadCategories();
     },
     [],
-    [categories]
+    []
   );
   const deleteCategory = async (id) => {
     try {
@@ -192,14 +202,15 @@ export default function Category() {
           Authorization: `Bearer ${quizmasterInfo.token}`,
         },
       };
-      await axios.delete(
+      const { data } = await axios.delete(
         process.env.REACT_APP_BACKEND + `/quizmaster/skill/${id}`,
         config
       );
+      setConfirmDialog({ isOpen: false });
       loadCategories();
       setNotify({
         isOpen: true,
-        message: "Deleted Successfully",
+        message: data.message,
         type: "success",
       });
     } catch (error) {
@@ -217,54 +228,17 @@ export default function Category() {
     }
   };
 
-  const add = async () => {
-    try {
-      const quizmasterInfo = JSON.parse(localStorage.getItem("quizmasterInfo"));
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${quizmasterInfo.token}`,
-        },
-      };
-      setloading(true);
-      const { result } = await axios.post(
-        process.env.REACT_APP_BACKEND + "/quizmaster/createSkill",
-        { skill_name, requirements },
-        config
-      );
-      setNotify({
-        isOpen: true,
-        message: result.message,
-        type: "success",
-      });
-      if (result) {
-        // setOpenPopup(false);
-        // loadCategories();
-        setloading(false);
-      }
-    } catch (error) {
-      setloading(false);
-      if (
-        error.response &&
-        error.response.status >= 400 &&
-        error.response.status <= 500
-      ) {
-        setNotify({
-          isOpen: true,
-          message: error.response.data.message,
-          type: "error",
-        });
-      }
-    }
-  };
   function openModal() {
-    setopenModal(true);
+    setOpenPopup(true);
+    // setrecordforedit(skill);
   }
 
   function closeModal() {
-    setopenModal(false);
+    setOpenPopup(false);
   }
-
+  function closeAddModal() {
+    setopenAdd(false);
+  }
   const [expandedId, setExpandedId] = React.useState(-1);
 
   const handleExpandClick = (i) => {
@@ -289,12 +263,8 @@ export default function Category() {
           }}
         >
           {/* <Paper > */}
-          <div style={{ width: "160px", height: "200px" }}>
-            <img
-              src={Rectangl42}
-              onClick={openModal}
-              style={{ cursor: "pointer" }}
-            ></img>
+          <div style={{ width: "180px", height: "200px" }}>
+            <img src={Rectangl42} style={{ marginRight: "35px" }}></img>
             <div
               style={{
                 direction: "column",
@@ -304,7 +274,16 @@ export default function Category() {
               }}
             >
               <div className={classes.addskill}>Add Skill</div>
-
+              <img
+                src={trac}
+                style={{
+                  width: "30px",
+                  height: "30px",
+                  marginLeft: "77px",
+                  cursor: "pointer",
+                }}
+                onClick={openAddModal}
+              ></img>
               <div className={classes.addskill} style={{ marginTop: "5px" }}>
                 <GrAdd size="30px" />
               </div>
@@ -312,63 +291,97 @@ export default function Category() {
           </div>
           {/* </Paper> */}
           <Modal
-            isOpen={isopenModal}
-            onRequestClose={closeModal}
+            isOpen={openAdd}
+            onRequestClose={closeAddModal}
             style={customStyles}
           >
-            <AddSkill loadCategories={loadCategories} />
+            <img
+              src={rectangle43}
+              style={{ width: "907px", height: "500px" }}
+            />
+            <div style={{ marginTop: "-470px" }}>
+              <AddSkill
+                loadCategories={loadCategories}
+                skill={null}
+                setOpenPopup={setopenAdd}
+              />
+            </div>
           </Modal>
           {categories?.map((key, id) => {
             const paragaraph1 = `${key.requirements}`.slice(0, 140);
             const paragaraph2 = `${key.requirements}`.slice(140);
             return (
-              <div style={{ display: "block", marginLeft: "5px" }}>
+              <div
+                style={{ display: "block", marginLeft: "10px" }}
+                key={key._id}
+              >
                 <Paper className={classes.paper1}>
-                  {key.skill_name}{" "}
-                  {/* <div style={{ flexDirection: "row" }}>
+                  {key.skill_name}
+                  <div
+                    style={{
+                      marginTop: "-40px",
+                      textAlign: "end",
+                      paddingRight: "8px",
+                      cursor: "pointer",
+                    }}
+                  >
                     <img
-                      className="delete-svgrepo-com"
-                      src={deleteSvgrepo}
-                      style={{ width: "33px" }}
+                      src={pen}
+                      className="edit"
+                      // key={key}
+                      onClick={() => {
+                        openModal();
+                        setrecordforedit(key);
+                      }}
                     />
-                  </div> */}
+
+                    <img
+                      style={{
+                        width: "30px",
+                        height: "40px",
+                        marginLeft: "-5px  ",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => {
+                        setConfirmDialog({
+                          isOpen: true,
+                          title: "Are you sure to delete this record?",
+                          subTitle: "You can't undo this operation",
+                          onConfirm: () => {
+                            deleteCategory(key._id);
+                          },
+                        });
+                      }}
+                      src={imgdelete}
+                      onMouseEnter={(e) => (e.currentTarget.src = deleteHover)}
+                      onMouseOut={(e) => (e.currentTarget.src = imgdelete)}
+                    />
+                  </div>
                 </Paper>
+                <Modal
+                  isOpen={openPopup}
+                  onRequestClose={closeModal}
+                  style={customStyles}
+                >
+                  <img
+                    src={rectangle43}
+                    style={{ width: "907px", height: "500px" }}
+                  />
+                  <div style={{ marginTop: "-470px" }}>
+                    <AddSkill
+                      loadCategories={loadCategories}
+                      skill={recordforedit}
+                      setOpenPopup={setOpenPopup}
+                    />
+                  </div>
+                </Modal>
                 <Paper className={classes.paper2} id="paper">
                   <div className="grid">
-                    <p
-                      style={{
-                        background:
-                          "-webkit-linear-gradient(var(--cod-gray),#eee)",
+                    <p className="para1">{paragaraph1}</p>
 
-                        // color: expandedId ? "" : "black",
-                        webkitBackgroundClip: "text",
-                        webkitTextFillColor: "transparent",
-                        textAlign: "start",
-                      }}
-                      className="para1"
-                    >
-                      {paragaraph1}
-                    </p>
-
-                    <FaAngleDown
-                      size={25}
-                      class="button"
-                      onClick={() => handleExpandClick(id)}
-                      aria-expanded={expandedId === id}
-                      aria-label="show more"
-                      style={{
-                        cursor: "pointer",
-                        color: "var(--mahogany-3)",
-                        // marginBottom: expandedId ? "" : "-70px",
-                        // transform: expandedId ? "" : "rotate(180deg)",
-                        marginTop: "-30px",
-                        // marginBotyom: "10px",
-                        textAlign: "center",
-                      }}
-                    ></FaAngleDown>
                     <p
                       class="text"
-                      style={{ marginTop: "-30px", marginBottom: "15px" }}
+                      style={{ marginTop: "-10px" }}
                       in={expandedId === id}
                       key={key.id}
                     >

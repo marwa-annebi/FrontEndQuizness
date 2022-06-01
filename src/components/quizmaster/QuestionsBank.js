@@ -5,6 +5,9 @@ import useTable from "../useTable";
 import ContentMenuItem from "./../ContentMenuItem";
 import ConfirmDialog from "../ConfirmDialog";
 import "./../../css/questionBank.css";
+import deleteHover from "./../../assets/Composant 12 – 1.svg";
+import pen from "./../../assets/pen-svgrepo-com.svg";
+import imgdelete from "./../../assets/delete-svgrepo-com@1x.png";
 import mcq from "./../../assets/check-svgrepo-com (2).svg";
 import tfq from "./../../assets/yes or no.svg";
 import {
@@ -36,23 +39,27 @@ import { IoChevronDown, IoChevronUp } from "react-icons/io5";
 const customStyles = {
   content: {
     top: "50%",
-    left: "50%",
+    left: "53%",
     right: "auto",
     bottom: "auto",
     marginRight: "-50%",
     transform: "translate(-34%, -50%)",
-    borderRadius: "25px",
+    borderRadius: "35px",
     // borderColor: "transparent",
     // backgroundColor: "var(--gold-2)",
     backgroundColor: "white",
-    width: "907px",
+    width: "807px",
     // opacity: "1",
+    // heght: "350px",
     fontFamily: "var(--font-family-cerapro-bold)",
     justifyContent: "center",
     textAlign: "center",
     boxShadow: " 0px 3px 6px  #00000029",
     direction: "column",
     marginTop: "50px",
+    maxHeight: "510px",
+    // padding: "15px 15px",
+    // overFlow: "auto",
     border: "5px solid var(--mahogany)",
   },
   overlay: {
@@ -61,12 +68,11 @@ const customStyles = {
     left: 0,
     right: 0,
     bottom: 0,
-    webkitBackdropFilter: "blur(30px) brightness(115%)",
-    backdropFilter: " blur(30px) brightness(115%)",
+    webkitBackdropFilter: "blur(13px) brightness(115%)",
+    backdropFilter: " blur(13px) brightness(115%)",
     backgroundColor: "transparent",
   },
 };
-
 const styles = makeStyles(() => ({
   paper: {
     background: "transparent",
@@ -123,11 +129,6 @@ const headCells = [
   { id: "skill", label: "Skill" },
   { id: "actions", label: "Actions", disableSorting: true },
 ];
-// const historyRow = [
-//   { id: "mark", label: "mark" },
-//   { id: "propositions", label: "propositions" },
-// ];
-
 export default function QuestionsBank({ active }) {
   let subtitle;
   const [modalIsOpen, setIsOpen] = React.useState(false);
@@ -260,8 +261,9 @@ export default function QuestionsBank({ active }) {
     return (
       <React.Fragment>
         <TableRow
-          className={classes.tableRow}
-          // sx={{ "& > *": { borderBottom: "none" } }}
+          // className={classes.tableRow}
+          sx={{ "& > *": { borderBottom: "none" } }}
+          // style={{ height: "50px" }}
         >
           <div
             style={{
@@ -292,18 +294,22 @@ export default function QuestionsBank({ active }) {
             </IconButton>
           </div>
           <TableCell
+            // size="small"
             className={classes.tableCell}
             style={{
               backgroundColor: "white",
               borderRadius: "40px",
               width: "220px",
+              padding: "0px 30px",
+
+              // height: "5px",
               border: "4px solid var(--mahogany-3)",
               textAlign: "center",
               // marginLeft: "40px",
               fontFamily: "var(--font-family-cerapro-medium)",
               color: "#464646",
-              fontWeight: 500,
-              fontSize: "18px",
+              // fontWeight: 500,
+              // fontSize: "18px",
               // marginBottom: "5px",
               // padding: "0px 18px 0px 0px",
               // height: "27px",
@@ -314,6 +320,8 @@ export default function QuestionsBank({ active }) {
           </TableCell>
           <TableCell
             style={{
+              padding: "0px 30px",
+
               backgroundColor: "white",
               borderRadius: "40px",
               width: "220px",
@@ -333,7 +341,7 @@ export default function QuestionsBank({ active }) {
           <TableCell
             // margin={10}
             style={{
-              padding: "15px 15px",
+              padding: "0px 30px",
               backgroundColor: "white",
               fontSize: "18px",
               borderBottom: "none",
@@ -346,7 +354,7 @@ export default function QuestionsBank({ active }) {
               fontWeight: 500,
             }}
           >
-            <Button
+            {/* <Button
               color="primary"
               onClick={() => {
                 setopenEditPopup(true);
@@ -354,19 +362,40 @@ export default function QuestionsBank({ active }) {
               }}
             >
               <EditOutlinedIcon fontSize="small" />
-              <Modal
-                isOpen={openEditPopup}
-                onRequestClose={() => setopenEditPopup(false)}
-                style={customStyles}
-              >
-                <QuestionForm
-                  // loadQuestions={loadQuestions}
-                  questionId={recordForEdit}
-                />
-              </Modal>
-            </Button>
+    
+            </Button> */}
+            <img
+              src={pen}
+              className="edit"
+              // key={key}
+              onClick={() => {
+                setopenEditPopup(true);
+                setRecordForEdit(row);
+              }}
+            />
 
-            <Button
+            <img
+              style={{
+                width: "30px",
+                height: "40px",
+                marginLeft: "-5px  ",
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                setConfirmDialog({
+                  isOpen: true,
+                  title: "Are you sure to delete this record?",
+                  subTitle: "You can't undo this operation",
+                  onConfirm: () => {
+                    deleteQuestion(row._id);
+                  },
+                });
+              }}
+              src={imgdelete}
+              onMouseEnter={(e) => (e.currentTarget.src = deleteHover)}
+              onMouseOut={(e) => (e.currentTarget.src = imgdelete)}
+            />
+            {/* <Button
               color="secondary"
               onClick={() => {
                 setConfirmDialog({
@@ -380,10 +409,19 @@ export default function QuestionsBank({ active }) {
               }}
             >
               <CloseIcon fontSize="small" />
-            </Button>
+            </Button> */}
           </TableCell>
         </TableRow>
-
+        <Modal
+          isOpen={openEditPopup}
+          onRequestClose={() => setopenEditPopup(false)}
+          style={customStyles}
+        >
+          <QuestionForm
+            // loadQuestions={loadQuestions}
+            questionId={recordForEdit}
+          />
+        </Modal>
         <TableRow>
           <TableCell
             style={{
@@ -611,29 +649,16 @@ export default function QuestionsBank({ active }) {
             Yes or No
           </MenuItem>
         </Menu>
-
-        <Modal
-          isOpen={modalIsOpen}
-          onAfterOpen={afterOpenModal}
-          onRequestClose={closeModal}
-          style={customStyles}
-          contentLabel="Example Modal"
-        >
-          <QuestionForm loadQuestions={loadQuestions} questionId={null} />
-        </Modal>
-
-        {/* </div> */}
       </div>
-      <Notification
-        notify={notify}
-        setNotify={setNotify}
-        vertical="top"
-        horizontal="right"
-      />
-      <ConfirmDialog
-        confirmDialog={confirmDialog}
-        setConfirmDialog={setConfirmDialog}
-      />
+      <Modal
+        isOpen={modalIsOpen}
+        onAfterOpen={afterOpenModal}
+        onRequestClose={closeModal}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        <QuestionForm loadQuestions={loadQuestions} questionId={null} />
+      </Modal>
     </ContentMenuItem>
   );
 }

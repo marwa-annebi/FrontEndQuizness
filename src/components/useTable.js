@@ -20,17 +20,23 @@ const useStyles = makeStyles((theme) => ({
       fontWeight: 700,
       color: "var(--gold)",
       fontFamily: "cerapro-bold",
+      position: "static",
       marginBottom: "10px",
     },
     "& tbody td": {
       fontWeight: "500",
       border: 0,
+      height: "5px",
+      // padding: "-16px -16px",
     },
     "& tbody tr:hover": {
       cursor: "pointer",
     },
     "& tbody tr": {
-      marginBottom: "-10px",
+      // marginBottom: "-10px",
+      height: "10px",
+      // background: "red",
+      // padding: "0px 16px ",
     },
   },
 }));
