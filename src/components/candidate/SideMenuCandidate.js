@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Menu } from "antd";
-import { NavLink } from "react-router-dom";
+import { Navigate, NavLink, useNavigate } from "react-router-dom";
 function getItem(label, key) {
   return {
     label,
@@ -9,22 +9,14 @@ function getItem(label, key) {
   };
 }
 
-export default function SideMenuCandidate() {
-  const companySettings = useSelector((state) => state.companySettings);
-  const { companyInfo } = companySettings;
-  console.log("#", companySettings);
-  const company = companyInfo;
-  console.log("#navCandidate", company);
-
-  const lightColor = company.account.lightColor;
-  const darkColor = company.account.darkColor;
-  //   let img = company.account.logo;
+export default function SideMenuCandidate(props) {
+  const lightColor = props.company_info.account.lightColor;
+  const darkColor = props.company_info.account.darkColor;
   const items = [
     getItem(
-      // <div style={{ padding: "100px", height: "" }}>
       <NavLink
         className={({ isActive }) => (isActive ? "link-active" : "link")}
-        to="/dashboard/candidate/updateProfile"
+        to="/dashboard/candidate/update"
         // style={}
         style={
           ({ color: darkColor },
@@ -42,7 +34,7 @@ export default function SideMenuCandidate() {
     getItem(
       <NavLink
         className={({ isActive }) => (isActive ? "link-active" : "link")}
-        to="/dashboard/candidate/updateProfile"
+        to="#"
         style={
           ({ color: darkColor },
           ({ isActive }) =>
@@ -59,7 +51,7 @@ export default function SideMenuCandidate() {
       <div className="divLink">
         <NavLink
           className={({ isActive }) => (isActive ? "link-active" : "link")}
-          to="/dashboard/candidate/updateProfile"
+          to="#"
           style={
             ({ color: darkColor },
             ({ isActive }) =>
@@ -73,25 +65,6 @@ export default function SideMenuCandidate() {
       </div>,
       "3"
     ),
-    //   getItem(
-    //     <NavLink
-    //       className={({ isActive }) => (isActive ? "link-active" : "link")}
-    //       to="/dashboard/candidate/quizHistory"
-    //     >
-    //       Quizzes
-    //     </NavLink>,
-    //     "4"
-    //   ),
-    //   getItem(
-    //     <NavLink
-    //       className={({ isActive }) => (isActive ? "link-active" : "link")}
-    //       to="/dashboard/candidate/candidate"
-    //     >
-    //       List Candidates
-    //     </NavLink>,
-    //     "5"
-    //   ),
-    // getItem("Voucher ", "5"),
   ];
 
   return (

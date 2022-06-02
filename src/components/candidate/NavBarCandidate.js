@@ -74,18 +74,19 @@ const styles = makeStyles({
     paddingLeft: "0px",
   },
 });
-export default function NavBarCandidate() {
+export default function NavBarCandidate(props) {
+  console.log(props);
   const classes = styles();
   const navigate = useNavigate();
-  const companySettings = useSelector((state) => state.companySettings);
-  const { companyInfo } = companySettings;
-  console.log("#", companySettings);
-  const company = companyInfo;
-  console.log("#navCandidate", company);
+  // const companySettings = useSelector((state) => state.companySettings);
+  // const { companyInfo } = companySettings;
+  // console.log("#", companySettings);
+  // const company = companyInfo;
+  // console.log("#navCandidate", company);
 
-  let lightColor = " company.account.lightColor";
-  let darkColor = " company.account.darkColor";
-  let img = "company.account.logo";
+  let lightColor = props.company_info.account.lightColor;
+  let darkColor = props.company_info.account.darkColor;
+  let img = props.company_info.account.logo;
 
   const logoutHandler = async () => {
     const config = {
