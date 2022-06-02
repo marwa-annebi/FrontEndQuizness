@@ -12,8 +12,8 @@ export default function HomeQuizMaster(company_colors) {
   const [openPopup, setopenPopup] = useState(false);
 
   console.log("#colorrrrrrrr", company_colors);
-  const darkColor = company_colors.company_colors.darkColor;
-  const lightColor = company_colors.company_colors.lightColor;
+  const darkColor = company_colors.company_colors.account.darkColor;
+  const lightColor = company_colors.company_colors.account.lightColor;
 
   return (
     <div className="container-center-horizontal1">
@@ -25,7 +25,7 @@ export default function HomeQuizMaster(company_colors) {
           >
             <Logo
               // className="rectangle-11"
-              src={company_colors.company_colors.logo}
+              src={company_colors.company_colors.account.logo}
               // style={{ width: "30%" }}
             />
           </div>
@@ -47,15 +47,14 @@ export default function HomeQuizMaster(company_colors) {
                 setopenPopup(true);
               }}
             >
-              <AuthForm
-                openLogin={openPopup}
-                setOpenPopupLogin={setopenPopup}
-                // {...companySettings}
-                companyInfo={company_colors}
-              />
-
               <Trac85 className="trac-Q85" fill={darkColor} />
             </div>
+            <AuthForm
+              openLogin={openPopup}
+              setOpenPopupLogin={setopenPopup}
+              // {...companySettings}
+              companyInfo={company_colors}
+            />
             <h1
               className="why-do-we-use-itiQ"
               style={{ color: darkColor, marginTop: "80px" }}

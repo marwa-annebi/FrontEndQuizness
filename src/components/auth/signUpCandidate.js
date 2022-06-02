@@ -13,6 +13,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import Notification from "../Notification";
+import { useNavigate } from "react-router-dom";
 
 const styles = makeStyles({
   textField: {
@@ -50,6 +51,8 @@ const styles = makeStyles({
   },
 });
 export default function SignUpCandidate(companyInfo) {
+  const navigate = useNavigate();
+  console.log(companyInfo);
   const google = () => {
     window.open("http://localhost:5000/auth/google/Candidate", "_self");
   };
@@ -62,9 +65,11 @@ export default function SignUpCandidate(companyInfo) {
     window.open("http://localhost:5000/auth/microsoft/Candidate", "_self");
   };
   const darkColor =
-    companyInfo.companyInfo.companyInfo.company_colors.darkColor;
+    companyInfo.companyInfo.companyInfo.company_colors.account.darkColor;
   const lightColor =
-    companyInfo.companyInfo.companyInfo.company_colors.lightColor;
+    companyInfo.companyInfo.companyInfo.company_colors.account.lightColor;
+  const idQuizmaster = companyInfo.companyInfo.companyInfo.company_colors._id;
+
   const { switchToSignin } = useContext(AccountContext);
   const classes = styles();
   const [email, setEmail] = useState("");
@@ -88,47 +93,55 @@ export default function SignUpCandidate(companyInfo) {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    if (password !== confirmpassword) {
-      setNotify({
-        isOpen: true,
-        message: "passwords do not match",
-        type: "error",
-      });
-    } else {
-      try {
-        const config = {
-          headers: {
-            "Content-type": "application/json",
-          },
-        };
-        setloading(true);
-        const { data } = await axios.post(
-          "/auth/registerCandidate",
-          { firstName, lastName, email, password },
-          config
-        );
+    // if (password !== confirmpassword) {
+    //   setNotify({
+    //     isOpen: true,
+    //     message: "passwords do not match",
+    //     type: "error",
+    //   });
+    // } else {
+    try {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
+      setloading(true);
+      const { data } = await axios.post(
+        process.env.REACT_APP_BACKEND + "/auth/registerCandidate",
+        {
+          firstName,
+          lastName,
+          email,
+          password,
+          confirmpassword,
+          quizmaster: idQuizmaster,
+        },
+        config
+      );
+      setloading(false);
+      const candidateInfo = localStorage.setItem(
+        "candidateInfo",
+        JSON.stringify(data)
+      );
+      if (candidateInfo) {
+        navigate("/");
+      }
+    } catch (error) {
+      if (
+        error.response &&
+        error.response.status >= 400 &&
+        error.response.status <= 500
+      ) {
         setNotify({
           isOpen: true,
-          message: "verify your email ,check your inbox",
-          type: "success",
+          message: error.response.data.message,
+          type: "error",
         });
         setloading(false);
-        localStorage.setItem("userInfo", JSON.stringify(data));
-      } catch (error) {
-        if (
-          error.response &&
-          error.response.status >= 400 &&
-          error.response.status <= 500
-        ) {
-          setNotify({
-            isOpen: true,
-            message: error.response.data.message,
-            type: "error",
-          });
-          setloading(false);
-        }
       }
     }
+    // }
   };
 
   return (

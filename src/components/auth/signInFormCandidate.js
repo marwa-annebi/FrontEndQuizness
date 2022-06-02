@@ -13,7 +13,7 @@ import { makeStyles, TextField, Button } from "@material-ui/core";
 import axios from "axios";
 import Loading from "../Loading";
 import Notification from "../Notification";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const styles = makeStyles({
   textField: {
     width: "70%",
@@ -62,10 +62,10 @@ function SignInFormCandidate(companyInfo) {
   };
   console.log("sii", companyInfo);
   const darkColor =
-    companyInfo.companyInfo.companyInfo.company_colors.darkColor;
+    companyInfo.companyInfo.companyInfo.company_colors.account.darkColor;
   const lightColor =
-    companyInfo.companyInfo.companyInfo.company_colors.lightColor;
-
+    companyInfo.companyInfo.companyInfo.company_colors.account.lightColor;
+  const navigate = useNavigate();
   const { switchToSignup } = useContext(AccountContext);
   const classes = styles();
   const [email, setEmail] = useState("");
@@ -86,13 +86,18 @@ function SignInFormCandidate(companyInfo) {
       };
       setloading(true);
       const { data } = await axios.post(
-        "/auth/loginUser",
+        process.env.REACT_APP_BACKEND + "/auth/loginUser",
         { email, password, type: "2" },
         config
       );
       // console.log(data);
       localStorage.setItem("candidateInfo", JSON.stringify(data));
-      setloading(false);
+      if (data) {
+        setloading(true);
+        navigate("/dashboard/candidate");
+        window.location.reload(true);
+      }
+      // setloading(false);
     } catch (error) {
       setloading(false);
 

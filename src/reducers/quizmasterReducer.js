@@ -9,7 +9,7 @@ export const companySettingsReducer = (state = {}, action) => {
     case COMPANY_SETTINGS_REQUEST:
       return { loading: false };
     case COMPANY_SETTINGS_SUCCESS:
-      return { loading: false, companyInfo: action.payload };
+      return { companyInfo: action.payload };
     case COMPANY_SETTINGS_FAIL:
       return { loading: false, error: action.payload };
 

@@ -179,16 +179,16 @@
     margin-left: 400px;
     background-color: var(--gold);
     border-radius: 39px;
-    box-shadow: 0px 3px 6px #00000029;
-    height: 57px;
-    width: 220px;
-    color: var(--mahogany-3);
+    box-shadow: 0px 3px 6px #0000009c;
+    height: 45px;
+    width: 250px;
+    color: var(--mahogany);
     font-family: var(--font-family-cerapro-bold);
     font-size: var(--font-size-m);
     font-weight: 700;
     letter-spacing: 0;
     line-height: 45px;
-    min-height: 59px;
+    /* min-height: 59px; */
     white-space: nowrap;
     cursor: pointer;
 }

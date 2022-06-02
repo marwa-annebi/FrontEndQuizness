@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Badge, Button, Grid, IconButton, makeStyles } from "@material-ui/core";
 import { AppBar, Container, Toolbar } from "@mui/material";
@@ -9,8 +9,9 @@ import { RiNotification2Fill } from "react-icons/ri";
 import { IconContext } from "react-icons";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import ChooseTypeQuiz from "./ChooseTypeQuiz";
-
+import AddSkill from "./addSkill";
+import Modal from "react-modal";
+import rectangle43 from "./../../assets/Rectangle 42.png";
 const styles = makeStyles({
   overlapGroup5: {
     alignItems: "center",
@@ -79,7 +80,59 @@ const styles = makeStyles({
     paddingLeft: "0px",
   },
 });
+const customStyles = {
+  content: {
+    top: "55%",
+    left: "51.5%",
+    // right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-34%, -50%)",
+    // borderRadius: "25px",
+    borderColor: "transparent",
+    // backgroundColor: "var(--gold-2)",
+    backgroundColor: "transparent",
+    width: "950px",
+    // opacity: "1",
+    fontFamily: "var(--font-family-cerapro-bold)",
+    justifyContent: "center",
+    textAlign: "center",
+    boxShadow: " 0px 3px 6px  #00000029",
+    direction: "column",
+    marginTop: "50px",
+    // border: "4px dashed var(--mahogany)",
+    // backgroundImage: ` url(${Rectangl42})`,
+    // background: `url(${rectangle43})`,
+    height: "550px",
+    // height: "450px",
+  },
+  overlay: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    webkitBackdropFilter: "blur(13px) brightness(115%)",
+    backdropFilter: " blur(13px) brightness(115%)",
+    backgroundColor: "transparent",
+  },
+};
 export default function NavBar() {
+  const [categories, setcategories] = useState([]);
+
+  const loadCategories = async () => {
+    const quizmasterInfo = JSON.parse(localStorage.getItem("quizmasterInfo"));
+    const config = {
+      headers: {
+        Authorization: `Bearer ${quizmasterInfo.token}`,
+      },
+    };
+    const result = await axios.get(
+      process.env.REACT_APP_BACKEND + "/quizmaster/getSkills",
+      config
+    );
+    setcategories(result.data.reverse());
+  };
   const dispatch = useDispatch();
   const [modalIsOpen, setIsOpen] = React.useState(false);
   function openModal() {
@@ -97,15 +150,17 @@ export default function NavBar() {
     setcompanySet(company);
   }, [dispatch, companySet]);
   const navigate = useNavigate();
-  // const companySettings = useSelector((state) => state.companySettings);
-  // const { companyInfo } = companySettings;
-  // const company = companyInfo?.data;
-  // console.log(company);
-  // const lightColor = companySet.account.lightColor;
-  // const img = companySet.account.logo;
-
-  // console.log(lightColor);
-  // const img = company_settings.company_settings.account.logo;
+  const [recordforedit, setrecordforedit] = useState(null);
+  const [openAdd, setopenAdd] = useState(false);
+  function closeAddModal() {
+    setopenAdd(false);
+  }
+  const openAddModal = () => {
+    setopenAdd(true);
+    setrecordforedit(null);
+  };
+  const lightColor = companySet.account.lightColor;
+  const img = companySet.account.logo;
   const logoutHandler = async () => {
     const config = {
       headers: {
@@ -124,12 +179,12 @@ export default function NavBar() {
           <div style={{ display: "flex", direction: "row", marginTop: "30px" }}>
             <div
               className={classes.overlapGroup5}
-              style={{ backgroundColor: "gold" }}
+              style={{ backgroundColor: lightColor }}
             >
               <Link to="/dashboard/quizMaster">
                 {" "}
                 <img
-                  src={logo}
+                  src={img}
                   // onClick={window.location("/dashboard/quizMaster")}
                   className={classes.image1}
                 ></img>
@@ -163,9 +218,9 @@ export default function NavBar() {
                   </IconContext.Provider>
                 }
                 className={classes.btn}
-                onClick={openModal}
+                onClick={openAddModal}
               >
-                <h3 className={classes.addQuiz}>Add Quiz</h3>
+                <h3 className={classes.addQuiz}>Add Skill</h3>
               </Button>
               <IconButton className={classes.iconLogout}>
                 <Badge color="secondary">
@@ -187,13 +242,20 @@ export default function NavBar() {
           </div>
         </Toolbar>
       </Container>
-      <ChooseTypeQuiz
-        modalIsOpen={modalIsOpen}
-        // onAfterOpen={afterOpenModal}
-        closeModal={closeModal}
+      <Modal
+        isOpen={openAdd}
+        onRequestClose={closeAddModal}
+        style={customStyles}
       >
-        {/* <ChooseTypeQuiz /> */}
-      </ChooseTypeQuiz>
+        <img src={rectangle43} style={{ width: "907px", height: "500px" }} />
+        <div style={{ marginTop: "-470px" }}>
+          <AddSkill
+            loadCategories={loadCategories}
+            skill={null}
+            setOpenPopup={setopenAdd}
+          />
+        </div>
+      </Modal>
     </AppBar>
   );
 }

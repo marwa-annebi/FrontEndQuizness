@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40.602" height="40.602" viewBox="0 0 40.602 40.602">
+  <defs>
+    <filter id="Tracé_134" x="0" y="0" width="40.602" height="40.602" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="pen-svgrepo-com" transform="translate(7.763 9.5)">
+    <g id="Composant_10_1" data-name="Composant 10 – 1" transform="translate(0 0)">
+      <path id="Tracé_133" data-name="Tracé 133" d="M0,166.956l6.3-.651L.652,160.661Z" transform="translate(0 -143.617)" fill="#ffd600" stroke="#a44f46" stroke-linejoin="round" stroke-width="1"/>
+      <g transform="matrix(1, 0, 0, 1, -7.76, -9.5)" filter="url(#Tracé_134)">
+        <path id="Tracé_134-2" data-name="Tracé 134" d="M28.639,3.69l5.643,5.643L22.014,21.6,16.37,15.959ZM37.2,6.418a2.645,2.645,0,0,0,0-3.741L35.3.775a2.646,2.646,0,0,0-3.741,0l-1.84,1.84,5.644,5.643Z" transform="translate(-6.87 9.5)" fill="#ffd600" stroke="#a44f46" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+    </g>
+  </g>
+</svg>

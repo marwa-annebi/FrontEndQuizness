@@ -65,7 +65,7 @@ const items = [
       className={({ isActive }) => (isActive ? "link-active" : "link")}
       to="/dashboard/quizMaster/candidate"
     >
-      List Candidate{" "}
+      List Candidates
     </NavLink>,
     "5"
   ),
