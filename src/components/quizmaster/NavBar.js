@@ -9,7 +9,6 @@ import { RiNotification2Fill } from "react-icons/ri";
 import { IconContext } from "react-icons";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import ChooseTypeQuiz from "./ChooseTypeQuiz";
 import AddSkill from "./addSkill";
 import Modal from "react-modal";
 import rectangle43 from "./../../assets/Rectangle 42.png";
@@ -160,15 +159,8 @@ export default function NavBar() {
     setopenAdd(true);
     setrecordforedit(null);
   };
-  // const companySettings = useSelector((state) => state.companySettings);
-  // const { companyInfo } = companySettings;
-  // const company = companyInfo?.data;
-  // console.log(company);
-  // const lightColor = companySet.account.lightColor;
-  // const img = companySet.account.logo;
-
-  // console.log(lightColor);
-  // const img = company_settings.company_settings.account.logo;
+  const lightColor = companySet.account.lightColor;
+  const img = companySet.account.logo;
   const logoutHandler = async () => {
     const config = {
       headers: {
@@ -187,12 +179,12 @@ export default function NavBar() {
           <div style={{ display: "flex", direction: "row", marginTop: "30px" }}>
             <div
               className={classes.overlapGroup5}
-              style={{ backgroundColor: "gold" }}
+              style={{ backgroundColor: lightColor }}
             >
               <Link to="/dashboard/quizMaster">
                 {" "}
                 <img
-                  src={logo}
+                  src={img}
                   // onClick={window.location("/dashboard/quizMaster")}
                   className={classes.image1}
                 ></img>

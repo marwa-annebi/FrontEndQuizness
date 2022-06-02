@@ -102,8 +102,8 @@ export default function SigInForm(companyInfo) {
     }
   };
   console.log("siginnn", companyInfo);
-  const darkColor = companyInfo.companyInfo.company_colors.darkColor;
-  const lightColor = companyInfo.companyInfo.company_colors.lightColor;
+  const darkColor = companyInfo.companyInfo.company_colors.account.darkColor;
+  const lightColor = companyInfo.companyInfo.company_colors.account.lightColor;
   const [showPassword, setshowPassword] = useState(false);
   const handleClickShowPassword = () => {
     setshowPassword(true);

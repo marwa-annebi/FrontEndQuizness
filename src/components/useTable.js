@@ -34,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
     },
     "& tbody tr": {
       // marginBottom: "-10px",
-      height: "10px",
       // background: "red",
       // padding: "0px 16px ",
     },

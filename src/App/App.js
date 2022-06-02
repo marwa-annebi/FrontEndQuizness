@@ -17,6 +17,8 @@ import { CompanySettings } from "./../actions/quizmasterAction";
 import Loading from "./../components/Loading";
 import AddQuizBySelection from "./../components/quizmaster/AddQuizBySelection";
 import AddQuizRandomly from "./../components/quizmaster/AddQuizRandomly";
+import Account from "./../components/candidate/Account";
+import DashboardCandidat from "../components/candidate/DashboardCandidat";
 function App() {
   const [companyColors, setcompanyColors] = React.useState("");
   const [subdomain, setSubDomain] = React.useState(null);
@@ -35,7 +37,7 @@ function App() {
       dispatch(CompanySettings());
       console.log("......bla bla...", company);
       if (company) {
-        setcompanyColors(company.account);
+        setcompanyColors(company);
       }
     },
     [],
@@ -75,6 +77,14 @@ function App() {
           />
           <Route element={<AddQuizBySelection />} path="/QuizBySelection" />
           <Route element={<AddQuizRandomly />} path="/QuizRandomly" />
+          <Route
+            path="/dashboard/candidate/*"
+            element={<DashboardCandidat />}
+            company_info={companyColors}
+          >
+            <Route path="update" element={<Account />} />
+            {/*  */}
+          </Route>
         </Routes>
       ) : (
         <Routes>

@@ -40,8 +40,8 @@ function AuthForm(props) {
     return classArr.join(" ");
   };
   console.log("authh", companyInfo);
-  const darkColor = companyInfo.company_colors.darkColor;
-  const lightColor = companyInfo.company_colors.lightColor;
+  const darkColor = companyInfo.company_colors.account.darkColor;
+  const lightColor = companyInfo.company_colors.account.lightColor;
   const styles = {
     background: {
       backgroundColor: welcome ? darkColor : lightColor,

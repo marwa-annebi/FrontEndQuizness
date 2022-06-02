@@ -247,13 +247,12 @@ export default function AddSkill(props) {
                 <TextField
                   id="outlined-basic"
                   variant="outlined"
-                  placeholder={`Lorem Ipsum is simply dummy text,
-                  \n
-                            of the printing and typesetting industry
+                  placeholder="Lorem Ipsum is simply dummy text,of the printing
+                   and typesetting industry
                              Lorem Ipsum has been the industry's ,
                             standard dummy text ever since the 1500s,
                             when an unknown printer 
-                            took a galley of type and`}
+                            took a galley of type and"
                   value={requirements}
                   onChange={(e) => setrequirements(e.target.value)}
                   multiline
