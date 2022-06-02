@@ -79,10 +79,9 @@ function App() {
           <Route element={<AddQuizRandomly />} path="/QuizRandomly" />
           <Route
             path="/dashboard/candidate/*"
-            element={<DashboardCandidat />}
-            company_info={companyColors}
+            element={<DashboardCandidat company_info={companyColors} />}
           >
-            <Route path="update" element={<Account />} />
+            <Route path="update" element={<Account {...companyColors} />} />
             {/*  */}
           </Route>
         </Routes>

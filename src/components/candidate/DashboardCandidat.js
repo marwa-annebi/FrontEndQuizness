@@ -4,8 +4,8 @@ import NavBarCandidate from "./NavBarCandidate";
 import SideMenuCandidate from "./SideMenuCandidate";
 import { Outlet } from "react-router-dom";
 
-export default function DashboardCandidat() {
-  //   console.log("#colorrrrrrrrCandidat", company_info);
+export default function DashboardCandidat(company_info) {
+  console.log("#colorrrrrrrrCandidat", company_info);
 
   return (
     <Grid container spacing={{ xs: 6, md: 12 }}>
@@ -13,11 +13,11 @@ export default function DashboardCandidat() {
         {/* <NavBar /> */}
       </Grid>
       <Grid item md={10}>
-        <NavBarCandidate />
+        <NavBarCandidate {...company_info} />
       </Grid>
 
       <Grid item xs={8}>
-        <SideMenuCandidate />
+        <SideMenuCandidate {...company_info} />
       </Grid>
       <Grid item xs={4}>
         <Outlet />
