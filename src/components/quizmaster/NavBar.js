@@ -117,9 +117,9 @@ const customStyles = {
     backgroundColor: "transparent",
   },
 };
-export default function NavBar() {
+export default function NavBar(props) {
   const [categories, setcategories] = useState([]);
-
+  console.log(props);
   const loadCategories = async () => {
     const quizmasterInfo = JSON.parse(localStorage.getItem("quizmasterInfo"));
     const config = {
@@ -141,14 +141,6 @@ export default function NavBar() {
   function closeModal() {
     setIsOpen(false);
   }
-  const [companySet, setcompanySet] = React.useState("");
-  const companySettings = useSelector((state) => state.companySettings);
-  const { companyInfo } = companySettings;
-  const company = companyInfo;
-  console.log("nav", company);
-  React.useEffect(() => {
-    setcompanySet(company);
-  }, [dispatch, companySet]);
   const navigate = useNavigate();
   const [recordforedit, setrecordforedit] = useState(null);
   const [openAdd, setopenAdd] = useState(false);
@@ -159,8 +151,8 @@ export default function NavBar() {
     setopenAdd(true);
     setrecordforedit(null);
   };
-  const lightColor = companySet.account.lightColor;
-  const img = companySet.account.logo;
+  const lightColor = props.account.lightColor;
+  const img = props.account.logo;
   const logoutHandler = async () => {
     const config = {
       headers: {

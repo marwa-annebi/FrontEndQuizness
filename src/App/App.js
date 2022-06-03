@@ -54,12 +54,14 @@ function App() {
             exact
           />
           <Route
-            element={<Dashboard />}
+            element={<Dashboard {...companyColors} />}
             path="/dashboard/quizMaster/*"
-            // company_colors={companyColors}
             exact
           >
-            <Route path="updateProfile" element={<UpdateProfile />} />
+            <Route
+              path="updateProfile"
+              element={<UpdateProfile {...companyColors} />}
+            />
             <Route path="quizHistory" element={<QuizHistory />} />
             <Route path="questionsBank" element={<QuestionsBank />} />
             <Route path="category" element={<Category />} />
