@@ -90,7 +90,7 @@ const styles = makeStyles((theme) => ({
     marginLeft: "210px",
   },
 }));
-export default function UpdateProfile() {
+export default function UpdateProfile(props) {
   const classes = styles();
   // const dispatch = useDispatch();
   const [notify, setNotify] = useState({
@@ -98,28 +98,28 @@ export default function UpdateProfile() {
     message: "",
     type: "",
   });
-  const companySettings = useSelector((state) => state.companySettings);
-  const { companyInfo } = companySettings;
-  console.log("#com", companyInfo);
-  const navigate = useNavigate();
+  console.log(props);
   const [domain_name, setdomain_name] = useState("");
   const [businessName, setbusinessName] = useState("");
   const [darkColor, setdarkColor] = useState("");
   const [lightColor, setlightColor] = useState("");
   const [pic, setpic] = useState();
   const [colors, setcolors] = useState([]);
+  const navigate = useNavigate();
   useEffect(
     () => {
-      if (!companyInfo) {
+      if (!props) {
         navigate("/");
       } else {
-        setdomain_name(companyInfo.account.domain_name);
-        setbusinessName(companyInfo.account.businessName);
-        setpic(companyInfo.account.logo);
+        setdomain_name(props.account.domain_name);
+        setbusinessName(props.account.businessName);
+        setpic(props.account.logo);
+        // setlightColor(props.account.lightColor);
+        // setdarkColor(props.account.darkColor);
       }
     },
     [],
-    [navigate, companyInfo]
+    [navigate, props]
   );
   const handleChange = (e) => {
     const { value, checked } = e.target;
@@ -297,7 +297,7 @@ export default function UpdateProfile() {
       const { data } = await axios.put(
         process.env.REACT_APP_BACKEND + "/auth/updateAccount",
         {
-          id: companyInfo._id,
+          id: props._id,
           account: {
             domain_name: domain_name,
             logo: pic,
@@ -314,6 +314,9 @@ export default function UpdateProfile() {
         type: "success",
       });
       console.log(data);
+      if (data) {
+        navigate("/");
+      }
     } catch (error) {
       if (
         error.response &&
@@ -499,6 +502,7 @@ export default function UpdateProfile() {
           className="btnVerif border-1px-dove-gray"
           variant="contained"
           type="submit"
+          style={{ marginLeft: "350px" }}
         >
           save
         </button>

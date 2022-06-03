@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 import NavBar from "./NavBar";
 import SideMenu from "./SideMenu";
 
-export default function Dashboard() {
+export default function Dashboard(props) {
   // React.useEffect(() => {}, [company_colors]);
   // const [companySet, setcompanySet] = useState("");
   // const companySettings = useSelector((state) => state.companySettings);
@@ -14,14 +14,16 @@ export default function Dashboard() {
   // useEffect(() => {
   //   setcompanySet(company);
   // }, [companySet]);
-
+  const companyInfo = props;
+  // console.log(props);
+  console.log(companyInfo);
   return (
     <Grid container spacing={{ xs: 6, md: 12 }}>
       <Grid item md={2}>
         {/* <NavBar /> */}
       </Grid>
       <Grid item md={10}>
-        <NavBar />
+        <NavBar {...companyInfo} />
       </Grid>
 
       <Grid item xs={8}>
