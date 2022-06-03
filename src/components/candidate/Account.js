@@ -15,7 +15,8 @@ export default function Account(props) {
   const [email, setemail] = useState("");
   const [firstName, setfirstName] = useState("");
   const [lastName, setlastName] = useState("");
-  const [picture, setpicture] = useState();
+  const [pic, setpic] = useState();
+
   const [password, setpassword] = useState("");
   const [confirmPassword, setconfirmPassword] = useState("");
   const [nationality, setnationality] = useState("");
@@ -79,19 +80,23 @@ export default function Account(props) {
   const userInfo = JSON.parse(localStorage.getItem("candidateInfo"));
   const navigate = useNavigate();
   console.log(userInfo.user);
-  React.useEffect(() => {
-    if (!userInfo) {
-      navigate("/");
-    } else {
-      setfirstName(userInfo.user.firstName);
-      setemail(userInfo.user.email);
-      setlastName(userInfo.user.lastName);
-      setAddress(userInfo.user.Address);
-      setnationality(userInfo.user.nationality);
-      setstate(userInfo.user.state);
-      setpicture(userInfo.user.picture);
-    }
-  }, [navigate, userInfo]);
+  React.useEffect(
+    () => {
+      if (!userInfo) {
+        navigate("/");
+      } else {
+        setfirstName(userInfo.user.firstName);
+        setemail(userInfo.user.email);
+        setlastName(userInfo.user.lastName);
+        setAddress(userInfo.user.Address);
+        setnationality(userInfo.user.nationality);
+        setstate(userInfo.user.state);
+        setpic(userInfo.user.picture);
+      }
+    },
+    [],
+    [navigate, userInfo]
+  );
   const fileRef = useRef();
   const [notify, setNotify] = useState({
     isOpen: false,
@@ -110,8 +115,10 @@ export default function Account(props) {
         body: data,
       })
         .then((res) => res.json())
+
         .then((data) => {
-          setpicture(data.url.toString());
+          setpic(data.url.toString());
+
           console.log(data.url);
         })
         .catch((err) => {
@@ -125,7 +132,7 @@ export default function Account(props) {
       });
     }
   };
-  console.log("picture", picture);
+  // console.log("#picture", picture);
   const classes = styles();
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -146,24 +153,26 @@ export default function Account(props) {
         const { data } = await axios.put(
           process.env.REACT_APP_BACKEND + "/candidate/updateProfile",
           {
-            firstName,
-            lastName,
-            email,
-            password,
-            picture,
-            nationality,
-            state,
-            Address,
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            password: password,
+            picture: pic,
+            nationality: nationality,
+            state: state,
+            Address: Address,
           },
           config
         );
         if (data) {
           setNotify({
             isOpen: true,
-            message: data.message,
+            message: "updated successfully",
             type: "success",
           });
         }
+        localStorage.setItem("candidateInfo", JSON.stringify(data));
+        // const userInfo = JSON.parse(localStorage.setItem("data"));
       }
     } catch (error) {
       if (
@@ -182,7 +191,9 @@ export default function Account(props) {
   };
   return (
     <div style={{ height: "100vh" }}>
-      <ContentMenuItem style={{ borderColor: darkColor }}>
+      <ContentMenuItem
+        style={{ borderColor: darkColor, boxShadow: " 0px 3px 6px #00000029" }}
+      >
         <Notification
           notify={notify}
           setNotify={setNotify}
@@ -217,7 +228,7 @@ export default function Account(props) {
                   style={{ borderRadius: "20px" }}
                 >
                   <img
-                    src={picture}
+                    src={pic}
                     style={{ width: "100%", borderRadius: "20px" }}
                   />
                 </Paper>

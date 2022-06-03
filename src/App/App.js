@@ -19,6 +19,9 @@ import AddQuizBySelection from "./../components/quizmaster/AddQuizBySelection";
 import AddQuizRandomly from "./../components/quizmaster/AddQuizRandomly";
 import Account from "./../components/candidate/Account";
 import DashboardCandidat from "../components/candidate/DashboardCandidat";
+
+import Certificates from "../components/candidate/Certificates";
+import SkillsPage from "../components/candidate/SkillsPage";
 function App() {
   const [companyColors, setcompanyColors] = React.useState("");
   const [subdomain, setSubDomain] = React.useState(null);
@@ -68,6 +71,22 @@ function App() {
             <Route path="candidate" element={<Candidate />} />
           </Route>
           <Route
+            path="/dashboard/candidate/*"
+            element={<DashboardCandidat company_info={companyColors} />}
+          >
+            <Route path="update" element={<Account {...companyColors} />} />
+            <Route
+              path="chooseSkills"
+              element={<SkillsPage {...companyColors} />}
+            />
+            <Route
+              path="certificates"
+              element={<Certificates {...companyColors} />}
+            />
+
+            {/*  */}
+          </Route>
+          <Route
             element={<ForgotPasswordScreen />}
             path="/lostPassword/:type"
             exact
@@ -79,13 +98,6 @@ function App() {
           />
           <Route element={<AddQuizBySelection />} path="/QuizBySelection" />
           <Route element={<AddQuizRandomly />} path="/QuizRandomly" />
-          <Route
-            path="/dashboard/candidate/*"
-            element={<DashboardCandidat company_info={companyColors} />}
-          >
-            <Route path="update" element={<Account {...companyColors} />} />
-            {/*  */}
-          </Route>
         </Routes>
       ) : (
         <Routes>
