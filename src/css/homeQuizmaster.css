@@ -11,6 +11,7 @@
     pointer-events: auto;
 }
 
+
 .home1 {
     align-items: flex-start;
     display: flex;
@@ -26,9 +27,10 @@
     display: flex;
     flex-direction: column;
     margin-left: -180px;
-    margin-top: 60px;
+    /* margin-top: 60px; */
     width: 700px;
     min-height: 100vh;
+    margin-top: 75px;
     /* background-color: red; */
 
 }

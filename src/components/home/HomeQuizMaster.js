@@ -20,14 +20,55 @@ export default function HomeQuizMaster(company_colors) {
       <div className="home1 screen">
         <div className="flex-col1">
           <div
-            className="overlap-group1"
-            style={{ marginRight: "150px", background: "white" }}
+            // className="overlap-group1"
+            style={{
+              marginRight: "150px",
+              background: "white",
+              // width: "20px",
+              // height: "50px ",
+              alignItems: "flex-start",
+              border: `4px solid ${darkColor}`,
+              // backgroundColor: ,
+              borderRadius: "36px",
+              display: "flex",
+              // height: "42px",
+              marginLeft: "30.75px",
+              height: "60px",
+              width: "60px",
+              // padding: "11px 4.4px",
+              position: "relative",
+              textAlign: "center",
+              justifyContent: "center",
+            }}
           >
-            <Logo
-              // className="rectangle-11"
+            <img
               src={company_colors.company_colors.account.logo}
-              // style={{ width: "30%" }}
+              style={{
+                height: "60px",
+                objectFit: "cover",
+                width: "60px",
+                textAlign: "center",
+              }}
             />
+          </div>
+          <div
+            style={{
+              borderRadius: "36px",
+              border: `4px solid ${lightColor}`,
+              minWidth: "239px",
+              width: "auto",
+              height: "17px",
+              textAlign: "center",
+              justifyContent: "center",
+              padding: "10px 10px",
+              fontFamily: "var(--font-family-cerapro-medium)",
+              color: "#1D1D1D",
+              position: "static",
+              marginTop: "-55px",
+              marginLeft: "80px",
+            }}
+          >
+            {company_colors.company_colors.account.businessName}
           </div>
           <div className="x21">
             <Mybubble1 width="712px" height="712px" fill={darkColor} />

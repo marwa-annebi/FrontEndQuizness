@@ -19,11 +19,11 @@ export default function SideMenuCandidate(props) {
         to="/dashboard/candidate/update"
         // style={}
         style={
-          ({ color: darkColor },
+          // ({ color: darkColor },
           ({ isActive }) =>
             isActive
-              ? { background: lightColor }
-              : { background: "rgba(255, 215, 0, 0.33)" })
+              ? { background: lightColor, color: darkColor }
+              : { background: "rgba(255, 215, 0, 0.33)", color: darkColor }
         }
       >
         Account
@@ -34,13 +34,11 @@ export default function SideMenuCandidate(props) {
     getItem(
       <NavLink
         className={({ isActive }) => (isActive ? "link-active" : "link")}
-        to="#"
-        style={
-          ({ color: darkColor },
-          ({ isActive }) =>
-            isActive
-              ? { background: lightColor }
-              : { background: "rgba(255, 215, 0, 0.33)" })
+        to="/dashboard/candidate/chooseSkills"
+        style={({ isActive }) =>
+          isActive
+            ? { background: lightColor, color: darkColor }
+            : { background: "rgba(255, 215, 0, 0.33)", color: darkColor }
         }
       >
         Skills
@@ -51,13 +49,11 @@ export default function SideMenuCandidate(props) {
       <div className="divLink">
         <NavLink
           className={({ isActive }) => (isActive ? "link-active" : "link")}
-          to="#"
-          style={
-            ({ color: darkColor },
-            ({ isActive }) =>
-              isActive
-                ? { background: lightColor }
-                : { background: "rgba(255, 215, 0, 0.33)" })
+          to="/dashboard/candidate/certificates"
+          style={({ isActive }) =>
+            isActive
+              ? { background: lightColor, color: darkColor }
+              : { background: "rgba(255, 215, 0, 0.33)", color: darkColor }
           }
         >
           Certificats
@@ -69,7 +65,12 @@ export default function SideMenuCandidate(props) {
 
   return (
     <div className="menu" style={{ borderColor: lightColor }}>
-      <Menu mode="inline" items={items} className="sidemenu"></Menu>
+      <Menu
+        mode="inline"
+        items={items}
+        className="sidemenu"
+        // style={{ color: darkColor }}
+      ></Menu>
     </div>
   );
 }
