@@ -9,13 +9,13 @@ import axios from "axios";
 import { message } from "antd";
 import Notification from "../Notification";
 export default function Account(props) {
-  console.log("#", props);
+  // console.log("#", props);
   const darkColor = props.account.darkColor;
   const lightColor = props.account.lightColor;
   const [email, setemail] = useState("");
   const [firstName, setfirstName] = useState("");
   const [lastName, setlastName] = useState("");
-  const [pic, setpic] = useState();
+  const [picture, setpic] = useState();
 
   const [password, setpassword] = useState("");
   const [confirmPassword, setconfirmPassword] = useState("");
@@ -79,24 +79,7 @@ export default function Account(props) {
   }));
   const userInfo = JSON.parse(localStorage.getItem("candidateInfo"));
   const navigate = useNavigate();
-  console.log(userInfo.user);
-  React.useEffect(
-    () => {
-      if (!userInfo) {
-        navigate("/");
-      } else {
-        setfirstName(userInfo.user.firstName);
-        setemail(userInfo.user.email);
-        setlastName(userInfo.user.lastName);
-        setAddress(userInfo.user.Address);
-        setnationality(userInfo.user.nationality);
-        setstate(userInfo.user.state);
-        setpic(userInfo.user.picture);
-      }
-    },
-    [],
-    [navigate, userInfo]
-  );
+
   const fileRef = useRef();
   const [notify, setNotify] = useState({
     isOpen: false,
@@ -143,21 +126,27 @@ export default function Account(props) {
       },
     };
     try {
-      if (password !== confirmPassword) {
+      if (password.length < 7) {
+        setNotify({
+          isOpen: true,
+          message: "Password must be at least 7 characters",
+          type: "error",
+        });
+      } else if (password !== confirmPassword) {
         setNotify({
           isOpen: true,
           message: "Passwords do not match",
           type: "error",
         });
       } else {
-        const { data } = await axios.put(
+        const { data } = await axios.post(
           process.env.REACT_APP_BACKEND + "/candidate/updateProfile",
           {
             firstName: firstName,
             lastName: lastName,
             email: email,
             password: password,
-            picture: pic,
+            picture: picture,
             nationality: nationality,
             state: state,
             Address: Address,
@@ -170,9 +159,8 @@ export default function Account(props) {
             message: "updated successfully",
             type: "success",
           });
+          localStorage.setItem("candidateInfo", JSON.stringify(data));
         }
-        localStorage.setItem("candidateInfo", JSON.stringify(data));
-        // const userInfo = JSON.parse(localStorage.setItem("data"));
       }
     } catch (error) {
       if (
@@ -189,6 +177,24 @@ export default function Account(props) {
       }
     }
   };
+  // console.log(userInfo.user);
+  React.useEffect(
+    () => {
+      if (!userInfo) {
+        navigate("/");
+      } else {
+        setfirstName(userInfo.user.firstName);
+        setemail(userInfo.user.email);
+        setlastName(userInfo.user.lastName);
+        setAddress(userInfo.user.Address);
+        setnationality(userInfo.user.nationality);
+        setstate(userInfo.user.state);
+        setpic(userInfo.user.picture);
+      }
+    },
+    [],
+    [navigate, userInfo]
+  );
   return (
     <div style={{ height: "100vh" }}>
       <ContentMenuItem
@@ -228,7 +234,7 @@ export default function Account(props) {
                   style={{ borderRadius: "20px" }}
                 >
                   <img
-                    src={pic}
+                    src={picture}
                     style={{ width: "100%", borderRadius: "20px" }}
                   />
                 </Paper>
@@ -310,7 +316,7 @@ export default function Account(props) {
                           marginTop: "10px",
                         }}
                       >
-                        Password:
+                        NewPassword:
                       </div>
                       <TextField
                         value={password}

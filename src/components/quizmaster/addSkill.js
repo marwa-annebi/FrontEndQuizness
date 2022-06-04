@@ -75,6 +75,7 @@ export default function AddSkill(props) {
   const [skill_name, setskill_name] = useState("");
   const [requirements, setrequirements] = useState("");
   const [loading, setloading] = useState(false);
+  const [budget, setbudget] = useState();
   const [notify, setNotify] = useState({
     isOpen: false,
     message: "",
@@ -88,6 +89,7 @@ export default function AddSkill(props) {
     if (skill) {
       setskill_name(skill.skill_name);
       setrequirements(skill.requirements);
+      setbudget(skill.budget);
     }
   }, []);
 
@@ -103,7 +105,7 @@ export default function AddSkill(props) {
       setloading(true);
       const { data } = await axios.put(
         process.env.REACT_APP_BACKEND + `/quizmaster/updateSkill/${skill._id}`,
-        { skill_name: skill_name, requirements: requirements },
+        { skill_name: skill_name, requirements: requirements, budget: budget },
         config
       );
       setNotify({
@@ -141,7 +143,7 @@ export default function AddSkill(props) {
       setloading(true);
       const { data } = await axios.post(
         process.env.REACT_APP_BACKEND + "/quizmaster/createSkill",
-        { skill_name, requirements },
+        { skill_name, requirements, budget },
         config
       );
       setNotify({
@@ -231,6 +233,43 @@ export default function AddSkill(props) {
                   onChange={(e) => setskill_name(e.target.value)}
                 />
               </Grid>
+              <Grid item xs={12}>
+                <div
+                  style={{
+                    color: "var(--mahogany-32)",
+                    fontFamily: "var(--font-family-cerapro-bold)",
+                    fontSize: "23px",
+                    marginBottom: "-15px",
+                  }}
+                >
+                  <Grid item xs={12}>
+                    <div
+                      style={{
+                        color: "var(--mahogany-32)",
+                        fontFamily: "var(--font-family-cerapro-bold)",
+                        fontSize: "23px",
+                        marginBottom: "-15px",
+                      }}
+                    >
+                      Budget
+                    </div>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      id="outlined-basic"
+                      placeholder="100 DT"
+                      variant="outlined"
+                      className={classes.txtName}
+                      InputProps={{
+                        classes: { input: classes.input },
+                      }}
+                      value={budget}
+                      onChange={(e) => setbudget(e.target.value)}
+                    />
+                  </Grid>
+                </div>
+              </Grid>
+
               <Grid item xs={12}>
                 <div
                   style={{
