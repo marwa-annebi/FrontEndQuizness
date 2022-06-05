@@ -99,7 +99,7 @@ export default function AddSkill(props) {
       const config = {
         headers: {
           "Content-Type": "application/json",
-          // Authorization: `Bearer ${quizmasterInfo.token}`,
+          Authorization: `Bearer ${quizmasterInfo.token}`,
         },
       };
       setloading(true);

@@ -57,9 +57,11 @@ export default function SkillsPage(props) {
   console.log(props);
   const [categories, setcategories] = useState([]);
   console.log(props._id);
-  const loadCategories = async () => {
-    const candidate = JSON.parse(localStorage.getItem("candidateInfo"));
+  const candidate = JSON.parse(localStorage.getItem("candidateInfo"));
+  const firstName = candidate.user.firstName;
+  const lastName = candidate.user.lastName;
 
+  const loadCategories = async () => {
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -88,9 +90,6 @@ export default function SkillsPage(props) {
   const paywithKonnect = async (data) => {
     // const header = new Headers();
     // header.append();
-    let headers = new Headers({
-      "x-api-key": "629b3f54ca1ff70e36b26ec0:xSxHuyqJL415qJoM9rUi4D8S05E",
-    });
     // var myHeaders = new Headers();
     // myHeaders.append(
     //   "x-api-key",
@@ -99,19 +98,21 @@ export default function SkillsPage(props) {
     // console.log(myHeaders);
     // const header = myHeaders.get("x-api-key");
     const config = {
-      // method: "POST",
-      headers: headers,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": "629b3f54ca1ff70e36b26ec0:9Tr9hCClC147I4xEPwA1",
+      },
     };
-
-    console.log(config);
-    await axios
+    axios
       .post(
         "https://api.preprod.konnect.network/api/v2/payments/init-payment/",
         data,
         config
       )
       .then((response) => {
-        console.log(response);
+        console.log(response.data);
+        window.open(response.data.payUrl);
       })
       .catch((error) => {
         console.log(error);
@@ -174,8 +175,8 @@ export default function SkillsPage(props) {
                         paywithKonnect({
                           receiverWallet: "629b3f54ca1ff70e36b26ec1",
                           amount: key.budget,
-                          firstName: "y",
-                          lastName: "x",
+                          firstName: firstName,
+                          lastName: lastName,
                           phoneNumber: "28467147",
                           email: "marwaannebi25@gmail.com",
                         });
