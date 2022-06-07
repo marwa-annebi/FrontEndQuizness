@@ -121,7 +121,7 @@ export default function NavBar(props) {
   const [categories, setcategories] = useState([]);
   console.log(props);
   const loadCategories = async () => {
-    const quizmasterInfo = JSON.parse(localStorage.getItem("quizmasterInfo"));
+    const quizmasterInfo = JSON.parse(sessionStorage.getItem("quizmasterInfo"));
     const config = {
       headers: {
         Authorization: `Bearer ${quizmasterInfo.token}`,
@@ -160,7 +160,7 @@ export default function NavBar(props) {
       },
     };
     await axios.get(process.env.REACT_APP_BACKEND + "/auth/logout", config);
-    localStorage.removeItem("quizmasterInfo");
+    sessionStorage.removeItem("quizmasterInfo");
     navigate("/");
   };
   const classes = styles();

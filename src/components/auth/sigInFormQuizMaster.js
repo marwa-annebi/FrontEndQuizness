@@ -76,7 +76,7 @@ export default function SigInForm(companyInfo) {
         config
       );
 
-      localStorage.setItem("quizmasterInfo", JSON.stringify(data));
+      sessionStorage.setItem("quizmasterInfo", JSON.stringify(data));
       // console.log(userInfo);
       // console.log("hello");
       if (data) {

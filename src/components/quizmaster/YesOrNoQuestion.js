@@ -1,8 +1,6 @@
-// import { Grid, makeStyles } from "@material-ui/core";
-import { React, useEffect, useState } from "react";
-import { Form, useForm } from "../useForm";
-import { Button, Checkbox, makeStyles } from "@material-ui/core";
-import addmultiChoice from "./../../assets/Groupe 84.svg";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import PropositionCheckbox from "./PropositionCheckbox";
 import {
   Grid,
   FormControl,
@@ -11,12 +9,15 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
-import { IoAddOutline } from "react-icons/io5";
-import axios from "axios";
-import Item from "antd/lib/list/Item";
-import PropositionCheckbox from "./PropositionCheckbox";
+import {
+  FormControlLabel,
+  makeStyles,
+  Radio,
+  RadioGroup,
+} from "@material-ui/core";
 import Notification from "../Notification";
 import Loading from "../Loading";
+import addmultiChoice from "./../../assets/yes or no2.svg";
 const styles = makeStyles(() => ({
   paper: {
     color: "transparent",
@@ -90,8 +91,34 @@ const styles = makeStyles(() => ({
     fontFamily: "cerapro-Medium",
     color: "var( --licorice)",
   },
+  input: {
+    fontFamily: "cerapro-Medium",
+    color: "var( --licorice)",
+    textAlign: "center",
+  },
+
+  label: {
+    fontFamily: "cerapro-Medium",
+    // color: "#560a02",
+    fontSize: "15px",
+    // fontWeight: 700,
+    // opacity: 0.48,
+    whiteSpace: "nowrap",
+  },
+
+  txtName: {
+    [`& fieldset`]: {
+      borderRadius: 49,
+      border: "3px solid var(--gold)",
+      boxShadow: "0px 3px 6px #00000029",
+      height: "50px",
+    },
+    // backgroundColor: "transparent",
+    marginTop: "15px",
+    // width: "300px",
+  },
 }));
-export default function QuestionForm(props) {
+export default function YesOrNoQuestion(props) {
   const { loadQuestions, questionId } = props;
   const classes = styles();
   const [loading, setloading] = useState(false);
@@ -99,10 +126,8 @@ export default function QuestionForm(props) {
     tronc: "",
     skill: "",
     propositions: [
-      { content: "", veracity: false },
-      { content: "", veracity: false },
-      { content: "", veracity: false },
-      { content: "", veracity: false },
+      { content: "true", veracity: false },
+      { content: "false", veracity: false },
     ],
   });
   const [notify, setNotify] = useState({
@@ -110,12 +135,6 @@ export default function QuestionForm(props) {
     message: "",
     type: "",
   });
-  const handleCheckBoxAdd = () => {
-    const proposition = { content: "", veracity: false };
-    const updateProposition = question;
-    updateProposition.propositions.push(proposition);
-    setquestion({ ...updateProposition });
-  };
   const [categories, setcategories] = useState([]);
   const loadCategories = async () => {
     const quizmasterInfo = JSON.parse(sessionStorage.getItem("quizmasterInfo"));
@@ -131,7 +150,6 @@ export default function QuestionForm(props) {
     );
     setcategories(result.data.reverse());
   };
-
   useEffect(() => {
     loadCategories();
     if (questionId) setquestion({ ...questionId });
@@ -152,7 +170,7 @@ export default function QuestionForm(props) {
           question: {
             tronc: question.tronc,
             skill: question.skill,
-            typeQuestion: "MCQ",
+            typeQuestion: "TF",
           },
           proposition: question.propositions,
         },
@@ -171,49 +189,6 @@ export default function QuestionForm(props) {
     } catch (error) {
       setloading(false);
 
-      if (
-        error.response &&
-        error.response.status >= 400 &&
-        error.response.status <= 500
-      ) {
-        setNotify({
-          isOpen: true,
-          message: error.response.data.message,
-          type: "error",
-        });
-      }
-    }
-  };
-  const updateQuestion = async () => {
-    const quizmasterInfo = JSON.parse(sessionStorage.getItem("quizmasterInfo"));
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${quizmasterInfo.token}`,
-      },
-    };
-    try {
-      const { data } = await axios.put(
-        process.env.REACT_APP_BACKEND + "/quizmaster/",
-        {
-          question: {
-            tronc: question.tronc,
-            skill: question.skill,
-            typeQuestion: "MCQ",
-          },
-          proposition: question.propositions,
-        },
-        config
-      );
-      loadQuestions();
-      if (data) {
-        setNotify({
-          isOpen: true,
-          message: "Submitted Successfully",
-          type: "success",
-        });
-      }
-    } catch (error) {
       if (
         error.response &&
         error.response.status >= 400 &&
@@ -267,7 +242,7 @@ export default function QuestionForm(props) {
               }}
               className="iconaddskill"
             />
-            <h1 className={classes.title}>MultiChoice</h1>
+            <h1 className={classes.title}>YesOrNo</h1>
           </div>
           <Grid container spacing={2}>
             {/* <Grid item xs={12}> */}
@@ -367,38 +342,53 @@ export default function QuestionForm(props) {
                 Options
               </div>
             </Grid>
-            {question.propositions.map((item, index) => {
-              {
-                /* console.log("#item", item); */
-              }
-              return (
-                <div key={index}>
-                  <PropositionCheckbox
-                    setquestion={setquestion}
-                    index={index}
-                    question={question}
+            <div
+              style={{ direction: "row", display: "flex", textAlign: "center" }}
+            >
+              {/* {question.propositions.map((item, index) => {
+                console.log("#item", item);
+                return ( */}
+              <Grid xs={6}>
+                <div>
+                  <input
+                    type="radio"
+                    value={question.propositions[0].veracity}
+                    name={question.propositions[0].veracity}
+                    checked={question.propositions[0].veracity === "Male"}
+                    onChange={handleInputChange}
                   />
+                  {question.propositions[0].content}
+                  <input
+                    type="radio"
+                    value={question.propositions[1].veracity}
+                    name={question.propositions[1].veracity}
+                    onChange={handleInputChange}
+                  />
+                  {question.propositions[1].content}
                 </div>
-              );
-            })}
-            {question.propositions.length < 8 && (
-              <Grid xs={4}>
-                <Button
-                  style={{
-                    border: "3px dashed var(--gold)",
-                    borderRadius: "49px",
-                    width: "210px",
-                    height: "50px",
-                    marginTop: "15px",
-                  }}
-                  onClick={handleCheckBoxAdd}
-                >
-                  <IoAddOutline
-                    style={{ color: "var(--mahogany)", fontSize: "35px" }}
-                  />
-                </Button>
+                {/* <TextField
+                      //   name={propositions[index].content}
+
+                      //   label={`Option ${index + 1}`}
+                      id="outlined-basic"
+                      variant="outlined"
+                      className={classes.txtName}
+                      InputProps={{
+                        classes: { input: classes.input },
+                      }}
+                      value={item.content}
+                      InputLabelProps={{ className: classes.label }}
+                      //   onChange={(e) => {
+                      //     item.content = e.target.value;
+                      //     // console.log(prop);
+                      //     setquestion({ ...item });
+                      //   }}
+                    /> */}
+                {/* </Radio> */}
               </Grid>
-            )}
+              {/* ); */}
+              {/* })} */}
+            </div>
           </Grid>
           {/* </form> */}
           <br />

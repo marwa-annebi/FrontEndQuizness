@@ -91,7 +91,7 @@ function SignInFormCandidate(companyInfo) {
         config
       );
       // console.log(data);
-      localStorage.setItem("candidateInfo", JSON.stringify(data));
+      sessionStorage.setItem("candidateInfo", JSON.stringify(data));
       if (data) {
         setloading(true);
         navigate("/dashboard/candidate");

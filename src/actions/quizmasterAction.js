@@ -33,7 +33,7 @@ export const CompanySettings = () => async (dispatch) => {
       type: COMPANY_SETTINGS_SUCCESS,
       payload: data,
     });
-    localStorage.setItem("companyInfo", JSON.stringify(data));
+    sessionStorage.setItem("companyInfo", JSON.stringify(data));
   } catch (error) {
     const message =
       error.response && error.response.data.message

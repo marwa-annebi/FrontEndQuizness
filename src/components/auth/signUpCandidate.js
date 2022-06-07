@@ -120,7 +120,7 @@ export default function SignUpCandidate(companyInfo) {
         config
       );
       setloading(false);
-      const candidateInfo = localStorage.setItem(
+      const candidateInfo = sessionStorage.setItem(
         "candidateInfo",
         JSON.stringify(data)
       );

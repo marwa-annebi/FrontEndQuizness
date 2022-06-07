@@ -6,8 +6,8 @@ import { companySettingsReducer } from "./reducers/quizmasterReducer";
 const reducer = combineReducers({
   companySettings: companySettingsReducer,
 });
-const companyInfoStorage = localStorage.getItem("companyInfo")
-  ? JSON.parse(localStorage.getItem("companyInfo"))
+const companyInfoStorage = sessionStorage.getItem("companyInfo")
+  ? JSON.parse(sessionStorage.getItem("companyInfo"))
   : null;
 const initialState = { companySettings: { companyInfo: companyInfoStorage } };
 const middleware = [thunk];

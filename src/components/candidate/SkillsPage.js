@@ -54,10 +54,8 @@ export default function SkillsPage(props) {
       boxShadow: "0px 3px 4px #000000",
     },
   }));
-  console.log(props);
   const [categories, setcategories] = useState([]);
-  console.log(props._id);
-  const candidate = JSON.parse(localStorage.getItem("candidateInfo"));
+  const candidate = JSON.parse(sessionStorage.getItem("candidateInfo"));
   const firstName = candidate.user.firstName;
   const lastName = candidate.user.lastName;
 
@@ -68,13 +66,11 @@ export default function SkillsPage(props) {
         Authorization: `Bearer ${candidate.token}`,
       },
     };
-    console.log("helolo");
     const { data } = await axios.get(
       process.env.REACT_APP_BACKEND +
         `/candidate/getSkills?quizmaster=${props._id}`,
       config
     );
-    console.log(data);
     setcategories(data.reverse());
   };
   // console.log(categories);
@@ -113,6 +109,7 @@ export default function SkillsPage(props) {
       .then((response) => {
         console.log(response.data);
         window.open(response.data.payUrl);
+        // if()
       })
       .catch((error) => {
         console.log(error);
