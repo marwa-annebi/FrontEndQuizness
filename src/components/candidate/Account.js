@@ -77,7 +77,7 @@ export default function Account(props) {
       },
     },
   }));
-  const userInfo = JSON.parse(localStorage.getItem("candidateInfo"));
+  const userInfo = JSON.parse(sessionStorage.getItem("candidateInfo"));
   const navigate = useNavigate();
 
   const fileRef = useRef();
@@ -159,7 +159,7 @@ export default function Account(props) {
             message: "updated successfully",
             type: "success",
           });
-          localStorage.setItem("candidateInfo", JSON.stringify(data));
+          sessionStorage.setItem("candidateInfo", JSON.stringify(data));
         }
       }
     } catch (error) {

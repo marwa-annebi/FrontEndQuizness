@@ -42,9 +42,19 @@ export default function ChooseTypeQuiz(props) {
       style={customStyles}
       contentLabel="Example Modal"
     >
+      <h1
+        style={{
+          textAlign: "center",
+          fontFamily: "var(--font-family-cerapro-medium)",
+          color: "#2C2B2B",
+          // marginTop: "145px",
+        }}
+      >
+        Add Quiz
+      </h1>
       <div
         className="rectangle-10"
-        style={{ marginTop: "-600px", marginLeft: "-320px" }}
+        style={{ marginTop: "-550px", marginLeft: "-320px" }}
         onClick={() => {
           navigate("/QuizBySelection");
         }}
@@ -53,7 +63,7 @@ export default function ChooseTypeQuiz(props) {
       </div>
       <div
         className="ellipse-4"
-        style={{ marginTop: "-600px", marginLeft: "-320px" }}
+        style={{ marginTop: "-550px", marginLeft: "-320px" }}
       ></div>
       {/* 
         <img
@@ -63,16 +73,16 @@ export default function ChooseTypeQuiz(props) {
         /> */}
       <div
         className="rectangle-9"
-        style={{ top: "100px", width: "230px", left: "80px" }}
+        style={{ top: "140px", width: "230px", left: "80px" }}
       ></div>
       <div
         className="ellipse-3"
-        style={{ top: "103px", marginLeft: "-113px" }}
+        style={{ top: "143px", marginLeft: "-113px" }}
       ></div>
 
       <div
         className="watch-me"
-        style={{ marginTop: "-670px", marginLeft: "-100px" }}
+        style={{ marginTop: "-630px", marginLeft: "-100px" }}
         onClick={() => {
           navigate("/QuizRandomly");
         }}

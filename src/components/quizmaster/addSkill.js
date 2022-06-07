@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Grid, makeStyles, TextField } from "@material-ui/core";
 import trac from "./../../assets/trac--136@1x.png";
-
+import { GrAdd } from "react-icons/gr";
 import axios from "axios";
 import Loading from "../Loading";
 import Notification from "../Notification";
@@ -69,7 +69,7 @@ const styles = makeStyles((theme) => ({
   },
 }));
 export default function AddSkill(props) {
-  const { loadCategories, setOpenPopup, skill } = props;
+  const { loadCategories, setOpenPopup, skill, onClose } = props;
 
   const classes = styles();
   const [skill_name, setskill_name] = useState("");
@@ -95,7 +95,9 @@ export default function AddSkill(props) {
 
   const updateSkill = async () => {
     try {
-      const quizmasterInfo = JSON.parse(localStorage.getItem("quizmasterInfo"));
+      const quizmasterInfo = JSON.parse(
+        sessionStorage.getItem("quizmasterInfo")
+      );
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -133,7 +135,9 @@ export default function AddSkill(props) {
   };
   const addSkill = async () => {
     try {
-      const quizmasterInfo = JSON.parse(localStorage.getItem("quizmasterInfo"));
+      const quizmasterInfo = JSON.parse(
+        sessionStorage.getItem("quizmasterInfo")
+      );
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -182,157 +186,175 @@ export default function AddSkill(props) {
             vertical="top"
             horizontal="right"
           />
-          <div
-            style={{
-              direction: "row",
-              display: "flex",
-              textAlign: "center",
-              justifyContent: "center",
-            }}
-          >
-            {/* <div class="w3-container w3-center w3-animate-top"> */}
-            <img
-              src={trac}
+          <div style={{ maxHeight: "450px" }}>
+            <div
               style={{
-                width: "30px",
-                height: "30px",
-                // marginLeft: "77px",
-                // cursor: "pointer",
-                // display: "inline",
-                marginRight: "5px",
+                //   direction: "row",
+                display: "flex",
               }}
-              className="iconaddskill"
-            />
-            {/* </div> */}
-            <h1 className={classes.title}>Add Skill</h1>
-          </div>
-          <form>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <div
+            >
+              <div
+                style={{
+                  direction: "row",
+                  display: "flex",
+                  textAlign: "center",
+                  justifyContent: "center",
+                  marginLeft: "370px",
+                }}
+              >
+                {/* <div class="w3-container w3-center w3-animate-top"> */}
+                <img
+                  src={trac}
                   style={{
-                    color: "var(--mahogany-32)",
-                    fontFamily: "var(--font-family-cerapro-bold)",
-                    fontSize: "23px",
-                    marginBottom: "-15px",
+                    width: "30px",
+                    height: "30px",
+                    // marginLeft: "77px",
+                    // cursor: "pointer",
+                    // display: "inline",
+                    marginRight: "5px",
                   }}
-                >
-                  Skill Name
-                </div>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  id="outlined-basic"
-                  placeholder="Kotlen"
-                  variant="outlined"
-                  className={classes.txtName}
-                  InputProps={{
-                    classes: { input: classes.input },
-                  }}
-                  value={skill_name}
-                  onChange={(e) => setskill_name(e.target.value)}
+                  className="iconaddskill"
                 />
-              </Grid>
-              <Grid item xs={12}>
-                <div
-                  style={{
-                    color: "var(--mahogany-32)",
-                    fontFamily: "var(--font-family-cerapro-bold)",
-                    fontSize: "23px",
-                    marginBottom: "-15px",
-                  }}
-                >
-                  <Grid item xs={12}>
-                    <div
-                      style={{
-                        color: "var(--mahogany-32)",
-                        fontFamily: "var(--font-family-cerapro-bold)",
-                        fontSize: "23px",
-                        marginBottom: "-15px",
-                      }}
-                    >
-                      Budget
-                    </div>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      id="outlined-basic"
-                      placeholder="100 DT"
-                      variant="outlined"
-                      className={classes.txtName}
-                      InputProps={{
-                        classes: { input: classes.input },
-                      }}
-                      value={budget}
-                      onChange={(e) => setbudget(e.target.value)}
-                    />
-                  </Grid>
-                </div>
-              </Grid>
+                {/* </div> */}
+                <h1 className={classes.title}>Add Skill</h1>
+              </div>
+              <div
+                style={{
+                  justifyContent: "end",
+                  marginLeft: "270px",
+                  transform: "rotate(45deg)",
+                  cursor: "pointer",
+                }}
+                className="iconcloseskill"
+                onClick={onClose}
+              >
+                <GrAdd size="30px" />
+              </div>
+            </div>
 
-              <Grid item xs={12}>
-                <div
-                  style={{
-                    marginTop: "10px",
-                    color: "var(--mahogany-32)",
-                    fontFamily: "var(--font-family-cerapro-bold)",
-                    fontSize: "23px",
-                  }}
-                >
-                  Skill Description
-                </div>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  id="outlined-basic"
-                  variant="outlined"
-                  placeholder="Lorem Ipsum is simply dummy text,of the printing
-                   and typesetting industry
-                             Lorem Ipsum has been the industry's ,
-                            standard dummy text ever since the 1500s,
-                            when an unknown printer 
-                            took a galley of type and"
-                  value={requirements}
-                  onChange={(e) => setrequirements(e.target.value)}
-                  multiline
-                  rows={4}
-                  maxRows={6}
-                  className={classes.textarea}
-                  InputProps={{
-                    className: classes.inputtextarea,
-                  }}
-                  InputLabelProps={{ className: classes.label }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <button
-                  className="btnVerif border-1px-dove-gray"
-                  variant="contained"
-                  type="submit"
-                  // onClick={handleNext}
-                  style={{
-                    marginLeft: "50px",
-                    // height: "20px",
-                  }}
-                >
+            <form>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
                   <div
                     style={{
+                      color: "var(--mahogany-32)",
                       fontFamily: "var(--font-family-cerapro-bold)",
-                      fontWeight: 700,
-                      fontSize: "26px",
-                    }}
-                    onClick={() => {
-                      if (!skill) {
-                        addSkill();
-                      } else if (skill) updateSkill();
+                      fontSize: "23px",
+                      marginBottom: "-15px",
                     }}
                   >
-                    OKAY
+                    Skill Name
                   </div>
-                </button>
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    id="outlined-basic"
+                    placeholder="Kotlen"
+                    variant="outlined"
+                    className={classes.txtName}
+                    InputProps={{
+                      classes: { input: classes.input },
+                    }}
+                    value={skill_name}
+                    onChange={(e) => setskill_name(e.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <div
+                    style={{
+                      color: "var(--mahogany-32)",
+                      fontFamily: "var(--font-family-cerapro-bold)",
+                      fontSize: "23px",
+                      marginBottom: "-15px",
+                    }}
+                  >
+                    <Grid item xs={12}>
+                      <div
+                        style={{
+                          color: "var(--mahogany-32)",
+                          fontFamily: "var(--font-family-cerapro-bold)",
+                          fontSize: "23px",
+                          marginBottom: "-15px",
+                        }}
+                      >
+                        Budget
+                      </div>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        id="outlined-basic"
+                        placeholder="100 DT"
+                        variant="outlined"
+                        className={classes.txtName}
+                        InputProps={{
+                          classes: { input: classes.input },
+                        }}
+                        value={budget}
+                        onChange={(e) => setbudget(e.target.value)}
+                      />
+                    </Grid>
+                  </div>
+                </Grid>
+
+                <Grid item xs={12}>
+                  <div
+                    style={{
+                      marginTop: "10px",
+                      color: "var(--mahogany-32)",
+                      fontFamily: "var(--font-family-cerapro-bold)",
+                      fontSize: "23px",
+                    }}
+                  >
+                    Skill Description
+                  </div>
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    id="outlined-basic"
+                    variant="outlined"
+                    placeholder="setyour description here ..."
+                    value={requirements}
+                    onChange={(e) => setrequirements(e.target.value)}
+                    multiline
+                    rows={3}
+                    maxRows={6}
+                    className={classes.textarea}
+                    InputProps={{
+                      className: classes.inputtextarea,
+                    }}
+                    InputLabelProps={{ className: classes.label }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <button
+                    className="btnVerif border-1px-dove-gray"
+                    variant="contained"
+                    type="submit"
+                    // onClick={handleNext}
+                    style={{
+                      marginLeft: "50px",
+                      // height: "20px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontFamily: "var(--font-family-cerapro-bold)",
+                        fontWeight: 700,
+                        fontSize: "26px",
+                      }}
+                      onClick={() => {
+                        if (!skill) {
+                          addSkill();
+                        } else if (skill) updateSkill();
+                      }}
+                    >
+                      OKAY
+                    </div>
+                  </button>
+                </Grid>
               </Grid>
-            </Grid>
-          </form>
+            </form>
+          </div>
         </>
       )}
     </>

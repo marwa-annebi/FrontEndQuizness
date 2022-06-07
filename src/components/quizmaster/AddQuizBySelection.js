@@ -18,12 +18,12 @@ import { Button } from "@material-ui/core";
 import Notification from "../Notification";
 import SideMenu from "./SideMenu";
 const headCells = [
-  { id: "", label: "" },
+  // { id: "", label: "" },
   { id: "_id_question", label: "Id" },
   { id: "tronc", label: "tronc" },
   { id: "skill", label: "skill" },
 ];
-export default function AddQuizBySelection() {
+export default function AddQuizBySelection(props) {
   const [questionList, setquestionList] = React.useState([]);
   const [categories, setcategories] = useState([]);
   const [nbQuestion, setnbQuestion] = useState();
@@ -37,7 +37,7 @@ export default function AddQuizBySelection() {
   };
 
   const loadCategories = async () => {
-    const quizmasterInfo = JSON.parse(localStorage.getItem("quizmasterInfo"));
+    const quizmasterInfo = JSON.parse(sessionStorage.getItem("quizmasterInfo"));
     const config = {
       headers: {
         Authorization: `Bearer ${quizmasterInfo.token}`,
@@ -51,7 +51,7 @@ export default function AddQuizBySelection() {
     setcategories(result.data.reverse());
   };
   const loadQuestions = async () => {
-    const quizmasterInfo = JSON.parse(localStorage.getItem("quizmasterInfo"));
+    const quizmasterInfo = JSON.parse(sessionStorage.getItem("quizmasterInfo"));
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -106,7 +106,7 @@ export default function AddQuizBySelection() {
   });
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const quizmasterInfo = JSON.parse(localStorage.getItem("quizmasterInfo"));
+    const quizmasterInfo = JSON.parse(sessionStorage.getItem("quizmasterInfo"));
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -164,10 +164,10 @@ export default function AddQuizBySelection() {
   return (
     <Grid container spacing={{ xs: 6, md: 12 }}>
       <Grid item xs={12}>
-        <NavBar />
+        <NavBar {...props} />
       </Grid>
       <Grid item xs={8}>
-        <SideMenu />
+        <SideMenu {...props} />
       </Grid>
       <Grid item xs={4}>
         <div className="borderQuiz">

@@ -5,7 +5,7 @@ import { Button, Grid, TextField } from "@mui/material";
 import SideMenu from "./SideMenu";
 import Notification from "../Notification";
 
-export default function AddQuizRandomly() {
+export default function AddQuizRandomly(props) {
   const [nbQuestion, setnbQuestion] = useState();
   const [creation_date, setcreation_date] = useState();
   const [questionsRandomly, setquestionsRandomly] = useState([]);
@@ -17,7 +17,7 @@ export default function AddQuizRandomly() {
     type: "",
   });
   const loadQuestions = async () => {
-    const quizmasterInfo = JSON.parse(localStorage.getItem("quizmasterInfo"));
+    const quizmasterInfo = JSON.parse(sessionStorage.getItem("quizmasterInfo"));
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -32,6 +32,7 @@ export default function AddQuizRandomly() {
     setquestionList(result.data.reverse());
   };
 
+  console.log(questionList);
   function getRandom() {
     const list = questionList
       .sort(function () {
@@ -55,7 +56,7 @@ export default function AddQuizRandomly() {
   );
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const quizmasterInfo = JSON.parse(localStorage.getItem("quizmasterInfo"));
+    const quizmasterInfo = JSON.parse(sessionStorage.getItem("quizmasterInfo"));
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -101,10 +102,10 @@ export default function AddQuizRandomly() {
         {/* <NavBar /> */}
       </Grid>
       <Grid item md={10}>
-        <NavBar />
+        <NavBar {...props} />
       </Grid>
       <Grid item xs={8}>
-        <SideMenu />
+        <SideMenu {...props} />
       </Grid>
       <Grid item xs={4}>
         <div className="borderQuiz">

@@ -121,8 +121,10 @@ function SignUpQuizmaster() {
         config
       );
 
-      localStorage.setItem("quizmasterInfo", JSON.stringify(data));
-      const quizmasterInfo = JSON.parse(localStorage.getItem("quizmasterInfo"));
+      sessionStorage.setItem("quizmasterInfo", JSON.stringify(data));
+      const quizmasterInfo = JSON.parse(
+        sessionStorage.getItem("quizmasterInfo")
+      );
       console.log(quizmasterInfo);
       if (quizmasterInfo) {
         navigate(`/quizmaster/${quizmasterInfo.userId}`);

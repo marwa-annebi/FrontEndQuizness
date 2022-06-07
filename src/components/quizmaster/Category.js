@@ -135,6 +135,8 @@ const customStyles = {
     // background: `url(${rectangle43})`,
     height: "550px",
     // height: "450px",
+    // maxHeight: "550px",
+    // overFlow: "auto",
   },
   overlay: {
     position: "fixed",
@@ -173,7 +175,7 @@ export default function Category() {
   });
 
   const loadCategories = async () => {
-    const quizmasterInfo = JSON.parse(localStorage.getItem("quizmasterInfo"));
+    const quizmasterInfo = JSON.parse(sessionStorage.getItem("quizmasterInfo"));
     const config = {
       headers: {
         Authorization: `Bearer ${quizmasterInfo.token}`,
@@ -194,7 +196,9 @@ export default function Category() {
   );
   const deleteCategory = async (id) => {
     try {
-      const quizmasterInfo = JSON.parse(localStorage.getItem("quizmasterInfo"));
+      const quizmasterInfo = JSON.parse(
+        sessionStorage.getItem("quizmasterInfo")
+      );
 
       const config = {
         headers: {
@@ -299,11 +303,12 @@ export default function Category() {
               src={rectangle43}
               style={{ width: "907px", height: "500px" }}
             />
-            <div style={{ marginTop: "-470px" }}>
+            <div style={{ marginTop: "-490px" }}>
               <AddSkill
                 loadCategories={loadCategories}
                 skill={null}
                 setOpenPopup={setopenAdd}
+                onClose={closeAddModal}
               />
             </div>
           </Modal>
@@ -367,11 +372,13 @@ export default function Category() {
                     src={rectangle43}
                     style={{ width: "907px", height: "500px" }}
                   />
-                  <div style={{ marginTop: "-470px" }}>
+
+                  <div style={{ marginTop: "-490px" }}>
                     <AddSkill
                       loadCategories={loadCategories}
                       skill={recordforedit}
                       setOpenPopup={setOpenPopup}
+                      onClose={closeModal}
                     />
                   </div>
                 </Modal>

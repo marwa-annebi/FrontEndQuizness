@@ -317,6 +317,11 @@ div.grid:hover p {
   animation: fadeInLeft 1s ease-in-out;
 }
 
+.iconcloseskill {
+  /* color: #fff; */
+  animation: fadeInLeft 0.5s ease-in-out;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -339,5 +344,5 @@ div.grid:hover p {
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #b30000;
+  background: gold;
 }

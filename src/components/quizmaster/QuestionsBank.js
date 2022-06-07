@@ -36,6 +36,7 @@ import Notification from "../Notification";
 import QuestionForm from "./QuestionForm";
 import { Rowing } from "@material-ui/icons";
 import { IoChevronDown, IoChevronUp } from "react-icons/io5";
+import YesOrNoQuestion from "./YesOrNoQuestion";
 const customStyles = {
   content: {
     top: "50%",
@@ -132,18 +133,20 @@ const headCells = [
 export default function QuestionsBank({ active }) {
   let subtitle;
   const [modalIsOpen, setIsOpen] = React.useState(false);
-
+  const [openYesOrNo, setopenYesOrNo] = useState(false);
   const [recordForEdit, setRecordForEdit] = useState(null);
   function openModal() {
-    // console.log("#item", item);
-    // let item2 = item.propositions;
-    // console.log("#item2", item2);
-    // setRecordForEdit({ ...item, ...item2 });
     setIsOpen(true);
     setAnchorEl(false);
   }
   console.log("#record", recordForEdit);
-
+  function openModelYesOrNo() {
+    setopenYesOrNo(true);
+    setAnchorEl(false);
+  }
+  function closeModalYesOrNo() {
+    setopenYesOrNo(false);
+  }
   function afterOpenModal() {
     // references are now sync'd and can be accessed.
     subtitle.style.color = "#f00";
@@ -180,7 +183,7 @@ export default function QuestionsBank({ active }) {
   // get all question
 
   const loadQuestions = async () => {
-    const quizmasterInfo = JSON.parse(localStorage.getItem("quizmasterInfo"));
+    const quizmasterInfo = JSON.parse(sessionStorage.getItem("quizmasterInfo"));
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -201,8 +204,6 @@ export default function QuestionsBank({ active }) {
     },
   });
 
-  // create Question
-
   //delete question
 
   const deleteQuestion = async (id) => {
@@ -212,7 +213,9 @@ export default function QuestionsBank({ active }) {
     });
     console.log("#id", id);
     try {
-      const quizmasterInfo = JSON.parse(localStorage.getItem("quizmasterInfo"));
+      const quizmasterInfo = JSON.parse(
+        sessionStorage.getItem("quizmasterInfo")
+      );
       const config = {
         headers: {
           // "Content-Type": "application/json",
@@ -422,6 +425,7 @@ export default function QuestionsBank({ active }) {
             questionId={recordForEdit}
           />
         </Modal>
+
         <TableRow>
           <TableCell
             style={{
@@ -635,7 +639,9 @@ export default function QuestionsBank({ active }) {
           </MenuItem>
           <MenuItem
             className="divMenu"
-            onClick={handleClose}
+            onClick={() => {
+              openModelYesOrNo();
+            }}
             style={{
               justifyContent: "start",
               border: "4px solid var(--mahogany)",
@@ -659,6 +665,19 @@ export default function QuestionsBank({ active }) {
       >
         <QuestionForm loadQuestions={loadQuestions} questionId={null} />
       </Modal>
+      <Modal
+        isOpen={openYesOrNo}
+        // onAfterOpen={afterOpenModal}
+        onRequestClose={closeModalYesOrNo}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        <YesOrNoQuestion loadQuestions={loadQuestions} questionId={null} />
+      </Modal>
+      <ConfirmDialog
+        confirmDialog={confirmDialog}
+        setConfirmDialog={setConfirmDialog}
+      />
     </ContentMenuItem>
   );
 }

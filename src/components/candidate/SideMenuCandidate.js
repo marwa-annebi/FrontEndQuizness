@@ -49,6 +49,22 @@ export default function SideMenuCandidate(props) {
       <div className="divLink">
         <NavLink
           className={({ isActive }) => (isActive ? "link-active" : "link")}
+          to="/dashboard/candidate/quizzes"
+          style={({ isActive }) =>
+            isActive
+              ? { background: lightColor, color: darkColor }
+              : { background: "rgba(255, 215, 0, 0.33)", color: darkColor }
+          }
+        >
+          Quizzes
+        </NavLink>
+      </div>,
+      "3"
+    ),
+    getItem(
+      <div className="divLink">
+        <NavLink
+          className={({ isActive }) => (isActive ? "link-active" : "link")}
           to="/dashboard/candidate/certificates"
           style={({ isActive }) =>
             isActive
@@ -59,7 +75,7 @@ export default function SideMenuCandidate(props) {
           Certificats
         </NavLink>
       </div>,
-      "3"
+      "4"
     ),
   ];
 

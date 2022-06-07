@@ -95,7 +95,7 @@ export default function NavBarCandidate(props) {
       },
     };
     await axios.get(process.env.REACT_APP_BACKEND + "/auth/logout", config);
-    localStorage.removeItem("candidateInfo");
+    sessionStorage.removeItem("candidateInfo");
     navigate("/");
   };
   return (
