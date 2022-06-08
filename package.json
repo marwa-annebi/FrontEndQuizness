@@ -28,6 +28,7 @@
     "react-modal": "^3.14.4",
     "react-modal-video": "^1.2.8",
     "react-nice-input-password": "^2.7.0",
+    "react-numeric-input": "^2.2.3",
     "react-otp-input": "^0.3.1",
     "react-password-strength-bar": "^0.4.0",
     "react-player": "^2.10.0",

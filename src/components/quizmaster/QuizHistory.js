@@ -453,7 +453,7 @@ export default function QuizHistory() {
                       >
                         {row.questions.map((prop) => (
                           <div>
-                            <Grid xs={12}>{prop.tronc} </Grid>
+                            <Grid xs={12}>  {prop.tronc} </Grid>
                           </div>
                         ))}
                       </TableCell>

@@ -1,5 +1,7 @@
+import { TablePagination } from "@material-ui/core";
+import { Pagination } from "@mui/material";
 import React, { useState } from "react";
-import TablePagination from "@mui/material/TablePagination";
+
 export default function usePagination(records, filterFn) {
   const pages = [1, 5, 10, 25];
   const [page, setPage] = useState(0);
@@ -11,6 +13,33 @@ export default function usePagination(records, filterFn) {
     setPage(newPage);
   };
 
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value));
+    setPage(0);
+  };
+  console.log(page);
+  const TblPagination = () => (
+    <>
+      <TablePagination
+        component="div"
+        page={page}
+        rowsPerPageOptions={pages}
+        rowsPerPage={rowsPerPage}
+        count={records.length}
+        onChangePage={handleChangePage}
+        onChangeRowsPerPage={handleChangeRowsPerPage}
+      />
+      {page > records.length && (
+        <div>
+          <button type="submit">terminer</button>
+        </div>
+      )}
+    </>
+  );
+  function stableSort(array, comparator) {
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    return stabilizedThis.map((el) => el[0]);
+  }
   function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
       return -1;
@@ -19,33 +48,6 @@ export default function usePagination(records, filterFn) {
       return 1;
     }
     return 0;
-  }
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-  const TblPagination = () => (
-    <TablePagination
-      component="div"
-      page={page}
-      rowsPerPageOptions={pages}
-      rowsPerPage={rowsPerPage}
-      count={records.length}
-      style={{
-        fontFamily: "cerapro-Medium",
-      }}
-      onChangePage={handleChangePage}
-      onChangeRowsPerPage={handleChangeRowsPerPage}
-    />
-  );
-  function stableSort(array, comparator) {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-      const order = comparator(a[0], b[0]);
-      if (order !== 0) return order;
-      return a[1] - b[1];
-    });
-    return stabilizedThis.map((el) => el[0]);
   }
   function getComparator(order, orderBy) {
     return order === "desc"
@@ -60,5 +62,5 @@ export default function usePagination(records, filterFn) {
     ).slice(page * rowsPerPage, (page + 1) * rowsPerPage);
   };
 
-  return { TblPagination, recordsAfterPagingAndSorting };
+  return { recordsAfterPagingAndSorting, TblPagination };
 }

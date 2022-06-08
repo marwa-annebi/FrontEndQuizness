@@ -14,7 +14,7 @@ import moment from "moment";
 import axios from "axios";
 import useTable from "../useTable";
 import { Checkbox, TableBody, TableCell, TableRow } from "@mui/material";
-import { Button } from "@material-ui/core";
+import { Button, InputAdornment } from "@material-ui/core";
 import Notification from "../Notification";
 import SideMenu from "./SideMenu";
 const headCells = [
@@ -32,6 +32,7 @@ export default function AddQuizBySelection(props) {
   const [questions, setquestions] = useState([]);
   const [loading, setloading] = useState(false);
   const [filterSkill, setfilterSkill] = useState("");
+  const [quizName, setquizName] = useState("");
   const handleChangeFilter = (event) => {
     setfilterSkill(event.target.value);
   };
@@ -121,6 +122,7 @@ export default function AddQuizBySelection(props) {
           validation_date,
           nbQuestion,
           questions,
+          quizName,
         },
         config
       );
@@ -187,6 +189,30 @@ export default function AddQuizBySelection(props) {
                   value={nbQuestion}
                   onChange={(e) => {
                     setnbQuestion(e.target.value);
+                  }}
+                />
+              </Grid>
+              <Grid xs={4}>
+                <TextField
+                  label="quizName"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <h4
+                          style={{
+                            fontFamily: "var(--font-family-cerapro-bold)",
+                          }}
+                        >
+                          Quiz_
+                        </h4>
+                      </InputAdornment>
+                    ),
+                  }}
+                  variant="standard"
+                  // type="number"
+                  value={quizName}
+                  onChange={(e) => {
+                    setquizName(e.target.value);
                   }}
                 />
               </Grid>

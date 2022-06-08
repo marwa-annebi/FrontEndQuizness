@@ -4,13 +4,77 @@ import NavBar from "./NavBar";
 import { Button, Grid, TextField } from "@mui/material";
 import SideMenu from "./SideMenu";
 import Notification from "../Notification";
-
+import { InputAdornment, makeStyles } from "@material-ui/core";
+import NumericInput from "react-numeric-input";
+const styles = makeStyles((theme) => ({
+  h5: {
+    fontFamily: "cerapro-Medium",
+    textAlign: "center",
+    paddingTop: "30px",
+    fontWeight: 700,
+    color: "#560a02",
+  },
+  textField: {
+    width: "120px",
+    fontFamily: "cerapro-Medium",
+    textAlign: "center",
+    justifyContent: "center",
+  },
+  input: {
+    fontFamily: "cerapro-Medium",
+    color: "var( --licorice)",
+    textAlign: "center",
+  },
+  inputtextarea: {
+    padding: "5px 35px 0px 35px",
+    fontFamily: "cerapro-Medium",
+    color: "var( --licorice)",
+  },
+  label: {
+    fontFamily: "cerapro-Medium",
+    color: "#560a02",
+    fontSize: "15px",
+    // fontWeight: 700,
+    opacity: 0.48,
+    whiteSpace: "nowrap",
+  },
+  title: {
+    color: "var(--licorice)",
+    fontFamily: "var(--font-family-cerapro-bold)",
+    fontSize: "43px",
+    fontWeight: 700,
+    letterSpacing: 0,
+    lineHeight: "43px",
+    minHeight: "49px",
+    whiteSpace: "nowrap",
+    marginTop: "-5px",
+  },
+  txtName: {
+    [`& fieldset`]: {
+      borderRadius: 39,
+      border: "3px solid var(--gold)",
+    },
+    backgroundColor: "var(--white)",
+    marginTop: "15px",
+    width: "300px",
+    height: "45px",
+  },
+  textarea: {
+    [`& fieldset`]: {
+      borderRadius: 39,
+      border: "3px solid var(--gold)",
+    },
+    backgroundColor: "var(--white)",
+    width: "500px",
+  },
+}));
 export default function AddQuizRandomly(props) {
-  const [nbQuestion, setnbQuestion] = useState();
+  const [nbQuestion, setnbQuestion] = useState(5);
   const [creation_date, setcreation_date] = useState();
   const [questionsRandomly, setquestionsRandomly] = useState([]);
   const [validation_date, setvalidation_date] = useState();
   const [questionList, setquestionList] = useState([]);
+  const [quizName, setquizName] = useState("");
   const [notify, setNotify] = useState({
     isOpen: false,
     message: "",
@@ -72,6 +136,7 @@ export default function AddQuizRandomly(props) {
           validation_date,
           nbQuestion,
           questions: list,
+          quizName,
         },
         config
       );
@@ -96,6 +161,7 @@ export default function AddQuizRandomly(props) {
       }
     }
   };
+  const classes = styles();
   return (
     <Grid container spacing={{ xs: 6, md: 12 }}>
       <Grid item md={2}>
@@ -116,22 +182,68 @@ export default function AddQuizRandomly(props) {
             horizontal="right"
           />
           <form onSubmit={handleSubmit}>
-            <Grid container>
-              <Grid xs={4}>
+            <Grid container textAlign="center" spacing={2}>
+              <Grid xs={12}>
                 <TextField
-                  label="Nb Question"
-                  variant="standard"
-                  type="number"
-                  value={nbQuestion}
+                  // label="quizName"
+                  type="text"
+                  id="outlined-basic"
+                  variant="outlined"
+                  className={classes.txtName}
+                  // InputProps={{}}
+                  InputProps={{
+                    classes: { input: classes.input },
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <h4
+                          style={{
+                            fontFamily: "var(--font-family-cerapro-bold)",
+                          }}
+                        >
+                          Quiz_
+                        </h4>
+                      </InputAdornment>
+                    ),
+                  }}
+                  value={quizName}
+                  // style={{ borderRadius: "20px", border: "4px solid gold" }}
                   onChange={(e) => {
-                    setnbQuestion(e.target.value);
+                    setquizName(e.target.value);
                   }}
                 />
               </Grid>
-              <Grid xs={4}>
+              <Grid item xs={12}>
+                <NumericInput
+                  // label="Nb Question"
+                  // variant="standard"
+                  type="number"
+                  // min="5"
+                  // max="210"
+                  // style={{ borderRadius: "20px", border: "4px solid gold" }}
+                  value={nbQuestion}
+                  className={classes.txtName}
+                  mobile
+                  min={5}
+                  // max={100}
+                  // InputProps={{
+                  //   classes: { input: classes.input },
+                  //   inputProps: { min: 5 },
+                  // }}
+                  // InputProps={{  }}
+                  // onChange={(e) => {
+                  //   setnbQuestion(e.target.value);
+                  // }}
+                />
+              </Grid>
+              <Grid item xs={12}>
                 <TextField
                   name="creation Date "
-                  label="creation Date "
+                  id="outlined-basic"
+                  variant="outlined"
+                  className={classes.txtName}
+                  InputProps={{
+                    classes: { input: classes.input },
+                  }}
                   format={"yyyy/mm/dd"}
                   InputLabelProps={{ shrink: true, required: true }}
                   type="date"
@@ -142,14 +254,21 @@ export default function AddQuizRandomly(props) {
                   //   InputProps={{ inputProps: { min: Date.now() } }}
                 />
               </Grid>
-              <Grid xs={4}>
+              <Grid item xs={12}>
                 <TextField
                   name="validation Date "
-                  label="validation Date "
+                  // label="validation Date "
                   format={"yyyy/MM/DD"}
-                  InputLabelProps={{ shrink: true, required: true }}
-                  type="date"
                   value={validation_date}
+                  type="date"
+                  InputLabelProps={{ shrink: true, required: true }}
+                  id="outlined-basic"
+                  variant="outlined"
+                  className={classes.txtName}
+                  InputProps={{
+                    classes: { input: classes.input },
+                  }}
+                  // style={{ borderRadius: "20px", border: "4px solid gold" }}
                   onChange={(e) => {
                     setvalidation_date(e.target.value);
                   }}
