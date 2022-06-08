@@ -91,20 +91,26 @@ export default function Candidate() {
     subTitle: "",
   });
   const [openAddVoucher, setopenAddVoucher] = useState(false);
-  const quizmasterInfo = JSON.parse(sessionStorage.getItem("quizmasterInfo"));
+  // const quizmasterInfo = JSON.parse(sessionStorage.getItem("quizmasterInfo"));
   const [candidates, setcandidates] = useState([]);
   const loadCandidates = async () => {
+    const quizmasterInfo = JSON.parse(sessionStorage.getItem("quizmasterInfo"));
     const config = {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${quizmasterInfo.token}`,
       },
     };
-    const result = await axios.get(
-      process.env.REACT_APP_BACKEND + "/quizmaster/getCandidats",
-      config
-    );
-    setcandidates(result.data.reverse());
+    try {
+      const result = await axios.get(
+        process.env.REACT_APP_BACKEND + "/quizmaster/getCandidats",
+        config
+      );
+      setcandidates(result.data.reverse());
+      console.log("hello", candidates);
+    } catch (error) {
+      console.log(error);
+    }
   };
   useEffect(
     () => {
@@ -217,10 +223,15 @@ export default function Candidate() {
               <div
                 style={{
                   color: "var(--gold)",
-                  boxShadow: "0px 3px 6px #00000029",
                 }}
               >
-                <IoTicketSharp size={30} />
+                <IoTicketSharp
+                  size={30}
+                  style={{
+                    boxShadow: "0px 3px 6px #00000029",
+                    // backgroundColor: "white",
+                  }}
+                />
               </div>
               <div style={{ marginTop: "5px" }}>generate</div>
             </div>
@@ -451,10 +462,10 @@ export default function Candidate() {
         </TableBody>
       </TblContainer>
       ;{/* })} */}
-      <ConfirmDialog
+      {/* <ConfirmDialog
         confirmDialog={confirmDialog}
         setConfirmDialog={setConfirmDialog}
-      />
+      /> */}
     </ContentMenuItem>
   );
 }

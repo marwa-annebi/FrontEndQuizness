@@ -108,7 +108,10 @@ function App() {
             element={<AddQuizRandomly {...companyColors} />}
             path="/QuizRandomly"
           />
-          <Route element={<PlayQuiz />} path="playQuiz"></Route>
+          <Route
+            element={<PlayQuiz {...companyColors} />}
+            path="playQuiz"
+          ></Route>
         </Routes>
       ) : (
         <Routes>

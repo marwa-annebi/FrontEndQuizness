@@ -3,7 +3,8 @@ import { Button } from "@mui/material";
 import React from "react";
 import Modal from "react-modal";
 import { useNavigate } from "react-router-dom";
-import selection from "./../../assets/paint-selection-svgrepo-com.svg";
+import selection from "./../../assets/selection-tool-svgrepo-com.svg";
+import random from "./../../assets/random-svgrepo-com.svg";
 const customStyles = {
   content: {
     top: "50%",
@@ -63,8 +64,15 @@ export default function ChooseTypeQuiz(props) {
       </div>
       <div
         className="ellipse-4"
-        style={{ marginTop: "-550px", marginLeft: "-320px" }}
-      ></div>
+        style={{
+          marginTop: "-550px",
+          marginLeft: "-320px",
+          textAlign: "center",
+          // justifyContent: "center",
+        }}
+      >
+        <img src={selection} style={{ width: "20px", marginTop: "7px" }} />
+      </div>
       {/* 
         <img
             className="chrono"
@@ -77,8 +85,10 @@ export default function ChooseTypeQuiz(props) {
       ></div>
       <div
         className="ellipse-3"
-        style={{ top: "143px", marginLeft: "-113px" }}
-      ></div>
+        style={{ top: "143px", marginLeft: "-113px", textAlign: "center" }}
+      >
+        <img src={random} style={{ width: "25px", marginTop: "7px" }} />
+      </div>
 
       <div
         className="watch-me"
