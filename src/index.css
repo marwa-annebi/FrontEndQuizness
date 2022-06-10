@@ -346,3 +346,17 @@ div.grid:hover p {
 ::-webkit-scrollbar-thumb:hover {
   background: gold;
 }
+
+
+::-webkit-calendar-picker-indicator {
+  /* filter: invert(1) brightness(50%) sepia(100%) saturate(10000%) hue-rotate(180deg) */
+  filter: invert(76%) sepia(89%) saturate(821%) hue-rotate(357deg) brightness(99%) contrast(105%)
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  /* -webkit-appearance: none;  */
+  /* margin: 0; 
+ */
+  color: gold;
+}

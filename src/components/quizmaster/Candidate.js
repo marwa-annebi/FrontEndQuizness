@@ -25,6 +25,46 @@ import pen from "./../../assets/pen-svgrepo-com.svg";
 import imgdelete from "./../../assets/delete-svgrepo-com@1x.png";
 import { makeStyles } from "@material-ui/core";
 import ConfirmDialog from "../ConfirmDialog";
+import AddVoucher from "./AddVoucher";
+import Modal from "react-modal";
+
+const customStyles = {
+  content: {
+    top: "50%",
+    left: "53%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-34%, -50%)",
+    borderRadius: "35px",
+    // borderColor: "transparent",
+    // backgroundColor: "var(--gold-2)",
+    backgroundColor: "white",
+    width: "807px",
+    // opacity: "1",
+    // heght: "350px",
+    fontFamily: "var(--font-family-cerapro-bold)",
+    justifyContent: "center",
+    textAlign: "center",
+    boxShadow: " 0px 3px 6px  #00000029",
+    direction: "column",
+    marginTop: "50px",
+    maxHeight: "510px",
+    // padding: "15px 15px",
+    // overFlow: "auto",
+    border: "5px solid var(--mahogany)",
+  },
+  overlay: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    webkitBackdropFilter: "blur(13px) brightness(115%)",
+    backdropFilter: " blur(13px) brightness(115%)",
+    backgroundColor: "transparent",
+  },
+};
 const styles = makeStyles(() => ({
   paper: {
     background: "transparent",
@@ -124,12 +164,13 @@ export default function Candidate() {
       return items;
     },
   });
+  const [id, setid] = useState();
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTable(candidates, headCells, filterFn);
   function Row(props) {
     const { row } = props;
     const [open, setOpen] = React.useState(false);
-
+    console.log("#id", id);
     return (
       <React.Fragment>
         <TableRow
@@ -210,7 +251,8 @@ export default function Candidate() {
               // height: "30px",
             }}
             onClick={() => {
-              openAddVoucher(true);
+              setopenAddVoucher(true);
+              setid(row._id);
             }}
           >
             <div
@@ -456,8 +498,22 @@ export default function Candidate() {
       <TblContainer>
         <TblHead />
         <TableBody>
-          {recordsAfterPagingAndSorting().map((item) => (
-            <Row key={item.id} row={item} />
+          {recordsAfterPagingAndSorting().map((item, index) => (
+            <>
+              {" "}
+              <Row key={index} row={item} />
+              <Modal
+                isOpen={openAddVoucher}
+                onRequestClose={() => setopenAddVoucher(false)}
+                style={customStyles}
+              >
+                <AddVoucher
+                  // loadQuestions={loadQuestions}
+                  candidat={id}
+                  onClose={() => setopenAddVoucher(false)}
+                />
+              </Modal>
+            </>
           ))}
         </TableBody>
       </TblContainer>

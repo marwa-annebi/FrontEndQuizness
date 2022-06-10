@@ -21,6 +21,20 @@ export default function PlayQuiz(props) {
   const { from } = location.state;
   const [quiz, setquiz] = useState();
   const [count, setCount] = useState(0);
+  // const [clonequestiions, setclonequestiions] = useState();
+  const [propositions, setpropositions] = useState({
+    candidate: candidate.user._id,
+    reponses: [
+      {
+        questionId: "",
+        // proposition: {
+        //   checked: false,
+        // },
+        proposition: [],
+      },
+    ],
+  });
+  console.log("#propositions", propositions);
   const pages = [1, 5, 10, 25];
 
   // pagination
@@ -46,12 +60,13 @@ export default function PlayQuiz(props) {
 
   const fetchUsers = async () => {
     try {
-      const { data, countQuestion, error } = await read({
+      const { result, countQuestion } = await read({
         page: page + 1,
         perPage: rowsPerPage,
         id: id,
       });
-      setquiz(data.questions);
+      // console.log(result);
+      setquiz(result);
       setCount(countQuestion);
     } catch (error) {
       console.log(error);
@@ -76,6 +91,13 @@ export default function PlayQuiz(props) {
     setRowsPerPage(parseInt(e.target.value, 10));
     setPage(0);
   };
+  const handleInputChange = (e) => {
+    const { name, value, checked } = e.target;
+    setpropositions({
+      ...propositions,
+      [name]: value || checked,
+    });
+  };
 
   return (
     <Fragment>
@@ -86,19 +108,28 @@ export default function PlayQuiz(props) {
             <Typography>
               {quiz?.map((item) => {
                 return (
-                  <>
-                    <h5>{item.tronc}</h5>
+                  <React.Fragment key={item._id}>
+                    <h5 >{item.tronc}</h5>
                     <div>
                       {item.propositions.map((proposition, index) => {
                         return (
-                          <div style={{ display: "flex" }}>
+                          <div key={proposition.id} style={{ display: "flex" }}>
                             <Checkbox
-                              value={proposition[index]}
+                              key={index}
+                              // checked={propositions.reponses.checked}
+                              checked={
+                                !!propositions.reponses.find(
+                                  (o) => o.questionId === proposition.question
+                                )
+                              }
                               // onChange={handleInputChange}
+                              // checked={index}
                             />
                             <h6
-                              value={proposition}
-                              // onChange={handleInputChange}
+                              value={proposition._id}
+                              onChange={() => {
+                                handleInputChange();
+                              }}
                             >
                               {proposition.content}
                             </h6>
@@ -106,7 +137,7 @@ export default function PlayQuiz(props) {
                         );
                       })}
                     </div>
-                  </>
+                  </React.Fragment>
                 );
               })}
             </Typography>

@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
 import NavBar from "./NavBar";
-import { Button, Grid, TextField } from "@mui/material";
+import { Alert, Button, Grid, TextField } from "@mui/material";
 import SideMenu from "./SideMenu";
 import Notification from "../Notification";
 import { InputAdornment, makeStyles } from "@material-ui/core";
+import { FiMinus } from "react-icons/fi";
 import NumericInput from "react-numeric-input";
+import { ExpandLess, ExpandMore } from "@material-ui/icons";
+import { IoAdd } from "react-icons/io5";
 const styles = makeStyles((theme) => ({
   h5: {
     fontFamily: "cerapro-Medium",
@@ -19,9 +22,15 @@ const styles = makeStyles((theme) => ({
     fontFamily: "cerapro-Medium",
     textAlign: "center",
     justifyContent: "center",
+    marginRight: "100px",
   },
   input: {
     fontFamily: "cerapro-Medium",
+    color: "var( --licorice)",
+    textAlign: "start",
+  },
+  inputNumber: {
+    fontFamily: "var(--font-family-cerapro-medium)",
     color: "var( --licorice)",
     textAlign: "center",
   },
@@ -52,12 +61,13 @@ const styles = makeStyles((theme) => ({
   txtName: {
     [`& fieldset`]: {
       borderRadius: 39,
-      border: "3px solid var(--gold)",
+      border: "3px solid var(--mahogany-32)",
+      // color: "var(--mahogany-32)",
     },
     backgroundColor: "var(--white)",
     marginTop: "15px",
-    width: "300px",
-    height: "45px",
+    width: "250px",
+    height: "55px",
   },
   textarea: {
     [`& fieldset`]: {
@@ -67,6 +77,22 @@ const styles = makeStyles((theme) => ({
     backgroundColor: "var(--white)",
     width: "500px",
   },
+  div: {
+    borderRadius: "39px",
+    border: "3px solid var(--gold)",
+    background: "#FCF5D5",
+    width: "250px",
+    height: "50px",
+    fontFamily: "var(--font-family-cerapro-bold)",
+    color: "var(--mahogany-32)",
+    textAlign: "center",
+    justifyContent: "center",
+    // fontSize: "26px",
+    // paddingTop: "5px",
+    lineHeight: "16px",
+    whiteSpace: 0,
+    marginLeft: "140px",
+  },
 }));
 export default function AddQuizRandomly(props) {
   const [nbQuestion, setnbQuestion] = useState(5);
@@ -75,6 +101,7 @@ export default function AddQuizRandomly(props) {
   const [validation_date, setvalidation_date] = useState();
   const [questionList, setquestionList] = useState([]);
   const [quizName, setquizName] = useState("");
+  const [duration, setduration] = useState(5);
   const [notify, setNotify] = useState({
     isOpen: false,
     message: "",
@@ -137,6 +164,7 @@ export default function AddQuizRandomly(props) {
           nbQuestion,
           questions: list,
           quizName,
+          duration,
         },
         config
       );
@@ -182,8 +210,25 @@ export default function AddQuizRandomly(props) {
             horizontal="right"
           />
           <form onSubmit={handleSubmit}>
-            <Grid container textAlign="center" spacing={2}>
-              <Grid xs={12}>
+            <Grid
+              container
+              textAlign="center"
+              justifyContent="center"
+              spacing={2}
+              style={{ marginTop: "20px" }}
+            >
+              <Grid item xs={6}>
+                <div
+                  // label="quizName"
+                  type="text"
+                  id="outlined-basic"
+                  variant="outlined"
+                  className={classes.div}
+                >
+                  <h1 style={{ fontSize: "24px" }}> Quiz Name</h1>
+                </div>
+              </Grid>
+              <Grid item xs={6}>
                 <TextField
                   // label="quizName"
                   type="text"
@@ -198,6 +243,7 @@ export default function AddQuizRandomly(props) {
                         <h4
                           style={{
                             fontFamily: "var(--font-family-cerapro-bold)",
+                            color: "var(--mahogany-32)",
                           }}
                         >
                           Quiz_
@@ -210,42 +256,167 @@ export default function AddQuizRandomly(props) {
                   onChange={(e) => {
                     setquizName(e.target.value);
                   }}
+                  style={{ marginRight: "100px" }}
                 />
               </Grid>
-              <Grid item xs={12}>
-                <NumericInput
+              <Grid item xs={6}>
+                <div
+                  // label="quizName"
+                  type="text"
+                  id="outlined-basic"
+                  variant="outlined"
+                  className={classes.div}
+                >
+                  <h1 style={{ fontSize: "24px" }}> Nb Question</h1>
+                </div>
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
                   // label="Nb Question"
                   // variant="standard"
-                  type="number"
+                  // type="number"
                   // min="5"
                   // max="210"
                   // style={{ borderRadius: "20px", border: "4px solid gold" }}
                   value={nbQuestion}
                   className={classes.txtName}
                   mobile
-                  min={5}
+                  // min={5}
                   // max={100}
-                  // InputProps={{
-                  //   classes: { input: classes.input },
-                  //   inputProps: { min: 5 },
-                  // }}
+                  style={{ marginRight: "100px" }}
+                  InputProps={{
+                    classes: { input: classes.inputNumber },
+                    inputProps: { min: 5 },
+                    startAdornment: (
+                      <InputAdornment
+                        position="start"
+                        style={{ color: "gold", cursor: "pointer" }}
+                        onClick={() => {
+                          if (nbQuestion === 5) {
+                            alert("Nb Question min is 5");
+                          } else {
+                            setnbQuestion(nbQuestion - 1);
+                          }
+                        }}
+                      >
+                        <FiMinus size={30} />
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      <InputAdornment
+                        position="end"
+                        style={{ color: "gold", cursor: "pointer" }}
+                        onClick={() => setnbQuestion(nbQuestion + 1)}
+                      >
+                        <IoAdd size={30} />
+                      </InputAdornment>
+                    ),
+                  }}
                   // InputProps={{  }}
-                  // onChange={(e) => {
-                  //   setnbQuestion(e.target.value);
-                  // }}
+                  onChange={(e) => {
+                    setnbQuestion(e.target.value);
+                  }}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={6}>
+                <div
+                  // label="quizName"
+                  type="text"
+                  id="outlined-basic"
+                  variant="outlined"
+                  className={classes.div}
+                >
+                  <h1 style={{ fontSize: "24px" }}> Duration</h1>
+                </div>
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  style={{ marginRight: "100px" }}
+                  value={duration}
+                  className={classes.txtName}
+                  // mobile
+                  InputProps={{
+                    classes: { input: classes.inputNumber },
+                    inputProps: { min: 5 },
+                    startAdornment: (
+                      <InputAdornment
+                        position="start"
+                        style={{ color: "gold", cursor: "pointer" }}
+                        onClick={() => {
+                          if (duration === 5) {
+                            alert("Min duration  is 5");
+                          } else {
+                            setduration(duration - 1);
+                          }
+                        }}
+                      >
+                        <FiMinus size={30} />
+                      </InputAdornment>
+                    ),
+
+                    endAdornment: (
+                      <InputAdornment position="start">
+                        <h4
+                          style={{
+                            fontFamily: "var(--font-family-cerapro-bold)",
+                            color: "var(--mahogany-32)",
+                            marginRight: "30px",
+                          }}
+                        >
+                          Min
+                        </h4>
+                        <IoAdd
+                          style={{ color: "gold", cursor: "pointer" }}
+                          onClick={() => setduration(duration + 1)}
+                          size={30}
+                        />
+                      </InputAdornment>
+                    ),
+                  }}
+                  // InputProps={{  }}
+                  onChange={(e) => {
+                    setduration(e.target.value);
+                  }}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <div
+                  // label="quizName"
+                  type="text"
+                  id="outlined-basic"
+                  variant="outlined"
+                  className={classes.div}
+                >
+                  <h1 style={{ fontSize: "24px" }}>Creation Date</h1>
+                </div>
+              </Grid>
+              <Grid item xs={6}>
                 <TextField
                   name="creation Date "
                   id="outlined-basic"
                   variant="outlined"
                   className={classes.txtName}
+                  style={{ marginRight: "100px" }}
                   InputProps={{
                     classes: { input: classes.input },
+                    style: {
+                      color: "#560A02",
+                      fontFamily: "var(--font-family-cerapro-bold)",
+                      fontWeight: 700,
+                      fontSize: "20px",
+                    },
                   }}
                   format={"yyyy/mm/dd"}
-                  InputLabelProps={{ shrink: true, required: true }}
+                  InputLabelProps={{
+                    shrink: true,
+                    required: true,
+                    style: {
+                      color: "#560A02",
+                      fontFamily: "var(--font-family-cerapro-bold)",
+                      fontWeight: 700,
+                      fontSize: "20px",
+                    },
+                  }}
                   type="date"
                   value={creation_date}
                   onChange={(e) => {
@@ -254,9 +425,21 @@ export default function AddQuizRandomly(props) {
                   //   InputProps={{ inputProps: { min: Date.now() } }}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={6}>
+                <div
+                  // label="quizName"
+                  type="text"
+                  id="outlined-basic"
+                  variant="outlined"
+                  className={classes.div}
+                >
+                  <h1 style={{ fontSize: "24px" }}> Validation Date</h1>
+                </div>
+              </Grid>
+              <Grid item xs={6}>
                 <TextField
                   name="validation Date "
+                  style={{ marginRight: "100px" }}
                   // label="validation Date "
                   format={"yyyy/MM/DD"}
                   value={validation_date}
@@ -267,6 +450,12 @@ export default function AddQuizRandomly(props) {
                   className={classes.txtName}
                   InputProps={{
                     classes: { input: classes.input },
+                    style: {
+                      color: "#560A02",
+                      fontFamily: "var(--font-family-cerapro-bold)",
+                      fontWeight: 700,
+                      fontSize: "20px",
+                    },
                   }}
                   // style={{ borderRadius: "20px", border: "4px solid gold" }}
                   onChange={(e) => {
@@ -274,9 +463,31 @@ export default function AddQuizRandomly(props) {
                   }}
                 />
               </Grid>
-              <Grid xs={12}>
-                {" "}
-                <Button type="submit">submit</Button>
+              <Grid item xs={12}>
+                <button
+                  className="btnVerif border-1px-dove-gray"
+                  variant="contained"
+                  type="submit"
+                  // onClick={handleNext}
+                  style={{
+                    marginLeft: "50px",
+                    // height: "20px",
+
+                    textAlign: "center",
+                    marginTop: "30px",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontFamily: "var(--font-family-cerapro-bold)",
+                      fontWeight: 700,
+                      fontSize: "24px",
+                      marginTop: "-4px",
+                    }}
+                  >
+                    Randomize
+                  </div>
+                </button>
               </Grid>
             </Grid>
           </form>
