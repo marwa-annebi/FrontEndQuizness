@@ -442,7 +442,7 @@ export default function QuizHistory() {
                           color: "var(--heavy-metal)",
                         }}
                       >
-                        {row.duration}
+                        {row.duration} Minutes
                       </TableCell>
                       <TableCell
                         style={{
@@ -451,9 +451,47 @@ export default function QuizHistory() {
                           color: "var(--heavy-metal)",
                         }}
                       >
-                        {row.questions.map((prop) => (
+                        {row.questions.map((prop, index) => (
                           <div>
-                            <Grid xs={12}>  {prop.tronc} </Grid>
+                            <Grid
+                              xs={12}
+                              style={{
+                                display: "flex",
+                                // justifyContent: "space-between",
+                              }}
+                            >
+                              {/* <h5 style={{ color: "var(--mahogany-32)" }}>
+                                {" "} */}
+                              {index + 1}
+                              {/* </h5> */}
+                              <div
+                                style={{
+                                  // borderRadius: "39px",
+                                  // border: "3px solid gold",
+                                  // width: "20px",
+                                  // height: "20px",
+                                  // textAlign: "center",
+                                  color: "gold",
+                                  fontFamily: "var(--font-family-cerapro-bold)",
+                                  // color: "var(--mahogany-32)",
+                                  // position: "absolute",
+                                  // marginRight: "10px",
+                                }}
+                              >
+                                )
+                              </div>
+                              <h6
+                                style={{
+                                  marginTop: "5px",
+                                  textAlign: "start",
+                                  marginLeft: "10px",
+                                }}
+                              >
+                                {" "}
+                                {prop.tronc}
+                              </h6>{" "}
+                              {/* </div> */}
+                            </Grid>
                           </div>
                         ))}
                       </TableCell>

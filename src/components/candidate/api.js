@@ -2,7 +2,7 @@ export const read = async ({ page, perPage, id } = {}) => {
   const candidate = JSON.parse(sessionStorage.getItem("candidateInfo"));
 
   try {
-    const res = await fetch(
+    const result = await fetch(
       `${process.env.REACT_APP_BACKEND}/candidate/getQuizById/${id}?page=${page}&perPage=${perPage}`,
       {
         method: "GET",
@@ -11,10 +11,12 @@ export const read = async ({ page, perPage, id } = {}) => {
           Accept: "application/json",
           Authorization: `Bearer ${candidate.token}`,
         },
+        // body: JSON.stringify({ countQuestion }),
       }
     );
     // console.log("#ress", res.send());
-    return await res.json();
+    // console.log(result.json());
+    return result.json();
   } catch (error) {
     throw new Error(error.message);
   }
