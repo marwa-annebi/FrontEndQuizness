@@ -6,6 +6,9 @@ import ContentMenuItem from "./../ContentMenuItem";
 import ChooseTypeQuiz from "./ChooseTypeQuiz";
 import { IoChevronDown, IoChevronUp } from "react-icons/io5";
 import moment from "moment";
+import selection from "./../../assets/selection-tool-svgrepo-com.svg";
+import randomly from "./../../assets/random-svgrepo-com.svg";
+
 import {
   Box,
   Checkbox,
@@ -26,14 +29,52 @@ import deleteHover from "./../../assets/Composant 12 – 1.svg";
 import pen from "./../../assets/pen-svgrepo-com.svg";
 import imgdelete from "./../../assets/delete-svgrepo-com@1x.png";
 import ConfirmDialog from "../ConfirmDialog";
+import { useNavigate } from "react-router-dom";
+import EditQuizBySelection from "./EditQuizBySelection";
+import Modal from "react-modal";
+import EditQuizRandomly from "./EditQuizRandomly";
 const headCells = [
-  // { id: "", label: "" },
   { id: "quizName", label: "quiz_name" },
   { id: "validation_date", label: "validation_date" },
-  // { id: "duration", label: "duration" },
-  // { id: "duration", label: "duration" },
   { id: "actions", label: "Actions", disableSorting: true },
 ];
+const customStyles = {
+  content: {
+    top: "50%",
+    left: "53%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-34%, -50%)",
+    borderRadius: "35px",
+    // borderColor: "transparent",
+    // backgroundColor: "var(--gold-2)",
+    backgroundColor: "white",
+    width: "807px",
+    // opacity: "1",
+    // heght: "350px",
+    fontFamily: "var(--font-family-cerapro-bold)",
+    justifyContent: "center",
+    textAlign: "center",
+    boxShadow: " 0px 3px 6px  #00000029",
+    direction: "column",
+    marginTop: "50px",
+    maxHeight: "510px",
+    // padding: "15px 15px",
+    // overFlow: "auto",
+    border: "5px solid var(--mahogany)",
+  },
+  overlay: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    webkitBackdropFilter: "blur(13px) brightness(115%)",
+    backdropFilter: " blur(13px) brightness(115%)",
+    backgroundColor: "transparent",
+  },
+};
 const styles = makeStyles(() => ({
   paper: {
     background: "transparent",
@@ -91,8 +132,11 @@ export default function QuizHistory() {
     title: "",
     subTitle: "",
   });
+  const [OpenSelection, setOpenSelection] = useState(false);
+  const [quizId, setquizId] = useState(null);
   const [openModel, setopenModel] = useState(false);
   const [quizzes, setquizzes] = useState([]);
+  const [OpenEdit, setOpenEdit] = useState(false);
   const closeModal = () => {
     setopenModel(false);
   };
@@ -162,17 +206,14 @@ export default function QuizHistory() {
   };
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTable(quizzes, headCells, filterFn);
+  const navigate = useNavigate();
   function Row(props) {
     const { row } = props;
     const [open, setOpen] = React.useState(false);
 
     return (
       <React.Fragment>
-        <TableRow
-          // className={classes.tableRow}
-          sx={{ "& > *": { borderBottom: "none" } }}
-          // style={{ height: "50px" }}
-        >
+        <TableRow sx={{ "& > *": { borderBottom: "none" } }}>
           <div
             style={{
               backgroundColor: "white",
@@ -202,29 +243,49 @@ export default function QuizHistory() {
             </IconButton>
           </div>
           <TableCell
-            // size="small"
             className={classes.tableCell}
             style={{
               backgroundColor: "white",
               borderRadius: "40px",
               width: "220px",
               padding: "0px 30px",
-
-              // height: "5px",
               border: "4px solid var(--mahogany-3)",
-              textAlign: "center",
-              // marginLeft: "40px",
               fontFamily: "var(--font-family-cerapro-medium)",
               color: "#464646",
-              // fontWeight: 500,
-              // fontSize: "18px",
-              // marginBottom: "5px",
-              // padding: "0px 18px 0px 0px",
-              // height: "27px",
-              // lineHeight: "2px",
             }}
           >
-            {row.quizName}
+            {row.typeQuiz === "selection" ? (
+              <img
+                src={selection}
+                style={{
+                  width: "20px",
+                  position: "absolute",
+
+                  marginRight: "10px",
+                  marginTop: "5px",
+                }}
+              />
+            ) : (
+              <img
+                src={randomly}
+                style={{
+                  width: "20px",
+                  position: "absolute",
+
+                  marginRight: "10px",
+                  marginTop: "12px",
+                }}
+              />
+            )}
+            <p
+              style={{
+                lineHeight: "18px",
+                textAlign: "center",
+              }}
+            >
+              {" "}
+              {row.quizName}
+            </p>
           </TableCell>
           <TableCell
             style={{
@@ -296,10 +357,17 @@ export default function QuizHistory() {
               src={pen}
               className="edit"
               // key={key}
-              // onClick={() => {
-              //   setopenEditPopup(true);
-              //   // setRecordForEdit(row);
-              // }}
+              onClick={() => {
+                if (row.typeQuiz === "selection") {
+                  setOpenSelection(true);
+                  setquizId(row);
+                }
+                // navigate("/EditQuizBySelection");
+                else {
+                  setOpenEdit(true);
+                  setquizId(row);
+                }
+              }}
             />
 
             <img
@@ -323,22 +391,21 @@ export default function QuizHistory() {
               onMouseEnter={(e) => (e.currentTarget.src = deleteHover)}
               onMouseOut={(e) => (e.currentTarget.src = imgdelete)}
             />
-            {/* <Button
-                color="secondary"
-                onClick={() => {
-                  setConfirmDialog({
-                    isOpen: true,
-                    title: "Are you sure to delete this record?",
-                    subTitle: "You can't undo this operation",
-                    onConfirm: () => {
-                      deleteQuestion(row._id);
-                    },
-                  });
-                }}
-              >
-                <CloseIcon fontSize="small" />
-              </Button> */}
           </TableCell>
+          <Modal
+            isOpen={OpenSelection}
+            onRequestClose={() => setOpenSelection(false)}
+            style={customStyles}
+          >
+            <EditQuizBySelection quizId={quizId} />
+          </Modal>
+          <Modal
+            isOpen={OpenEdit}
+            onRequestClose={() => setOpenEdit(false)}
+            style={customStyles}
+          >
+            <EditQuizRandomly quizId={quizId} />
+          </Modal>
         </TableRow>
         {/* <Modal
           isOpen={openEditPopup}
@@ -510,8 +577,8 @@ export default function QuizHistory() {
       <TblContainer>
         <TblHead />
         <TableBody>
-          {recordsAfterPagingAndSorting().map((row) => (
-            <Row key={row.id} row={row} />
+          {quizzes?.map((row) => (
+            <Row key={row._id} row={row} />
           ))}
         </TableBody>
       </TblContainer>

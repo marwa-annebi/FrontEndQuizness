@@ -570,7 +570,7 @@ export default function QuestionsBank({ active }) {
       <TblContainer>
         <TblHead />
         <TableBody>
-          {recordsAfterPagingAndSorting().map((row) => (
+          {questionList.map((row) => (
             <Row key={row.id} row={row} />
           ))}
         </TableBody>

@@ -21,6 +21,15 @@ function getItem(label, key) {
 
 const items = [
   getItem(
+    <NavLink
+      className={({ isActive }) => (isActive ? "link-active" : "link")}
+      to="/dashboard/quizMaster/statistics"
+    >
+      Statistics
+    </NavLink>,
+    "0"
+  ),
+  getItem(
     // <div style={{ padding: "100px", height: "" }}>
     <NavLink
       className={({ isActive }) => (isActive ? "link-active" : "link")}
@@ -68,6 +77,15 @@ const items = [
       List Candidates
     </NavLink>,
     "5"
+  ),
+  getItem(
+    <NavLink
+      className={({ isActive }) => (isActive ? "link-active" : "link")}
+      to="/dashboard/quizMaster/vouchers"
+    >
+      Vouchers
+    </NavLink>,
+    "6"
   ),
   // getItem("Voucher ", "5"),
 ];

@@ -23,6 +23,12 @@ import QuizzesCandidate from "../components/candidate/QuizzesCandidate";
 import Certificates from "../components/candidate/Certificates";
 import SkillsPage from "../components/candidate/SkillsPage";
 import PlayQuiz from "../components/candidate/PlayQuiz";
+import EditQuizBySelection from "../components/quizmaster/EditQuizBySelection";
+import EditQuizRandomly from "../components/quizmaster/EditQuizRandomly";
+import { CheckoutSuccess } from "../components/candidate/CheckoutSuccess";
+import NotFound from "../components/NotFoundPage";
+import { ListVoucher } from "../components/quizmaster/ListVoucher";
+import { Statics, Statistics } from "../components/quizmaster/Statistics";
 function App() {
   const [companyColors, setcompanyColors] = React.useState("");
   const [subdomain, setSubDomain] = React.useState(null);
@@ -70,6 +76,8 @@ function App() {
             <Route path="questionsBank" element={<QuestionsBank />} />
             <Route path="category" element={<Category />} />
             <Route path="candidate" element={<Candidate />} />
+            <Route path="statistics" element={<Statistics />} />
+            <Route path="vouchers" element={<ListVoucher />} />
           </Route>
           <Route
             path="/dashboard/candidate/*"
@@ -109,14 +117,23 @@ function App() {
             path="/QuizRandomly"
           />
           <Route
-            element={<PlayQuiz {...companyColors} />}
-            path="playQuiz"
+            element={<PlayQuiz company_info={companyColors} />}
+            path="/playQuiz"
           ></Route>
+          <Route
+            element={<EditQuizBySelection />}
+            path="/EditQuizBySelection"
+          />
+          <Route element={<EditQuizRandomly />} path="/EditQuizRandomly" />
+          <Route element={<EditQuizRandomly />} path="/EditQuizRandomly" />
+          <Route element={<CheckoutSuccess />} path="/success" />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       ) : (
         <Routes>
           <Route path="/" element={<Home />} exact />
           <Route element={<LinaerStepper />} path="/quizmaster/:id" exact />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       )}
     </BrowserRouter>

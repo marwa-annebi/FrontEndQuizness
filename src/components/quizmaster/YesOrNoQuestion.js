@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PropositionCheckbox from "./PropositionCheckbox";
 import {
   Grid,
@@ -10,6 +10,7 @@ import {
   Select,
 } from "@mui/material";
 import {
+  Checkbox,
   FormControlLabel,
   makeStyles,
   Radio,
@@ -18,6 +19,7 @@ import {
 import Notification from "../Notification";
 import Loading from "../Loading";
 import addmultiChoice from "./../../assets/yes or no2.svg";
+import { logRoles } from "@testing-library/react";
 const styles = makeStyles(() => ({
   paper: {
     color: "transparent",
@@ -203,12 +205,28 @@ export default function YesOrNoQuestion(props) {
     }
   };
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, checked } = e.target;
     setquestion({
       ...question,
-      [name]: value,
+      [name]: value || checked,
     });
+    if (checked) {
+      if (question.propositions.length < 1) {
+        setquestion({
+          ...question,
+          [name]: value || checked,
+        });
+      }
+      // console.log(check);
+    } else {
+      //  console.log(check);
+
+      setquestion((prev) => prev.filter((x) => value !== x));
+    }
   };
+  const checkRef = useRef();
+
+  console.log(question);
   return (
     <>
       {loading ? (
@@ -345,49 +363,70 @@ export default function YesOrNoQuestion(props) {
             <div
               style={{ direction: "row", display: "flex", textAlign: "center" }}
             >
-              {/* {question.propositions.map((item, index) => {
+              {question.propositions.map((item, index) => {
                 console.log("#item", item);
-                return ( */}
-              <Grid xs={6}>
-                <div>
-                  <input
-                    type="radio"
-                    value={question.propositions[0].veracity}
-                    name={question.propositions[0].veracity}
-                    checked={question.propositions[0].veracity === "Male"}
-                    onChange={handleInputChange}
-                  />
-                  {question.propositions[0].content}
-                  <input
-                    type="radio"
-                    value={question.propositions[1].veracity}
-                    name={question.propositions[1].veracity}
-                    onChange={handleInputChange}
-                  />
-                  {question.propositions[1].content}
-                </div>
-                {/* <TextField
-                      //   name={propositions[index].content}
+                return (
+                  <div key={index}>
+                    <Grid container textAlign="center" spacing={2}>
+                      {/* <div className="radio"> */}
+                      <Grid
+                        item
+                        xs={12}
+                        // style={{ marginTop: "15px", marginRight: "250px" }}
+                      >
+                        <input
+                          type="radio"
+                          style={{
+                            // display: "none",
+                            color: "var(--mahogany-32)",
+                            width: 26,
+                            position: "absolute",
+                            height: 26,
+                            marginTop: "15px",
+                          }}
+                          name="veracity"
+                          value={item.veracity}
+                          onChange={(e) => {
+                            item.veracity = e.target.checked;
+                            // console.log(prop);
+                            console.log(e.target.checked);
+                            setquestion({ ...question });
+                          }}
+                          // checked={question.propositions.ver.indexOf(color) >= 0}
 
-                      //   label={`Option ${index + 1}`}
-                      id="outlined-basic"
-                      variant="outlined"
-                      className={classes.txtName}
-                      InputProps={{
-                        classes: { input: classes.input },
-                      }}
-                      value={item.content}
-                      InputLabelProps={{ className: classes.label }}
-                      //   onChange={(e) => {
-                      //     item.content = e.target.value;
-                      //     // console.log(prop);
-                      //     setquestion({ ...item });
-                      //   }}
-                    /> */}
-                {/* </Radio> */}
-              </Grid>
-              {/* ); */}
-              {/* })} */}
+                          // size="30px"
+                        ></input>
+                        <label
+                          //   name={propositions[index].content}
+                          // label={`Option ${index + 1}`}
+                          // className={classes.txtName}
+                          // InputProps={{
+                          //   classes: { input: classes.input },
+                          // }}
+                          value={item.content}
+                          style={{
+                            marginTop: "-10px",
+                            textAlign: "end",
+                          }}
+                          // InputLabelProps={{ className: classes.label }}
+                          // onChange={(e) => {
+                          //   item.content = e.target.value;
+                          //   // console.log(prop);
+                          //   setquestion({ ...question });
+                          // }}
+                        >
+                          {item.content}
+                        </label>
+                        {/* {item.content} */}
+                      </Grid>
+                      {/* <Grid item xs={6}> */}
+
+                      {/* </Grid> */}
+                      {/* </div> */}
+                    </Grid>
+                  </div>
+                );
+              })}
             </div>
           </Grid>
           {/* </form> */}

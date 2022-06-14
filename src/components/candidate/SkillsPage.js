@@ -121,11 +121,34 @@ export default function SkillsPage(props) {
     //   window.open(response.payUrl);
     // });
   };
-  // const click = (budget) => {
-  //   console.log(budget);
+  const candidateInfo = JSON.parse(sessionStorage.getItem("candidateInfo"));
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${candidateInfo.token}`,
+    },
+  };
+  const handleCheckout = (key) => {
+    console.log(key);
+    axios
+      .post(
+        process.env.REACT_APP_BACKEND + "/candidate/paymentCandidate",
+        {
+          key,
+          userId: candidateInfo.user._id,
+        },
+        config
+      )
+      .then((res) => {
+        if (res.data.url) {
+          window.location.href = res.data.url;
+        }
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
 
-  //   // debugger;
-  // };
   return (
     <div style={{ height: "100vh" }}>
       <ContentMenuItem
@@ -163,21 +186,12 @@ export default function SkillsPage(props) {
                       }}
                     >
                       {" "}
-                      {key.budget}{" "}
+                      {key.budget} DT
                     </p>
 
                     <div
                       className={classes.div}
-                      onClick={() => {
-                        paywithKonnect({
-                          receiverWallet: "629b3f54ca1ff70e36b26ec1",
-                          amount: key.budget,
-                          firstName: firstName,
-                          lastName: lastName,
-                          phoneNumber: "28467147",
-                          email: "marwaannebi25@gmail.com",
-                        });
-                      }}
+                      onClick={() => handleCheckout(key)}
                     >
                       Buy Voucher
                     </div>

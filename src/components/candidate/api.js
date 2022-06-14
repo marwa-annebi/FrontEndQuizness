@@ -14,8 +14,6 @@ export const read = async ({ page, perPage, id } = {}) => {
         // body: JSON.stringify({ countQuestion }),
       }
     );
-    // console.log("#ress", res.send());
-    // console.log(result.json());
     return result.json();
   } catch (error) {
     throw new Error(error.message);

@@ -165,6 +165,7 @@ export default function AddQuizRandomly(props) {
           questions: list,
           quizName,
           duration,
+          typeQuiz: "randomly",
         },
         config
       );

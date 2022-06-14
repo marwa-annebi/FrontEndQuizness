@@ -75,7 +75,7 @@ const styles = makeStyles({
   },
 });
 export default function NavBarCandidate(props) {
-  console.log(props);
+  console.log("#props", props);
   const classes = styles();
   const navigate = useNavigate();
   // const companySettings = useSelector((state) => state.companySettings);
