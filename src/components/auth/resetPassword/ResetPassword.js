@@ -111,7 +111,8 @@ export default function ResetPassword() {
       };
       setloading(true);
       const { data } = await axios.post(
-        `/auth/setNewPassword/${params.id}/${params.resetToken}/${params.type}`,
+        process.env.REACT_APP_BACKEND +
+          `/auth/setNewPassword/${params.id}/${params.resetToken}/${params.type}`,
         { password },
         config
       );

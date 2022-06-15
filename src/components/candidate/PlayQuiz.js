@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
-import { Checkbox, TablePagination } from "@material-ui/core";
+import { Checkbox, makeStyles, TablePagination } from "@material-ui/core";
 import { useLocation } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Pagination from "@mui/material/Pagination";
@@ -21,7 +21,32 @@ export default function PlayQuiz(company_info) {
       Authorization: `Bearer ${candidate.token}`,
     },
   };
-
+  const darkColor = company_info.company_info.account.darkColor;
+  const lightColor = company_info.company_info.account.lightColor;
+  const styles = makeStyles((theme) => ({
+    pagination: {
+      borderRadius: "33px",
+      textAlign: "center",
+      fontFamily: "var(--font-family-cerapro-bold)",
+      "& > *": {
+        marginTop: theme.spacing(2),
+        justifyContent: "center",
+        display: "flex",
+      },
+      "& .MuiButtonBase-root": {
+        backgroundColor: "white",
+        color: "#1D1D1D",
+        fontFamily: "var(--font-family-cerapro-bold)",
+        border: `1px solid ${lightColor}`,
+        textAlign: "center",
+      },
+      "& .Mui-selected": {
+        fontFamily: "var(--font-family-cerapro-bold)",
+        backgroundColor: darkColor,
+      },
+    },
+  }));
+  const classes = styles();
   const location = useLocation();
   const { state } = location;
   const [quiz, setquiz] = useState();
@@ -91,12 +116,12 @@ export default function PlayQuiz(company_info) {
       [name]: value || checked,
     });
   };
-  const isChecked = (item) =>
-    answercandidate.includes(item) ? "checked-item" : "not-checked-item";
-  console.log("#answercandidate", answercandidate);
-  const darkColor = company_info.company_info.account.darkColor;
-  const lightColor = company_info.company_info.account.lightColor;
 
+  console.log("#answercandidate", answercandidate);
+  const isChecked = (_id) => {
+    const checked = (element) => element === _id;
+    answercandidate.some(checked);
+  };
   return (
     <Grid container spacing={{ xs: 6, md: 12 }}>
       <Grid item md={2}>
@@ -177,17 +202,13 @@ export default function PlayQuiz(company_info) {
                           {item.tronc}
                         </h4>
                       </Grid>
-                      <Grid item key={item._id}>
+                      <Grid key={item._id}>
                         {item.propositions.map((proposition, index) => {
                           return (
-                            <Grid
-                              xs={12}
-                              item
-                              key={proposition._id}
-                              style={{ display: "flex" }}
-                            >
+                            <Grid xs={12} item style={{ display: "flex" }}>
+                              {/* <Grid> */}
                               <Checkbox
-                                key={proposition._id}
+                                key={item._id}
                                 name="response"
                                 onChange={
                                   (e) =>
@@ -202,14 +223,8 @@ export default function PlayQuiz(company_info) {
                                   color: lightColor,
                                 }}
                                 value={answercandidate[index]}
-                                // checked={() => {
-                                //   answercandidate.map((answer) => {
-                                //     console.log(answer);
-                                //   });
-                                // }}
-                                // checked={}
-                                // value={answercandidate.response}
                               />
+                              {/* <Grid xs={6}> */}
                               <h5
                                 value={answercandidate._id_proposition}
                                 name="_id_proposition"
@@ -231,12 +246,15 @@ export default function PlayQuiz(company_info) {
               </Grid>
               <Grid
                 item
+                xs={12}
                 style={{
-                  marginLeft: "290px",
-                  marginTop: "15px",
+                  marginTop: "auto",
                   borderRadius: "33px",
-                  // background: darkColor,
-                  // opacity: "0.3",
+                  backgroundColor: darkColor,
+                  opacity: 0.6,
+                  fontFamily: " var(--font-family-cerapro-bold)",
+                  padding: "10px",
+                  margin: "auto",
                 }}
               >
                 <Pagination
@@ -245,15 +263,12 @@ export default function PlayQuiz(company_info) {
                   showFirstButton
                   showLastButton
                   page={page}
-                  onChange={handleChangePage}
                   style={{
-                    borderRadius: "33px",
-                    color: lightColor,
-                    // "& .Mui-selected": {
-                    //   backgroundColor: "transparent",
-                    //   color: "red",
-                    // },
+                    fontFamily: " var(--font-family-cerapro-bold)",
+                    color: "#1D1D1D",
                   }}
+                  onChange={handleChangePage}
+                  className={classes.pagination}
                 />
               </Grid>
             </form>

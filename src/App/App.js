@@ -1,4 +1,4 @@
-import React, { useEffect, Suspense } from "react";
+import React, { useEffect, Suspense, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ForgotPasswordScreen from "../components/auth/forgotPassword/ForgotPasswordScreen";
@@ -36,7 +36,8 @@ function App() {
   const companySettings = useSelector((state) => state.companySettings);
   const { companyInfo } = companySettings;
   const company = companyInfo;
-
+  const [IsLoggedIn, setIsLoggedIn] = useState();
+  const [islogin, setislogin] = useState();
   useEffect(
     () => {
       const host = window.location.host; // gets the full domain of the app
@@ -45,7 +46,6 @@ function App() {
         .slice(0, host.includes("localhost") ? -1 : -2);
       if (arr.length > 0) setSubDomain(arr[0]);
       dispatch(CompanySettings());
-      console.log("......bla bla...", company);
       if (company) {
         setcompanyColors(company);
       }
@@ -53,7 +53,22 @@ function App() {
     [],
     [dispatch, company]
   );
+  const getUser = () => {
+    // let tokenQuizMaster = JSON.parse(sessionStorage.getItem("quizmasterInfo"));
+    let token = JSON.parse(sessionStorage.getItem(sessionStorage.key(1)));
+    setIsLoggedIn(token);
+    console.log("#isLoggedIn", token);
+    // setislogin(tokenQuizMaster);
+  };
 
+  useEffect(
+    () => {
+      getUser();
+      // console.log("#isLoggedIn", isLoggedIn);
+    },
+    [],
+    [IsLoggedIn]
+  );
   return (
     <BrowserRouter>
       {subdomain ? (
@@ -64,76 +79,82 @@ function App() {
             exact
           />
           <Route
-            element={<Dashboard {...companyColors} />}
-            path="/dashboard/quizMaster/*"
-            exact
-          >
-            <Route
-              path="updateProfile"
-              element={<UpdateProfile {...companyColors} />}
-            />
-            <Route path="quizHistory" element={<QuizHistory />} />
-            <Route path="questionsBank" element={<QuestionsBank />} />
-            <Route path="category" element={<Category />} />
-            <Route path="candidate" element={<Candidate />} />
-            <Route path="statistics" element={<Statistics />} />
-            <Route path="vouchers" element={<ListVoucher />} />
-          </Route>
-          <Route
-            path="/dashboard/candidate/*"
-            element={<DashboardCandidat company_info={companyColors} />}
-          >
-            <Route path="update" element={<Account {...companyColors} />} />
-            <Route
-              path="chooseSkills"
-              element={<SkillsPage {...companyColors} />}
-            />
-            <Route
-              path="certificates"
-              element={<Certificates {...companyColors} />}
-            />
-            <Route
-              path="quizzes"
-              element={<QuizzesCandidate {...companyColors} />}
-            ></Route>
-            {/*  */}
-          </Route>
-          <Route
-            element={<ForgotPasswordScreen />}
+            {...companyColors}
+            element={<ForgotPasswordScreen {...companyColors} />}
             path="/lostPassword/:type"
             exact
           />
           <Route
             element={<ResetPassword />}
             path="/setNewPassword/:id/:resetToken/:type"
-            exact
           />
-          <Route
-            element={<AddQuizBySelection {...companyColors} />}
-            path="/QuizBySelection"
-          />
-          <Route
-            element={<AddQuizRandomly {...companyColors} />}
-            path="/QuizRandomly"
-          />
-          <Route
-            element={<PlayQuiz company_info={companyColors} />}
-            path="/playQuiz"
-          ></Route>
-          <Route
-            element={<EditQuizBySelection />}
-            path="/EditQuizBySelection"
-          />
-          <Route element={<EditQuizRandomly />} path="/EditQuizRandomly" />
-          <Route element={<EditQuizRandomly />} path="/EditQuizRandomly" />
-          <Route element={<CheckoutSuccess />} path="/success" />
-          <Route path="*" element={<NotFound />} />
+          {IsLoggedIn ? (
+            <>
+              <Route
+                element={<Dashboard {...companyColors} />}
+                path="/dashboard/quizMaster/*"
+                exact
+              >
+                <Route
+                  path="updateProfile"
+                  element={<UpdateProfile {...companyColors} />}
+                />
+                <Route path="quizHistory" element={<QuizHistory />} />
+                <Route path="questionsBank" element={<QuestionsBank />} />
+                <Route path="category" element={<Category />} />
+
+                <Route path="candidate" element={<Candidate />} />
+                <Route path="statistics" element={<Statistics />} />
+                <Route path="vouchers" element={<ListVoucher />} />
+              </Route>
+              <Route
+                path="/dashboard/candidate/*"
+                element={<DashboardCandidat company_info={companyColors} />}
+              >
+                <Route path="update" element={<Account {...companyColors} />} />
+                <Route
+                  path="chooseSkills"
+                  element={<SkillsPage {...companyColors} />}
+                />
+                <Route
+                  path="certificates"
+                  element={<Certificates {...companyColors} />}
+                />
+                <Route
+                  path="quizzes"
+                  element={<QuizzesCandidate {...companyColors} />}
+                ></Route>
+                {/*  */}
+              </Route>
+
+              <Route
+                element={<AddQuizBySelection {...companyColors} />}
+                path="/QuizBySelection"
+              />
+              <Route
+                element={<AddQuizRandomly {...companyColors} />}
+                path="/QuizRandomly"
+              />
+              <Route
+                element={<PlayQuiz company_info={companyColors} />}
+                path="/playQuiz"
+              ></Route>
+              <Route
+                element={<EditQuizBySelection />}
+                path="/EditQuizBySelection"
+              />
+              <Route element={<EditQuizRandomly />} path="/EditQuizRandomly" />
+              <Route element={<EditQuizRandomly />} path="/EditQuizRandomly" />
+              <Route element={<CheckoutSuccess />} path="/success" />
+            </>
+          ) : (
+            <Route path="*" element={<NotFound />} />
+          )}
         </Routes>
       ) : (
         <Routes>
           <Route path="/" element={<Home />} exact />
           <Route element={<LinaerStepper />} path="/quizmaster/:id" exact />
-          <Route path="*" element={<NotFound />} />
         </Routes>
       )}
     </BrowserRouter>
