@@ -62,7 +62,7 @@ const styles = makeStyles({
     // position:"center"
   },
 });
-export default function ForgotPasswordScreen() {
+export default function ForgotPasswordScreen(props) {
   const classes = styles();
   const [email, setemail] = useState("");
   const params = useParams();
@@ -72,7 +72,7 @@ export default function ForgotPasswordScreen() {
     message: "",
     type: "",
   });
-  console.log(params.type);
+  console.log(props);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -84,8 +84,8 @@ export default function ForgotPasswordScreen() {
       };
       setloading(true);
       const { data } = await axios.post(
-        "/auth/sendpasswordlink",
-        { email, type: params.type },
+        process.env.REACT_APP_BACKEND + "/auth/sendpasswordlink",
+        { email, type: params.type, subDomain: props.account.domain_name },
         config
       );
       // localStorage.setItem("userInfo", JSON.stringify(data));
@@ -113,21 +113,28 @@ export default function ForgotPasswordScreen() {
   };
   return (
     <div>
-      {loading && <Loading />}
-      <Notification notify={notify} setNotify={setNotify} />
-      <form onSubmit={submitHandler} style={{ flexDirection: "column" }}>
-        <Grid
-          container
-          direction="column"
-          justifyContent="center"
-          alignItems="center"
-          spacing={7}
-          className={classes.grid}
-        >
-          <CssBaseline />
-          <Grid item xs={8}>
-            <div style={{ justifyContent: "center", alignItems: "center" }}>
-              {/* <div
+      {loading ? (
+        <Loading />
+      ) : (
+        <form onSubmit={submitHandler} style={{ flexDirection: "column" }}>
+          <Notification
+            notify={notify}
+            setNotify={setNotify}
+            vertical="top"
+            horizontal="right"
+          />
+          <Grid
+            container
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            spacing={7}
+            className={classes.grid}
+          >
+            <CssBaseline />
+            <Grid item xs={8}>
+              <div style={{ justifyContent: "center", alignItems: "center" }}>
+                {/* <div
             style={{
               backgroundColor: "gold",
               height: "62px",
@@ -137,37 +144,42 @@ export default function ForgotPasswordScreen() {
             //   justifyContent: "center",
             }}
           > */}
-              <img src={Logo} />
-              {/* </div> */}
-              {/* <br /> */}
-            </div>
-          </Grid>
-          <h2 className={classes.header4}>quizness</h2>
+                <img src={Logo} />
+                {/* </div> */}
+                {/* <br /> */}
+              </div>
+            </Grid>
+            <h2 className={classes.header4}>quizness</h2>
 
-          <Grid item xs={8}>
-            <TextField
-              type="email"
-              // class="form__field"
-              label="Email"
-              value={email}
-              id="email"
-              // required
-              onChange={(e) => setemail(e.target.value)}
-              InputProps={{
-                className: classes.input,
-              }}
-              InputLabelProps={{ className: classes.label }}
-              className={classes.textField}
-            />
-          </Grid>
+            <Grid item xs={8}>
+              <TextField
+                type="email"
+                // class="form__field"
+                label="Email"
+                value={email}
+                id="email"
+                // required
+                onChange={(e) => setemail(e.target.value)}
+                InputProps={{
+                  className: classes.input,
+                }}
+                InputLabelProps={{ className: classes.label }}
+                className={classes.textField}
+              />
+            </Grid>
 
-          {/* <Grid item xs={8}> */}
-          <Button type="submit" variant="contained" className={classes.submit}>
-            submit
-          </Button>
-          {/* </Grid> */}
-        </Grid>
-      </form>
+            {/* <Grid item xs={8}> */}
+            <Button
+              type="submit"
+              variant="contained"
+              className={classes.submit}
+            >
+              submit
+            </Button>
+            {/* </Grid> */}
+          </Grid>
+        </form>
+      )}
     </div>
   );
 }

@@ -115,12 +115,13 @@ function SignUpQuizmaster() {
           "Content-type": "application/json",
         },
       };
+      setloading(true);
       const { data } = await axios.post(
         process.env.REACT_APP_BACKEND + "/auth/registerQuizMaster",
         { firstName, lastName, email, password, confirmpassword },
         config
       );
-
+      setloading(false);
       sessionStorage.setItem("quizmasterInfo", JSON.stringify(data));
       const quizmasterInfo = JSON.parse(
         sessionStorage.getItem("quizmasterInfo")
@@ -140,8 +141,8 @@ function SignUpQuizmaster() {
           message: error.response.data.message,
           type: "error",
         });
-        setloading(false);
       }
+      setloading(false);
       // }
     }
   };

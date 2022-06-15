@@ -63,7 +63,7 @@ export default function Home() {
                 setopenPopupLogin(true);
               }}
             >
-              7 Days Free Trial
+              Sign Up
             </div>
             <div className="ellipse-4"></div>
 
