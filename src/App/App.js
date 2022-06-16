@@ -27,7 +27,7 @@ import EditQuizBySelection from "../components/quizmaster/EditQuizBySelection";
 import EditQuizRandomly from "../components/quizmaster/EditQuizRandomly";
 import { CheckoutSuccess } from "../components/candidate/CheckoutSuccess";
 import NotFound from "../components/NotFoundPage";
-import { ListVoucher } from "../components/quizmaster/ListVoucher";
+import ListVoucher from "../components/quizmaster/ListVoucher";
 import { Statics, Statistics } from "../components/quizmaster/Statistics";
 function App() {
   const [companyColors, setcompanyColors] = React.useState("");

@@ -92,7 +92,7 @@ const styles = makeStyles(() => ({
   },
 }));
 export default function QuestionForm(props) {
-  const { loadQuestions, questionId } = props;
+  const { loadQuestions, questionId, setclose } = props;
   const classes = styles();
   const [loading, setloading] = useState(false);
   const [question, setquestion] = useState({
@@ -158,6 +158,7 @@ export default function QuestionForm(props) {
         },
         config
       );
+      setclose();
       setloading(false);
 
       loadQuestions();

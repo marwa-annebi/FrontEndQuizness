@@ -663,7 +663,11 @@ export default function QuestionsBank({ active }) {
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <QuestionForm loadQuestions={loadQuestions} questionId={null} />
+        <QuestionForm
+          loadQuestions={loadQuestions}
+          questionId={null}
+          setclose={closeModal}
+        />
       </Modal>
       <Modal
         isOpen={openYesOrNo}

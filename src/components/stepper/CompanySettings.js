@@ -105,9 +105,6 @@ export default function CompanySettings({
   const classes = styles();
   const [colors, setcolors] = useState([]);
 
-  // const [pic, setPic] = useState();
-  // const [check, setcheck] = useState([]);
-  // const [domain_name, setdomain_name] = useState("");
   const handleChange = (e) => {
     const { value, checked } = e.target;
 
@@ -124,8 +121,6 @@ export default function CompanySettings({
   };
   const handleChangeLight = (e) => {
     const { value, checked } = e.target;
-
-    // console.log(check);
     if (checked) {
       if (lightColor.length < 1) {
         setlightColor((prev) => [...prev, value]);
@@ -136,26 +131,7 @@ export default function CompanySettings({
       setlightColor((prev) => prev.filter((x) => value !== x));
     }
   };
-  // const handleChange = (e) => {
-  //   const { value, checked } = e.target;
-  //   if (checked) {
-  //     // push selected value in list
-  //     // setcheck((prev) => [...prev, prev.color2=value]);
-  //     // console.log(check);
-  //     let temp_state = [...check];
-  //     let temp_element1 = { ...temp_state[1]=value };
-  //     // temp_element0 = value;
-  //     setcheck(temp_state);
-  //     if(temp_element1){
-  //       let temp_element0={...temp_state[0]=value}
-  //     }
-  //     setcheck(temp_state)
-  //     console.log(temp_state);
-  //   } else {
-  //     // remove unchecked value from the list
-  //     setcheck((prev) => prev.filter((x) => x !== value));
-  //   }
-  // };
+
   const [buttonText, setButtonText] = useState("Upload Your Logo");
   const params = useParams();
 
@@ -163,9 +139,6 @@ export default function CompanySettings({
   const [picMessage, setPicMessage] = useState();
 
   const renderSwatches = (type, id) => {
-    // const id=2;
-    // console.log(check);
-
     const nb = colors.length;
     return colors?.map((color, index) => {
       console.log(nb);
@@ -210,7 +183,6 @@ export default function CompanySettings({
               value={color}
               onChange={handleChange}
               checked={darkColor.indexOf(color) >= 0}
-
               // disabled={shouldDisableCheckbox(color)}
             />
           </div>
@@ -275,7 +247,11 @@ export default function CompanySettings({
   };
   const fileRef = useRef();
 
-  const getColors = (colors) => setcolors(colors);
+  const getColors = (colors) => {
+    setdarkColor([]);
+    setlightColor([]);
+    setcolors(colors);
+  };
   return picMessage ? (
     <div className="error-message">
       An error occurred while processing the image.

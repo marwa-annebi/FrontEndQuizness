@@ -129,13 +129,15 @@ export default function AddQuizBySelection(props) {
   const theme = useTheme();
   const [questionList, setquestionList] = React.useState([]);
   const [categories, setcategories] = useState([]);
-  const [nbQuestion, setnbQuestion] = useState(5);
+  const [nbQuestion, setnbQuestion] = useState(10);
   const [creation_date, setcreation_date] = useState();
   const [validation_date, setvalidation_date] = useState();
   const [questions, setquestions] = useState([]);
   const [quizName, setquizName] = useState("");
-  const [duration, setduration] = useState(5);
+  const [duration, setduration] = useState(15);
   const [loading, setloading] = useState(false);
+  const [tauxscore, settauxscore] = useState(50);
+  const [count, setcount] = useState(0);
   const [filterSkill, setfilterSkill] = useState("");
   const handleChangeFilter = (event) => {
     setfilterSkill(event.target.value);
@@ -184,18 +186,22 @@ export default function AddQuizBySelection(props) {
       return items;
     },
   });
+
   const handleChangeQuestion = (e) => {
     const { value, checked } = e.target;
     // console.log(check);
     let nb = questions.length;
-    console.log("nbq", nb);
+    // console.log("nbq", nb);
     if (checked) {
       if (questions.length < nbQuestion) {
         setquestions((prev) => [...prev, value]);
+        // let res = count++;
+        setcount(count + 1);
       }
       console.log(questions);
     } else {
       setquestions((prev) => prev.filter((x) => value !== x));
+      setcount(count - 1);
     }
   };
 
@@ -214,7 +220,7 @@ export default function AddQuizBySelection(props) {
           textAlign="center"
           justifyContent="center"
           spacing={2}
-          style={{ marginTop: "20px" }}
+          // style={{ marginTop: "10px" }}
         >
           <Grid item xs={6}>
             <div
@@ -362,7 +368,7 @@ export default function AddQuizBySelection(props) {
                         marginRight: "30px",
                       }}
                     >
-                      Min
+                      Minutes
                     </h4>
                     <IoAdd
                       style={{ color: "gold", cursor: "pointer" }}
@@ -375,6 +381,62 @@ export default function AddQuizBySelection(props) {
               // InputProps={{  }}
               onChange={(e) => {
                 setduration(e.target.value);
+              }}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <div
+              // label="quizName"
+              type="text"
+              id="outlined-basic"
+              variant="outlined"
+              className={classes.div}
+            >
+              <h1 style={{ fontSize: "24px" }}> Taux Score</h1>
+            </div>
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              style={{ marginRight: "100px" }}
+              value={tauxscore}
+              className={classes.txtName}
+              // mobile
+              InputProps={{
+                classes: { input: classes.inputNumber },
+                startAdornment: (
+                  <InputAdornment
+                    position="start"
+                    style={{ color: "gold", cursor: "pointer" }}
+                    onClick={() => {
+                      settauxscore(tauxscore - 1);
+                    }}
+                  >
+                    <FiMinus size={30} />
+                  </InputAdornment>
+                ),
+
+                endAdornment: (
+                  <InputAdornment position="start">
+                    <h4
+                      style={{
+                        fontFamily: "var(--font-family-cerapro-bold)",
+                        color: "var(--mahogany-32)",
+                        marginRight: "30px",
+                      }}
+                    >
+                      %
+                    </h4>
+                    <IoAdd
+                      style={{ color: "gold", cursor: "pointer" }}
+                      onClick={() => settauxscore(tauxscore + 1)}
+                      size={30}
+                    />
+                  </InputAdornment>
+                ),
+              }}
+              // InputProps={{  }}
+              onChange={(e) => {
+                settauxscore(e.target.value);
               }}
             />
           </Grid>
@@ -615,7 +677,9 @@ export default function AddQuizBySelection(props) {
           nbQuestion,
           questions,
           quizName,
+          duration,
           typeQuiz: "selection",
+          Tauxscore: tauxscore,
         },
         config
       );
@@ -688,7 +752,7 @@ export default function AddQuizBySelection(props) {
             {steps[activeStep].object}
             {/* </Box> */}
             {activeStep === steps.length - 1 && (
-              <Grid xs={12}>
+              <Grid xs={12} style={{ display: "flex", direction: "row" }}>
                 <button
                   className="btnVerif border-1px-dove-gray"
                   variant="contained"
@@ -698,7 +762,7 @@ export default function AddQuizBySelection(props) {
                     marginLeft: "300px",
                     // height: "20px",
                     textAlign: "center",
-                    marginTop: "30px",
+                    marginTop: "20px",
                   }}
                 >
                   <div
@@ -706,18 +770,43 @@ export default function AddQuizBySelection(props) {
                       fontFamily: "var(--font-family-cerapro-bold)",
                       fontWeight: 700,
                       fontSize: "24px",
-                      marginTop: "-4px",
+                      // marginTop: "-4px",
                     }}
                   >
                     Selection
                   </div>
                 </button>
+                <div
+                  style={{
+                    marginLeft: "200px",
+                    marginTop: "30px",
+                    border: "4px solid var(--mahogany)",
+                    borderRadius: "38px",
+                    color: "var(--mahogany)",
+                    fontFamily: "var(--font-family-cerapro-bold)",
+                    background: "#F2DDDB",
+                    width: "100px",
+                    // height: "50px",
+                    textAlign: "center",
+                    padding: "10px",
+                    boxShadow: "0px 3px 9px #00000091",
+                  }}
+                >
+                  {count}/{nbQuestion}
+                </div>
               </Grid>
             )}
             <MobileStepper
               variant="text"
               steps={maxSteps}
               position="static"
+              style={{
+                fontFamily: "var(--font-family-cerapro-bold)",
+                // boxShadow: "0px 3px 9px #00000091",
+                // marginTop: "-20px",
+                // background: "transparent",
+                marginBottom: "0px",
+              }}
               activeStep={activeStep}
               nextButton={
                 <Button
@@ -729,7 +818,6 @@ export default function AddQuizBySelection(props) {
                     fontFamily: "var(--font-family-cerapro-bold)",
                   }}
                 >
-                  Next
                   {theme.direction === "rtl" ? (
                     <KeyboardArrowLeft />
                   ) : (
@@ -754,7 +842,6 @@ export default function AddQuizBySelection(props) {
                   ) : (
                     <KeyboardArrowLeft />
                   )}
-                  Back
                 </Button>
               }
             />
