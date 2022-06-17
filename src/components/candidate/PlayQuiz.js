@@ -1,26 +1,16 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Checkbox, makeStyles, TablePagination } from "@material-ui/core";
-import { useLocation } from "react-router-dom";
-import Typography from "@mui/material/Typography";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
-import Stack from "@mui/material/Stack";
-import usePagination from "./Pagination";
-import useTable from "../useTable";
 import axios from "axios";
 import { read } from "./api";
 import { Grid } from "@mui/material";
 import NavBarCandidate from "./NavBarCandidate";
 import SideMenuCandidate from "./SideMenuCandidate";
 import ContentMenuItem from "../ContentMenuItem";
-import { height } from "@mui/system";
 export default function PlayQuiz(company_info) {
   const candidate = JSON.parse(sessionStorage.getItem("candidateInfo"));
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${candidate.token}`,
-    },
-  };
+
   const darkColor = company_info.company_info.account.darkColor;
   const lightColor = company_info.company_info.account.lightColor;
   const styles = makeStyles((theme) => ({
@@ -49,17 +39,20 @@ export default function PlayQuiz(company_info) {
   const classes = styles();
   const location = useLocation();
   const { state } = location;
-  const [quiz, setquiz] = useState();
+  console.log(state);
+  const [quiz, setquiz] = useState([]);
   const [compteur, setcompteur] = useState();
   const [count, setCount] = useState(0);
   // const [clonequestiions, setclonequestiions] = useState();
   const [answercandidate, setanswercandidate] = useState([]);
-  const [voucher, setvoucher] = useState(state._id);
+  const [voucher, setvoucher] = useState();
   const pages = [1, 5, 10, 25];
   // pagination
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(1);
-  const id = state.quiz;
+  const id = state.data.quiz;
+
+  console.log(id);
   const [error, seterror] = useState();
   const [minutes, setminutes] = useState();
   const [seconds, setseconds] = useState();
@@ -72,14 +65,15 @@ export default function PlayQuiz(company_info) {
         perPage: rowsPerPage,
         id: id,
       });
-      setquiz(result);
+
+      console.log(result);
+      const exist = quiz.find((item) => item._id === result[0]._id);
+      if (!exist && result) setquiz([...quiz, ...result]);
       setCount(countQuestion);
+      seterror(message);
       // setcompteur(compteur);
       setminutes(minutes);
       setseconds(seconds);
-      seterror(message);
-      console.log(minutes);
-      console.log(seconds);
 
       // const msg = message;
     } catch (error) {
@@ -89,11 +83,29 @@ export default function PlayQuiz(company_info) {
 
   const handleCheck = (event, _id, question) => {
     var updatedList = [...answercandidate];
-    if (event.target.checked) {
+    if (answercandidate.length != 0) {
+      const exist = answercandidate.find(
+        (item) => item._id_Question === question
+      );
+      if (exist) {
+        if (event.target.checked) {
+          exist.answers.push({
+            _id_proposition: _id,
+            response: event.target.checked,
+          });
+        } else
+          exist.answers.splice(exist.answers.indexOf(event.target.value), 1);
+      } else {
+        let add = {
+          _id_Question: question,
+          answers: [{ _id_proposition: _id, response: event.target.checked }],
+        };
+        updatedList = [...answercandidate, add];
+      }
+    } else if (event.target.checked) {
       let add = {
-        _id_proposition: _id,
         _id_Question: question,
-        response: event.target.checked,
+        answers: [{ _id_proposition: _id, response: event.target.checked }],
       };
       updatedList = [...answercandidate, add];
     } else {
@@ -102,6 +114,55 @@ export default function PlayQuiz(company_info) {
     // else if(answercandidate)
     setanswercandidate(updatedList);
   };
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
+
+  // api backend REACT_APP_BACKEND
+  const navigate = useNavigate();
+  const addAnswer = async (e) => {
+    e.preventDefault();
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${candidate.token}`,
+      },
+    };
+    setvoucher(state.data._id);
+    try {
+      console.log("hello");
+      const { data } = await axios.post(
+        process.env.REACT_APP_BACKEND + "/candidate/correctAnswer",
+        {
+          voucher: voucher,
+          array: answercandidate,
+          // Tauxscore: state.tauxScore,
+        },
+        config
+      );
+      if (data.scoreFinal >= state.tauxScore) {
+        navigate("/Success", { state: data.scoreFinal });
+      } else {
+        navigate("/Failed", { state: data.scoreFinal });
+      }
+    } catch (error) {
+      if (
+        error.response &&
+        error.response.status >= 400 &&
+        error.response.status <= 500
+      ) {
+        // notify(error.response.data.message);
+        setNotify({
+          isOpen: true,
+          message: error.response.data.message,
+          type: "error",
+        });
+      }
+    }
+  };
+
   useEffect(() => {
     fetchUsers();
   }, [page, rowsPerPage]);
@@ -117,11 +178,28 @@ export default function PlayQuiz(company_info) {
     });
   };
 
-  console.log("#answercandidate", answercandidate);
   const isChecked = (_id) => {
-    const checked = (element) => element === _id;
-    answercandidate.some(checked);
+    answercandidate.answers.find((item) => item._id_proposition === _id);
   };
+
+  const getItemIndex = (question, proposition) => {
+    let checked = false;
+    let existQuestion = answercandidate.find(
+      (item) => item._id_Question === question
+    );
+    if (existQuestion) {
+      let result = existQuestion.answers;
+
+      for (let index = 0; index < result.length; index++) {
+        const element = result[index];
+        if (element._id_proposition === proposition) return true;
+      }
+      // for (let index = 0; index < existQuestion.array.length; index++) {
+      //   const element = array[index];
+      // }
+    }
+  };
+  console.log(answercandidate);
   return (
     <Grid container spacing={{ xs: 6, md: 12 }}>
       <Grid item md={2}>
@@ -142,9 +220,16 @@ export default function PlayQuiz(company_info) {
           }}
         >
           {error ? (
-            <h1>{error}</h1>
+            <h1
+              style={{
+                fontFamily: "var(--font-family-cerapro-bold)",
+                textAlign: "center",
+              }}
+            >
+              {error}
+            </h1>
           ) : (
-            <form>
+            <form onSubmit={addAnswer}>
               <Grid container spacing={2}>
                 {/* <> */}
                 <Grid item xs={5}>
@@ -186,90 +271,131 @@ export default function PlayQuiz(company_info) {
                 {/* <Grid item xs={12}> */}
                 {quiz?.map((item, index) => {
                   return (
-                    <Grid
-                      item
-                      container
-                      textAlign="center"
-                      justifyContent="center"
-                    >
-                      <Grid xs={12} item>
-                        <h4
-                          style={{
-                            fontFamily: "var(--font-family-cerapro-bold)",
-                            color: "#1D1D1D",
-                          }}
+                    <>
+                      {index + 1 === page && (
+                        <Grid
+                          item
+                          container
+                          textAlign="center"
+                          justifyContent="center"
                         >
-                          {item.tronc}
-                        </h4>
-                      </Grid>
-                      <Grid key={item._id}>
-                        {item.propositions.map((proposition, index) => {
-                          return (
-                            <Grid xs={12} item style={{ display: "flex" }}>
-                              {/* <Grid> */}
-                              <Checkbox
-                                key={item._id}
-                                name="response"
-                                onChange={
-                                  (e) =>
-                                    handleCheck(
-                                      e,
-                                      proposition._id,
-                                      proposition.question
-                                    )
-                                  // isChecked(answercandidate._id_proposition);
-                                }
-                                style={{
-                                  color: lightColor,
-                                }}
-                                value={answercandidate[index]}
-                              />
-                              {/* <Grid xs={6}> */}
-                              <h5
-                                value={answercandidate._id_proposition}
-                                name="_id_proposition"
-                                style={{
-                                  fontFamily:
-                                    "var(--font-family-cerapro-medium)",
-                                  color: darkColor,
-                                }}
-                              >
-                                {proposition.content}
-                              </h5>
-                            </Grid>
-                          );
-                        })}
-                      </Grid>
-                    </Grid>
+                          <Grid xs={12} item>
+                            <h4
+                              style={{
+                                fontFamily: "var(--font-family-cerapro-bold)",
+                                color: "#1D1D1D",
+                              }}
+                            >
+                              {item.tronc}
+                            </h4>
+                          </Grid>
+                          <Grid key={item._id}>
+                            {item.propositions?.map((proposition, index) => {
+                              return (
+                                <Grid
+                                  xs={12}
+                                  item
+                                  style={{ display: "flex" }}
+                                  key={index}
+                                >
+                                  {/* <Grid> */}
+                                  <Checkbox
+                                    key={index}
+                                    name="response"
+                                    onChange={(e) => {
+                                      handleCheck(
+                                        e,
+                                        proposition._id,
+                                        proposition.question
+                                      );
+                                    }}
+                                    style={{
+                                      color: lightColor,
+                                    }}
+                                    checked={getItemIndex(
+                                      proposition.question,
+                                      proposition._id
+                                    )}
+                                  />
+                                  {/* <Grid xs={6}> */}
+                                  <h5
+                                    value={answercandidate._id_proposition}
+                                    name="_id_proposition"
+                                    style={{
+                                      fontFamily:
+                                        "var(--font-family-cerapro-medium)",
+                                      color: darkColor,
+                                    }}
+                                  >
+                                    {proposition.content}
+                                  </h5>
+                                </Grid>
+                              );
+                            })}
+                          </Grid>
+                        </Grid>
+                      )}
+                    </>
                   );
                 })}
               </Grid>
-              <Grid
-                item
-                xs={12}
-                style={{
-                  marginTop: "auto",
-                  borderRadius: "33px",
-                  backgroundColor: darkColor,
-                  opacity: 0.6,
-                  fontFamily: " var(--font-family-cerapro-bold)",
-                  padding: "10px",
-                  margin: "auto",
-                }}
-              >
-                <Pagination
-                  count={count}
-                  variant="outlined"
-                  showFirstButton
-                  showLastButton
-                  page={page}
+              <Grid xs={12} style={{ display: "flex" }}>
+                <Grid
+                  item
+                  xs={10}
                   style={{
+                    marginTop: "auto",
+                    borderRadius: "39px",
+                    backgroundColor: darkColor,
+                    opacity: 0.6,
                     fontFamily: " var(--font-family-cerapro-bold)",
-                    color: "#1D1D1D",
+                    padding: "10px",
+
+                    // margin: "auto",
                   }}
-                  onChange={handleChangePage}
-                  className={classes.pagination}
-                />
+                >
+                  <Pagination
+                    count={count}
+                    variant="outlined"
+                    showFirstButton
+                    showLastButton
+                    page={page}
+                    style={{
+                      fontFamily: " var(--font-family-cerapro-bold)",
+                      color: "#1D1D1D",
+                    }}
+                    onChange={handleChangePage}
+                    className={classes.pagination}
+                  />
+                </Grid>
+
+                {page === count && (
+                  <Grid item xs={2}>
+                    <button
+                      style={{
+                        borderRadius: "39px",
+                        color: "white",
+                        background: darkColor,
+                        border: "0px",
+                        width: "160px",
+                        height: "50px",
+                        marginLeft: "5px",
+                        cursor: "pointer",
+                        // padding: "10px",
+                        fontFamily: " var(--font-family-cerapro-bold)",
+                        fontSize: "16px",
+                        // marginLeft: "760px",
+                        // marginTop: "30px",
+                      }}
+                      type="submit"
+                      // onClick={addAnswer}
+                      // disabled={count === page + 1}
+                    >
+                      Submit Answers
+                    </button>
+                  </Grid>
+                )}
+                {/* </Grid> */}
               </Grid>
             </form>
           )}

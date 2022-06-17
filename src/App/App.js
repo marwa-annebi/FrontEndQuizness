@@ -27,10 +27,14 @@ import EditQuizBySelection from "../components/quizmaster/EditQuizBySelection";
 import EditQuizRandomly from "../components/quizmaster/EditQuizRandomly";
 import { CheckoutSuccess } from "../components/candidate/CheckoutSuccess";
 import NotFound from "../components/NotFoundPage";
-import { ListVoucher } from "../components/quizmaster/ListVoucher";
+
+import ListVoucher from "../components/quizmaster/ListVoucher";
+import Success from "../components/candidate/score/Success";
+import Failed from "../components/candidate/score/Failed";
 import { Statistics } from "../components/quizmaster/Statistics";
 import NumbreofQuiz from "../components/quizmaster/Statistic/NumbreOfQuiz";
 import NumbreOfcandidatByMonth from "../components/quizmaster/Statistic/NumbreOfcandidatByMonth"
+
 function App() {
   const [companyColors, setcompanyColors] = React.useState("");
   const [subdomain, setSubDomain] = React.useState(null);
@@ -151,6 +155,14 @@ function App() {
               <Route element={<EditQuizRandomly />} path="/EditQuizRandomly" />
               <Route element={<EditQuizRandomly />} path="/EditQuizRandomly" />
               <Route element={<CheckoutSuccess />} path="/success" />
+              <Route
+                element={<Success company_info={companyColors} />}
+                path="/Quiz/Success"
+              />
+              <Route
+                element={<Failed company_info={companyColors} />}
+                path="Failed"
+              />
             </>
           ) : (
             <Route path="*" element={<NotFound />} />

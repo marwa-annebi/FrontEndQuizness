@@ -95,13 +95,15 @@ const styles = makeStyles((theme) => ({
   },
 }));
 export default function AddQuizRandomly(props) {
-  const [nbQuestion, setnbQuestion] = useState(5);
+  const [nbQuestion, setnbQuestion] = useState(10);
   const [creation_date, setcreation_date] = useState();
   const [questionsRandomly, setquestionsRandomly] = useState([]);
   const [validation_date, setvalidation_date] = useState();
   const [questionList, setquestionList] = useState([]);
   const [quizName, setquizName] = useState("");
-  const [duration, setduration] = useState(5);
+  const [duration, setduration] = useState(1);
+  const [tauxscore, settauxscore] = useState(50);
+  console.log(tauxscore);
   const [notify, setNotify] = useState({
     isOpen: false,
     message: "",
@@ -166,6 +168,7 @@ export default function AddQuizRandomly(props) {
           quizName,
           duration,
           typeQuiz: "randomly",
+          Tauxscore: tauxscore,
         },
         config
       );
@@ -216,7 +219,7 @@ export default function AddQuizRandomly(props) {
               textAlign="center"
               justifyContent="center"
               spacing={2}
-              style={{ marginTop: "20px" }}
+              style={{ marginTop: "-15px" }}
             >
               <Grid item xs={6}>
                 <div
@@ -287,17 +290,13 @@ export default function AddQuizRandomly(props) {
                   style={{ marginRight: "100px" }}
                   InputProps={{
                     classes: { input: classes.inputNumber },
-                    inputProps: { min: 5 },
+                    // inputProps: { min: 5 },
                     startAdornment: (
                       <InputAdornment
                         position="start"
                         style={{ color: "gold", cursor: "pointer" }}
                         onClick={() => {
-                          if (nbQuestion === 5) {
-                            alert("Nb Question min is 5");
-                          } else {
-                            setnbQuestion(nbQuestion - 1);
-                          }
+                          setnbQuestion(nbQuestion - 1);
                         }}
                       >
                         <FiMinus size={30} />
@@ -335,7 +334,6 @@ export default function AddQuizRandomly(props) {
                   style={{ marginRight: "100px" }}
                   value={duration}
                   className={classes.txtName}
-                  // mobile
                   InputProps={{
                     classes: { input: classes.inputNumber },
                     inputProps: { min: 5 },
@@ -344,11 +342,7 @@ export default function AddQuizRandomly(props) {
                         position="start"
                         style={{ color: "gold", cursor: "pointer" }}
                         onClick={() => {
-                          if (duration === 5) {
-                            alert("Min duration  is 5");
-                          } else {
-                            setduration(duration - 1);
-                          }
+                          setduration(duration - 1);
                         }}
                       >
                         <FiMinus size={30} />
@@ -364,7 +358,7 @@ export default function AddQuizRandomly(props) {
                             marginRight: "30px",
                           }}
                         >
-                          Min
+                          Minutes
                         </h4>
                         <IoAdd
                           style={{ color: "gold", cursor: "pointer" }}
@@ -377,6 +371,62 @@ export default function AddQuizRandomly(props) {
                   // InputProps={{  }}
                   onChange={(e) => {
                     setduration(e.target.value);
+                  }}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <div
+                  // label="quizName"
+                  type="text"
+                  id="outlined-basic"
+                  variant="outlined"
+                  className={classes.div}
+                >
+                  <h1 style={{ fontSize: "24px" }}> Taux Score</h1>
+                </div>
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  style={{ marginRight: "100px" }}
+                  value={tauxscore}
+                  className={classes.txtName}
+                  // mobile
+                  InputProps={{
+                    classes: { input: classes.inputNumber },
+                    startAdornment: (
+                      <InputAdornment
+                        position="start"
+                        style={{ color: "gold", cursor: "pointer" }}
+                        onClick={() => {
+                          settauxscore(tauxscore - 1);
+                        }}
+                      >
+                        <FiMinus size={30} />
+                      </InputAdornment>
+                    ),
+
+                    endAdornment: (
+                      <InputAdornment position="start">
+                        <h4
+                          style={{
+                            fontFamily: "var(--font-family-cerapro-bold)",
+                            color: "var(--mahogany-32)",
+                            marginRight: "30px",
+                          }}
+                        >
+                          %
+                        </h4>
+                        <IoAdd
+                          style={{ color: "gold", cursor: "pointer" }}
+                          onClick={() => settauxscore(tauxscore + 1)}
+                          size={30}
+                        />
+                      </InputAdornment>
+                    ),
+                  }}
+                  // InputProps={{  }}
+                  onChange={(e) => {
+                    settauxscore(e.target.value);
                   }}
                 />
               </Grid>
@@ -464,6 +514,7 @@ export default function AddQuizRandomly(props) {
                   }}
                 />
               </Grid>
+
               <Grid item xs={12}>
                 <button
                   className="btnVerif border-1px-dove-gray"
@@ -475,7 +526,8 @@ export default function AddQuizRandomly(props) {
                     // height: "20px",
 
                     textAlign: "center",
-                    marginTop: "30px",
+                    marginTop: "10px",
+                    marginBottom: "-15px",
                   }}
                 >
                   <div
