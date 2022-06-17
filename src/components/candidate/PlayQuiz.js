@@ -49,7 +49,7 @@ export default function PlayQuiz(company_info) {
   const classes = styles();
   const location = useLocation();
   const { state } = location;
-  const [quiz, setquiz] = useState();
+  const [quiz, setquiz] = useState([]);
   const [compteur, setcompteur] = useState();
   const [count, setCount] = useState(0);
   // const [clonequestiions, setclonequestiions] = useState();
@@ -72,14 +72,15 @@ export default function PlayQuiz(company_info) {
         perPage: rowsPerPage,
         id: id,
       });
-      setquiz(result);
+
+      const exist = quiz.find((item) => item._id === result[0]._id);
+
+      if (!exist && result) setquiz([...quiz, ...result]);
       setCount(countQuestion);
+      seterror(message);
       // setcompteur(compteur);
       setminutes(minutes);
       setseconds(seconds);
-      seterror(message);
-      console.log(minutes);
-      console.log(seconds);
 
       // const msg = message;
     } catch (error) {
@@ -89,11 +90,22 @@ export default function PlayQuiz(company_info) {
 
   const handleCheck = (event, _id, question) => {
     var updatedList = [...answercandidate];
-    if (event.target.checked) {
+    if (answercandidate.length != 0) {
+      const exist = answercandidate.find(
+        (item) => item._id_Question === question
+      );
+      if (exist) {
+        if (event.target.checked) {
+          exist.array.push({
+            _id_proposition: _id,
+            response: event.target.checked,
+          });
+        } else exist.array.splice(exist.array.indexOf(event.target.value), 1);
+      }
+    } else if (event.target.checked) {
       let add = {
-        _id_proposition: _id,
         _id_Question: question,
-        response: event.target.checked,
+        array: [{ _id_proposition: _id, response: event.target.checked }],
       };
       updatedList = [...answercandidate, add];
     } else {
@@ -117,11 +129,29 @@ export default function PlayQuiz(company_info) {
     });
   };
 
-  console.log("#answercandidate", answercandidate);
+  console.log("#page", page);
   const isChecked = (_id) => {
-    const checked = (element) => element === _id;
-    answercandidate.some(checked);
+    answercandidate.array.find((item) => item._id_proposition === _id);
   };
+
+  const getItemIndex = (question, proposition) => {
+    let checked = false;
+    let existQuestion = answercandidate.find(
+      (item) => item._id_Question === question
+    );
+    if (existQuestion) {
+      let result = existQuestion.array;
+
+      for (let index = 0; index < result.length; index++) {
+        const element = result[index];
+        if (element._id_proposition === proposition) return true;
+      }
+      // for (let index = 0; index < existQuestion.array.length; index++) {
+      //   const element = array[index];
+      // }
+    }
+  };
+
   return (
     <Grid container spacing={{ xs: 6, md: 12 }}>
       <Grid item md={2}>
@@ -142,7 +172,14 @@ export default function PlayQuiz(company_info) {
           }}
         >
           {error ? (
-            <h1>{error}</h1>
+            <h1
+              style={{
+                fontFamily: "var(--font-family-cerapro-bold)",
+                textAlign: "center",
+              }}
+            >
+              {error}
+            </h1>
           ) : (
             <form>
               <Grid container spacing={2}>
@@ -186,61 +223,71 @@ export default function PlayQuiz(company_info) {
                 {/* <Grid item xs={12}> */}
                 {quiz?.map((item, index) => {
                   return (
-                    <Grid
-                      item
-                      container
-                      textAlign="center"
-                      justifyContent="center"
-                    >
-                      <Grid xs={12} item>
-                        <h4
-                          style={{
-                            fontFamily: "var(--font-family-cerapro-bold)",
-                            color: "#1D1D1D",
-                          }}
+                    <>
+                      {index + 1 === page && (
+                        <Grid
+                          item
+                          container
+                          textAlign="center"
+                          justifyContent="center"
                         >
-                          {item.tronc}
-                        </h4>
-                      </Grid>
-                      <Grid key={item._id}>
-                        {item.propositions.map((proposition, index) => {
-                          return (
-                            <Grid xs={12} item style={{ display: "flex" }}>
-                              {/* <Grid> */}
-                              <Checkbox
-                                key={item._id}
-                                name="response"
-                                onChange={
-                                  (e) =>
-                                    handleCheck(
-                                      e,
-                                      proposition._id,
-                                      proposition.question
-                                    )
-                                  // isChecked(answercandidate._id_proposition);
-                                }
-                                style={{
-                                  color: lightColor,
-                                }}
-                                value={answercandidate[index]}
-                              />
-                              {/* <Grid xs={6}> */}
-                              <h5
-                                value={answercandidate._id_proposition}
-                                name="_id_proposition"
-                                style={{
-                                  fontFamily:
-                                    "var(--font-family-cerapro-medium)",
-                                  color: darkColor,
-                                }}
-                              >
-                                {proposition.content}
-                              </h5>
-                            </Grid>
-                          );
-                        })}
-                      </Grid>
-                    </Grid>
+                          <Grid xs={12} item>
+                            <h4
+                              style={{
+                                fontFamily: "var(--font-family-cerapro-bold)",
+                                color: "#1D1D1D",
+                              }}
+                            >
+                              {item.tronc}
+                            </h4>
+                          </Grid>
+                          <Grid key={item._id}>
+                            {item.propositions?.map((proposition, index) => {
+                              return (
+                                <Grid
+                                  xs={12}
+                                  item
+                                  style={{ display: "flex" }}
+                                  key={index}
+                                >
+                                  {/* <Grid> */}
+                                  <Checkbox
+                                    key={index}
+                                    name="response"
+                                    onChange={(e) => {
+                                      handleCheck(
+                                        e,
+                                        proposition._id,
+                                        proposition.question
+                                      );
+                                    }}
+                                    style={{
+                                      color: lightColor,
+                                    }}
+                                    checked={getItemIndex(
+                                      proposition.question,
+                                      proposition._id
+                                    )}
+                                  />
+                                  {/* <Grid xs={6}> */}
+                                  <h5
+                                    value={answercandidate._id_proposition}
+                                    name="_id_proposition"
+                                    style={{
+                                      fontFamily:
+                                        "var(--font-family-cerapro-medium)",
+                                      color: darkColor,
+                                    }}
+                                  >
+                                    {proposition.content}
+                                  </h5>
+                                </Grid>
+                              );
+                            })}
+                          </Grid>
+                        </Grid>
+                      )}
+                    </>
                   );
                 })}
               </Grid>
