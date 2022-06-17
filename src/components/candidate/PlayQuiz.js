@@ -1,26 +1,16 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Checkbox, makeStyles, TablePagination } from "@material-ui/core";
-import { useLocation } from "react-router-dom";
-import Typography from "@mui/material/Typography";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
-import Stack from "@mui/material/Stack";
-import usePagination from "./Pagination";
-import useTable from "../useTable";
 import axios from "axios";
 import { read } from "./api";
 import { Grid } from "@mui/material";
 import NavBarCandidate from "./NavBarCandidate";
 import SideMenuCandidate from "./SideMenuCandidate";
 import ContentMenuItem from "../ContentMenuItem";
-import { height } from "@mui/system";
 export default function PlayQuiz(company_info) {
   const candidate = JSON.parse(sessionStorage.getItem("candidateInfo"));
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${candidate.token}`,
-    },
-  };
+
   const darkColor = company_info.company_info.account.darkColor;
   const lightColor = company_info.company_info.account.lightColor;
   const styles = makeStyles((theme) => ({
@@ -49,17 +39,20 @@ export default function PlayQuiz(company_info) {
   const classes = styles();
   const location = useLocation();
   const { state } = location;
+  console.log(state);
   const [quiz, setquiz] = useState([]);
   const [compteur, setcompteur] = useState();
   const [count, setCount] = useState(0);
   // const [clonequestiions, setclonequestiions] = useState();
   const [answercandidate, setanswercandidate] = useState([]);
-  const [voucher, setvoucher] = useState(state._id);
+  const [voucher, setvoucher] = useState();
   const pages = [1, 5, 10, 25];
   // pagination
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(1);
-  const id = state.quiz;
+  const id = state.data.quiz;
+
+  console.log(id);
   const [error, seterror] = useState();
   const [minutes, setminutes] = useState();
   const [seconds, setseconds] = useState();
@@ -73,8 +66,8 @@ export default function PlayQuiz(company_info) {
         id: id,
       });
 
+      console.log(result);
       const exist = quiz.find((item) => item._id === result[0]._id);
-
       if (!exist && result) setquiz([...quiz, ...result]);
       setCount(countQuestion);
       seterror(message);
@@ -96,16 +89,23 @@ export default function PlayQuiz(company_info) {
       );
       if (exist) {
         if (event.target.checked) {
-          exist.array.push({
+          exist.answers.push({
             _id_proposition: _id,
             response: event.target.checked,
           });
-        } else exist.array.splice(exist.array.indexOf(event.target.value), 1);
+        } else
+          exist.answers.splice(exist.answers.indexOf(event.target.value), 1);
+      } else {
+        let add = {
+          _id_Question: question,
+          answers: [{ _id_proposition: _id, response: event.target.checked }],
+        };
+        updatedList = [...answercandidate, add];
       }
     } else if (event.target.checked) {
       let add = {
         _id_Question: question,
-        array: [{ _id_proposition: _id, response: event.target.checked }],
+        answers: [{ _id_proposition: _id, response: event.target.checked }],
       };
       updatedList = [...answercandidate, add];
     } else {
@@ -114,6 +114,55 @@ export default function PlayQuiz(company_info) {
     // else if(answercandidate)
     setanswercandidate(updatedList);
   };
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
+
+  // api backend REACT_APP_BACKEND
+  const navigate = useNavigate();
+  const addAnswer = async (e) => {
+    e.preventDefault();
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${candidate.token}`,
+      },
+    };
+    setvoucher(state.data._id);
+    try {
+      console.log("hello");
+      const { data } = await axios.post(
+        process.env.REACT_APP_BACKEND + "/candidate/correctAnswer",
+        {
+          voucher: voucher,
+          array: answercandidate,
+          // Tauxscore: state.tauxScore,
+        },
+        config
+      );
+      if (data.scoreFinal >= state.tauxScore) {
+        navigate("/Success", { state: data.scoreFinal });
+      } else {
+        navigate("/Failed", { state: data.scoreFinal });
+      }
+    } catch (error) {
+      if (
+        error.response &&
+        error.response.status >= 400 &&
+        error.response.status <= 500
+      ) {
+        // notify(error.response.data.message);
+        setNotify({
+          isOpen: true,
+          message: error.response.data.message,
+          type: "error",
+        });
+      }
+    }
+  };
+
   useEffect(() => {
     fetchUsers();
   }, [page, rowsPerPage]);
@@ -129,9 +178,8 @@ export default function PlayQuiz(company_info) {
     });
   };
 
-  console.log("#page", page);
   const isChecked = (_id) => {
-    answercandidate.array.find((item) => item._id_proposition === _id);
+    answercandidate.answers.find((item) => item._id_proposition === _id);
   };
 
   const getItemIndex = (question, proposition) => {
@@ -140,7 +188,7 @@ export default function PlayQuiz(company_info) {
       (item) => item._id_Question === question
     );
     if (existQuestion) {
-      let result = existQuestion.array;
+      let result = existQuestion.answers;
 
       for (let index = 0; index < result.length; index++) {
         const element = result[index];
@@ -151,7 +199,7 @@ export default function PlayQuiz(company_info) {
       // }
     }
   };
-
+  console.log(answercandidate);
   return (
     <Grid container spacing={{ xs: 6, md: 12 }}>
       <Grid item md={2}>
@@ -181,7 +229,7 @@ export default function PlayQuiz(company_info) {
               {error}
             </h1>
           ) : (
-            <form>
+            <form onSubmit={addAnswer}>
               <Grid container spacing={2}>
                 {/* <> */}
                 <Grid item xs={5}>
@@ -291,32 +339,63 @@ export default function PlayQuiz(company_info) {
                   );
                 })}
               </Grid>
-              <Grid
-                item
-                xs={12}
-                style={{
-                  marginTop: "auto",
-                  borderRadius: "33px",
-                  backgroundColor: darkColor,
-                  opacity: 0.6,
-                  fontFamily: " var(--font-family-cerapro-bold)",
-                  padding: "10px",
-                  margin: "auto",
-                }}
-              >
-                <Pagination
-                  count={count}
-                  variant="outlined"
-                  showFirstButton
-                  showLastButton
-                  page={page}
+              <Grid xs={12} style={{ display: "flex" }}>
+                <Grid
+                  item
+                  xs={10}
                   style={{
+                    marginTop: "auto",
+                    borderRadius: "39px",
+                    backgroundColor: darkColor,
+                    opacity: 0.6,
                     fontFamily: " var(--font-family-cerapro-bold)",
-                    color: "#1D1D1D",
+                    padding: "10px",
+
+                    // margin: "auto",
                   }}
-                  onChange={handleChangePage}
-                  className={classes.pagination}
-                />
+                >
+                  <Pagination
+                    count={count}
+                    variant="outlined"
+                    showFirstButton
+                    showLastButton
+                    page={page}
+                    style={{
+                      fontFamily: " var(--font-family-cerapro-bold)",
+                      color: "#1D1D1D",
+                    }}
+                    onChange={handleChangePage}
+                    className={classes.pagination}
+                  />
+                </Grid>
+
+                {page === count && (
+                  <Grid item xs={2}>
+                    <button
+                      style={{
+                        borderRadius: "39px",
+                        color: "white",
+                        background: darkColor,
+                        border: "0px",
+                        width: "160px",
+                        height: "50px",
+                        marginLeft: "5px",
+                        cursor: "pointer",
+                        // padding: "10px",
+                        fontFamily: " var(--font-family-cerapro-bold)",
+                        fontSize: "16px",
+                        // marginLeft: "760px",
+                        // marginTop: "30px",
+                      }}
+                      type="submit"
+                      // onClick={addAnswer}
+                      // disabled={count === page + 1}
+                    >
+                      Submit Answers
+                    </button>
+                  </Grid>
+                )}
+                {/* </Grid> */}
               </Grid>
             </form>
           )}
