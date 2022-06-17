@@ -116,7 +116,6 @@ export default function CompanySettings({
       if (darkColor.length < 1) {
         setdarkColor((prev) => [...prev, value]);
       }
-      // console.log(check);
     } else {
       //  console.log(check);
       setdarkColor((prev) => prev.filter((x) => value !== x));
@@ -265,7 +264,7 @@ export default function CompanySettings({
               }}
               value={color}
               onChange={handleChangeLight}
-              checked={lightColor.indexOf(color) >= 0}
+              // checked={lightColor.indexOf(color) >= 0}
               // disabled={shouldDisableCheckbox(color)}
             />
           </div>
@@ -275,7 +274,11 @@ export default function CompanySettings({
   };
   const fileRef = useRef();
 
-  const getColors = (colors) => setcolors(colors);
+  const getColors = async (colors) => {
+    setdarkColor("");
+    setlightColor("");
+    setcolors(colors);
+  };
   return picMessage ? (
     <div className="error-message">
       An error occurred while processing the image.
@@ -320,6 +323,8 @@ export default function CompanySettings({
                 onClick={() => {
                   fileRef.current.click();
                   changeText("Reupload Your Logo");
+                  setdarkColor("");
+                  setlightColor("");
                 }}
                 // size="large"
                 className={classes.btn}
@@ -354,7 +359,9 @@ export default function CompanySettings({
                 <input
                   type="file"
                   ref={fileRef}
-                  onChange={(e) => postDetails(e.target.files[0])}
+                  onChange={(e) => {
+                    postDetails(e.target.files[0]);
+                  }}
                   accept="image/png,image/jpeg"
                   hidden
                 />
