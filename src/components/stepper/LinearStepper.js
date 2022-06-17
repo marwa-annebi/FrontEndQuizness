@@ -87,6 +87,7 @@ const LinaerStepper = () => {
     if (pics.type === "image/jpeg" || pics.type === "image/png") {
       const data = new FormData();
       data.append("file", pics);
+
       data.append("upload_preset", "3almni");
       data.append("cloud_name", "dknkfvzye");
       fetch("https://api.cloudinary.com/v1_1/dknkfvzye/image/upload", {

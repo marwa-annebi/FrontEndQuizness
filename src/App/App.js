@@ -27,10 +27,14 @@ import EditQuizBySelection from "../components/quizmaster/EditQuizBySelection";
 import EditQuizRandomly from "../components/quizmaster/EditQuizRandomly";
 import { CheckoutSuccess } from "../components/candidate/CheckoutSuccess";
 import NotFound from "../components/NotFoundPage";
+
 import ListVoucher from "../components/quizmaster/ListVoucher";
-import { Statics, Statistics } from "../components/quizmaster/Statistics";
 import Success from "../components/candidate/score/Success";
 import Failed from "../components/candidate/score/Failed";
+import { Statistics } from "../components/quizmaster/Statistics";
+import NumbreofQuiz from "../components/quizmaster/Statistic/NumbreOfQuiz";
+import NumbreOfcandidatByMonth from "../components/quizmaster/Statistic/NumbreOfcandidatByMonth"
+
 function App() {
   const [companyColors, setcompanyColors] = React.useState("");
   const [subdomain, setSubDomain] = React.useState(null);
@@ -106,7 +110,10 @@ function App() {
                 <Route path="category" element={<Category />} />
 
                 <Route path="candidate" element={<Candidate />} />
-                <Route path="statistics" element={<Statistics />} />
+                <Route path="statistics/*" element={<Statistics />}>
+                  <Route path="nbofQuiz" element={<NumbreofQuiz />} />
+                  <Route path="NumbreOfcandidatByMonth" element={<NumbreOfcandidatByMonth/>}/>
+                </Route>
                 <Route path="vouchers" element={<ListVoucher />} />
               </Route>
               <Route
