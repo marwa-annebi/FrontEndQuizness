@@ -275,6 +275,17 @@ body {
   cursor: pointer;
 }
 
+#paper1 {
+  height: 100px;
+  /* padding-right: 15px; */
+  /* padding-left: 15px; */
+  /* width: 130px; */
+  /* text-align: start; */
+  background: -webkit-linear-gradient(var(--cod-gray), #eee);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  cursor: pointer;
+}
 
 #paper:hover {
   color: var(--cod-gray);
@@ -282,6 +293,15 @@ body {
 
   height: 280px;
   position: fixed;
+  -webkit-text-fill-color: var(--cod-gray);
+
+}
+
+#paper1:hover {
+  color: var(--cod-gray);
+  background: white;
+  height: 280px;
+  /* position: fixed; */
   -webkit-text-fill-color: var(--cod-gray);
 
 }

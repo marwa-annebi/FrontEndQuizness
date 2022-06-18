@@ -13,6 +13,7 @@ import { ReactComponent as KeyIcon } from "./../../assets/key-svgrepo-com (2).sv
 import { ToastContainer, toast } from "react-toastify";
 import Notification from "../Notification";
 import "react-toastify/dist/ReactToastify.css";
+import Loading from "../Loading";
 export default function QuizzesCandidate(props) {
   const darkColor = props.account.darkColor;
   const lightColor = props.account.lightColor;
@@ -36,16 +37,19 @@ export default function QuizzesCandidate(props) {
       },
     };
     try {
+      setloading(true);
       const { data } = await axios.get(
         process.env.REACT_APP_BACKEND +
           `/candidate/getvoucher?_id_voucher=${key}`,
         // { _id_voucher: key, candidat: candidate.user._id },
         config
       );
+
       // console.log(data);
       if (data) {
         navigate("/playQuiz", { state: data });
       }
+
       setloading(false);
     } catch (error) {
       if (
@@ -125,79 +129,83 @@ export default function QuizzesCandidate(props) {
       <ContentMenuItem
         style={{ borderColor: darkColor, boxShadow: " 0px 3px 6px #00000029" }}
       >
-        <form onSubmit={getVoucher}>
-          <Grid container spacing={2} textAlign="center">
-            <Grid className={classes.title1} item xs={12}>
-              Please enter the key sent to you by your quizmaster
-            </Grid>
-            <Grid className={classes.title1} xs={12}>
-              via E-mail
-            </Grid>
-            <Grid item xs={12}>
-              <Key
-                width="450px"
-                height="250px"
-                fill={lightColor}
-                className={classes.plume}
-              />
-            </Grid>
-            <Grid xs={12} style={{ marginTop: "-11px" }}>
-              <TextField
-                id="outlined-basic"
-                variant="outlined"
-                type="text"
-                className={classes.key}
-                value={key}
-                name="key"
-                onChange={(e) => setkey(e.target.value)}
-                InputProps={{
-                  classes: { input: classes.input },
-                  startAdornment: (
-                    <InputAdornment
-                      position="start"
-                      style={{ marginLeft: "-17px" }}
-                    >
-                      <KeyIcon fill={lightColor} width="50px" />
-                      <h3
-                        style={{
-                          color: darkColor,
-                          fontFamily: "var(--font-family-cerapro-bold)",
-                        }}
+        {loading ? (
+          <Loading />
+        ) : (
+          <form onSubmit={getVoucher}>
+            <Grid container spacing={2} textAlign="center">
+              <Grid className={classes.title1} item xs={12}>
+                Please enter the key sent to you by your quizmaster
+              </Grid>
+              <Grid className={classes.title1} xs={12}>
+                via E-mail
+              </Grid>
+              <Grid item xs={12}>
+                <Key
+                  width="450px"
+                  height="250px"
+                  fill={lightColor}
+                  className={classes.plume}
+                />
+              </Grid>
+              <Grid xs={12} style={{ marginTop: "-11px" }}>
+                <TextField
+                  id="outlined-basic"
+                  variant="outlined"
+                  type="text"
+                  className={classes.key}
+                  value={key}
+                  name="key"
+                  onChange={(e) => setkey(e.target.value)}
+                  InputProps={{
+                    classes: { input: classes.input },
+                    startAdornment: (
+                      <InputAdornment
+                        position="start"
+                        style={{ marginLeft: "-17px" }}
                       >
-                        key :
-                      </h3>
-                    </InputAdornment>
-                  ),
-                }}
-              ></TextField>
-            </Grid>
-            <Grid item xs={12}>
-              <button
-                className="btnVerif border-1px-dove-gray"
-                variant="contained"
-                type="submit"
-                style={{
-                  marginLeft: "80px",
-                  marginTop: "30px",
-                  color: darkColor,
-                  backgroundColor: lightColor,
-                }}
-              >
-                <div
+                        <KeyIcon fill={lightColor} width="50px" />
+                        <h3
+                          style={{
+                            color: darkColor,
+                            fontFamily: "var(--font-family-cerapro-bold)",
+                          }}
+                        >
+                          key :
+                        </h3>
+                      </InputAdornment>
+                    ),
+                  }}
+                ></TextField>
+              </Grid>
+              <Grid item xs={12}>
+                <button
+                  className="btnVerif border-1px-dove-gray"
+                  variant="contained"
+                  type="submit"
                   style={{
-                    fontFamily: "var(--font-family-cerapro-bold)",
-                    fontWeight: 700,
-                    fontSize: "24px",
-                    marginTop: "-4px",
+                    marginLeft: "80px",
+                    marginTop: "30px",
+                    color: darkColor,
+                    backgroundColor: lightColor,
                   }}
                 >
-                  PLAY QUIZ
-                </div>
-              </button>
-              {/* <ToastContainer /> */}
+                  <div
+                    style={{
+                      fontFamily: "var(--font-family-cerapro-bold)",
+                      fontWeight: 700,
+                      fontSize: "24px",
+                      marginTop: "-4px",
+                    }}
+                  >
+                    PLAY QUIZ
+                  </div>
+                </button>
+                {/* <ToastContainer /> */}
+              </Grid>
             </Grid>
-          </Grid>
-        </form>
+          </form>
+        )}
       </ContentMenuItem>
     </div>
   );

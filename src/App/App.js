@@ -33,7 +33,7 @@ import Success from "../components/candidate/score/Success";
 import Failed from "../components/candidate/score/Failed";
 import { Statistics } from "../components/quizmaster/Statistics";
 import NumbreofQuiz from "../components/quizmaster/Statistic/NumbreOfQuiz";
-import NumbreOfcandidatByMonth from "../components/quizmaster/Statistic/NumbreOfcandidatByMonth"
+import NumbreOfcandidatByMonth from "../components/quizmaster/Statistic/NumbreOfcandidatByMonth";
 
 function App() {
   const [companyColors, setcompanyColors] = React.useState("");
@@ -112,7 +112,10 @@ function App() {
                 <Route path="candidate" element={<Candidate />} />
                 <Route path="statistics/*" element={<Statistics />}>
                   <Route path="nbofQuiz" element={<NumbreofQuiz />} />
-                  <Route path="NumbreOfcandidatByMonth" element={<NumbreOfcandidatByMonth/>}/>
+                  <Route
+                    path="NumbreOfcandidatByMonth"
+                    element={<NumbreOfcandidatByMonth />}
+                  />
                 </Route>
                 <Route path="vouchers" element={<ListVoucher />} />
               </Route>
@@ -161,7 +164,7 @@ function App() {
               />
               <Route
                 element={<Failed company_info={companyColors} />}
-                path="Failed"
+                path="/Quiz/Failed"
               />
             </>
           ) : (

@@ -2,12 +2,45 @@ import { makeStyles } from "@material-ui/core";
 import { Box, Grid, Paper } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
+import Modal from "react-modal";
 // import axios from "axios";
 import ContentMenuItem from "../ContentMenuItem";
 // import httpHeaders from "Headers";
 export default function SkillsPage(props) {
   const darkColor = props.account.darkColor;
   const lightColor = props.account.lightColor;
+  const customStyles = {
+    content: {
+      top: "auto",
+      left: "auto",
+      // right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-34%, -50%)",
+      backgroundColor: darkColor,
+      width: "130px",
+      fontFamily: "var(--font-family-cerapro-bold)",
+      justifyContent: "center",
+      textAlign: "center",
+      boxShadow: " 0px 3px 6px  #00000029",
+      color: lightColor,
+      border: `1px solid ${lightColor}`,
+      borderRadius: "20px",
+      fontSize: "15px",
+      height: "200px",
+      width: "250px",
+    },
+    overlay: {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      // webkitBackdropFilter: "blur(13px) brightness(115%)",
+      // backdropFilter: " blur(13px) brightness(115%)",
+      backgroundColor: "transparent",
+    },
+  };
   const styles = makeStyles((theme) => ({
     paper: {
       border: `4px solid ${lightColor}`,
@@ -26,13 +59,13 @@ export default function SkillsPage(props) {
       color: lightColor,
       border: `1px solid ${lightColor}`,
       borderRadius: "20px",
-      fontSize: "18px",
+      fontSize: "15px",
       height: "30px",
       width: "130px",
       marginTop: "-5px",
       textAlign: "center",
       marginLeft: "11.5%",
-      paddingTop: "2px",
+      paddingTop: "8px",
       marginTop: "-10px",
       cursor: "pointer",
       boxShadow: "0px 3px 4px #000000",
@@ -42,15 +75,15 @@ export default function SkillsPage(props) {
       color: lightColor,
       border: `1px solid ${lightColor}`,
       borderRadius: "20px",
-      fontSize: "18px",
+      fontSize: "15px",
       height: "30px",
       width: "130px",
-      marginBottom: "5px",
+      marginBottom: "3px",
       textAlign: "center",
       marginLeft: "11.5%",
-      paddingTop: "2px",
+      paddingTop: "8px",
       cursor: "pointer",
-      marginTop: "10px",
+      marginTop: "7px",
       boxShadow: "0px 3px 4px #000000",
     },
   }));
@@ -148,7 +181,10 @@ export default function SkillsPage(props) {
         console.log(err.message);
       });
   };
-
+  const [show, setshow] = useState(false);
+  const showModal = (e) => {
+    setshow(true);
+  };
   return (
     <div style={{ height: "100vh" }}>
       <ContentMenuItem
@@ -195,7 +231,23 @@ export default function SkillsPage(props) {
                     >
                       Buy Voucher
                     </div>
-                    <div className={classes.div1}>Description</div>
+                    <div
+                      className={classes.div1}
+                      onClick={(e) => {
+                        showModal(e);
+                      }}
+                    >
+                      Description
+                    </div>
+                    <Modal
+                      isOpen={show}
+                      onRequestClose={() => {
+                        setshow(false);
+                      }}
+                      style={customStyles}
+                    >
+                      {key.requirements}
+                    </Modal>
                   </Paper>
                 </Grid>
               );
