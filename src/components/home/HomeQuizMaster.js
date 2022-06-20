@@ -48,6 +48,7 @@ export default function HomeQuizMaster(company_colors) {
                 objectFit: "cover",
                 width: "60px",
                 textAlign: "center",
+                borderRadius: "36px",
               }}
             />
           </div>

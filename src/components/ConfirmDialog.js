@@ -17,14 +17,19 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     webkitBackdropFilter: "blur(15px) brightness(105%)",
     backdropFilter: " blur(15px) brightness(105%)",
-    backgroundColor: "transparent",
+    backgroundColor: "white",
+    borderRadius: "39px",
+    border: "4px solid var(--gold)",
     top: theme.spacing(5),
+    fontFamily: "var(--font-family-cerapro-bold)",
+    marginTop: "100px",
   },
   dialogTitle: {
     textAlign: "center",
   },
   dialogContent: {
     textAlign: "center",
+    fontFamily: "var(--font-family-cerapro-bold)",
   },
   dialogAction: {
     justifyContent: "center",
@@ -32,10 +37,12 @@ const useStyles = makeStyles((theme) => ({
   titleIcon: {
     // backgroundColor: theme.palette.secondary.light,
     color: "#570B03",
-    "&:hover": {
-      backgroundColor: "gold",
-      cursor: "default",
-    },
+    boxShadow: " 0px 3px 6px  #00000029",
+
+    backgroundColor: "gold",
+    // "&:hover": {
+    //   cursor: "default",
+    // },
     "& .MuiSvgIcon-root": {
       fontSize: "8rem",
     },
@@ -53,9 +60,31 @@ export default function ConfirmDialog(props) {
           <NotListedLocationIcon />
         </IconButton>
       </DialogTitle>
-      <DialogContent className={classes.dialogContent}>
-        <Typography variant="h6">{confirmDialog.title}</Typography>
-        <Typography variant="subtitle2">{confirmDialog.subTitle}</Typography>
+      <DialogContent
+        style={{
+          fontFamily: "var(--font-family-cerapro-bold)",
+          color: "#1D1D1D",
+        }}
+        className={classes.dialogContent}
+      >
+        <Typography
+          style={{
+            fontFamily: "var(--font-family-cerapro-bold)",
+            color: "#1D1D1D",
+          }}
+          variant="h6"
+        >
+          {confirmDialog.title}
+        </Typography>
+        <Typography
+          style={{
+            fontFamily: "var(--font-family-cerapro-bold)",
+            color: "#1D1D1D",
+          }}
+          variant="subtitle2"
+        >
+          {confirmDialog.subTitle}
+        </Typography>
       </DialogContent>
       <DialogActions className={classes.dialogAction}>
         <Button

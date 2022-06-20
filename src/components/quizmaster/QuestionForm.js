@@ -85,6 +85,7 @@ const styles = makeStyles(() => ({
     backgroundColor: "var(--white)",
     width: "500px",
   },
+
   inputtextarea: {
     padding: "5px 35px 0px 35px",
     fontFamily: "cerapro-Medium",
@@ -136,7 +137,9 @@ export default function QuestionForm(props) {
     loadCategories();
     if (questionId) setquestion({ ...questionId });
   }, []);
-  const addQuestion = async () => {
+  const addQuestion = async (e) => {
+    e.preventDefault();
+
     const quizmasterInfo = JSON.parse(sessionStorage.getItem("quizmasterInfo"));
     const config = {
       headers: {

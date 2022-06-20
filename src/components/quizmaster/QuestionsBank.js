@@ -218,7 +218,7 @@ export default function QuestionsBank({ active }) {
       );
       const config = {
         headers: {
-          // "Content-Type": "application/json",
+          "Content-Type": "application/json",
           Authorization: `Bearer ${quizmasterInfo.token}`,
         },
       };
@@ -527,14 +527,16 @@ export default function QuestionsBank({ active }) {
                         {row.propositions.map((prop) => (
                           <div>
                             <Grid xs={12}>
-                              {prop.typeQuestion === "MCQ" ? (
-                                <Radio
+                              {row.typeQuestion === "TF" && (
+                                <input
+                                  type="radio"
                                   checked={prop.veracity}
                                   value={prop.veracity}
                                   name="radio-buttons"
-                                  // inputProps={{ "aria-label": "A" }}
+                                  color="var(--mahogany-32)"
                                 />
-                              ) : (
+                              )}
+                              {row.typeQuestion === "MCQ" && (
                                 <Checkbox
                                   checked={prop.veracity}
                                   value={prop.veracity}

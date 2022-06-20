@@ -3,7 +3,7 @@ import { Box, Grid, Paper } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
 import Modal from "react-modal";
-// import axios from "axios";
+import Popup from "reactjs-popup";
 import ContentMenuItem from "../ContentMenuItem";
 // import httpHeaders from "Headers";
 export default function SkillsPage(props) {
@@ -154,6 +154,11 @@ export default function SkillsPage(props) {
     //   window.open(response.payUrl);
     // });
   };
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
   const candidateInfo = JSON.parse(sessionStorage.getItem("candidateInfo"));
   const config = {
     headers: {
@@ -162,7 +167,6 @@ export default function SkillsPage(props) {
     },
   };
   const handleCheckout = (key) => {
-    console.log(key);
     axios
       .post(
         process.env.REACT_APP_BACKEND + "/candidate/paymentCandidate",
@@ -178,7 +182,18 @@ export default function SkillsPage(props) {
         }
       })
       .catch((err) => {
-        console.log(err.message);
+        if (
+          err.response &&
+          err.response.status >= 400 &&
+          err.response.status <= 500
+        ) {
+          // setloading(false);
+          setNotify({
+            isOpen: true,
+            message: err.response.data.message,
+            type: "error",
+          });
+        }
       });
   };
   const [show, setshow] = useState(false);
@@ -231,7 +246,31 @@ export default function SkillsPage(props) {
                     >
                       Buy Voucher
                     </div>
-                    <div
+                    <Popup
+                      trigger={
+                        <div className={classes.div1}> Description </div>
+                      }
+                      position="bottom "
+                    >
+                      <div
+                        style={{
+                          backgroundColor: darkColor,
+                          width: "250px",
+                          height: "110px",
+                          borderRadius: "33px",
+                          textAlign: "center",
+                          padding: "10px",
+                          justifyItems: "center",
+                          fontFamily: "var(--font-family-cerapro-medium)",
+                          fontSize: "12px",
+                        }}
+                      >
+                        {" "}
+                        {key.requirements}
+                      </div>
+                      {/* <button>Click here</button> */}
+                    </Popup>
+                    {/* <div
                       className={classes.div1}
                       onClick={(e) => {
                         showModal(e);
@@ -247,7 +286,7 @@ export default function SkillsPage(props) {
                       style={customStyles}
                     >
                       {key.requirements}
-                    </Modal>
+                    </Modal> */}
                   </Paper>
                 </Grid>
               );

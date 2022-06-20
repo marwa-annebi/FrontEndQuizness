@@ -132,6 +132,15 @@ export default function YesOrNoQuestion(props) {
       { content: "false", veracity: false },
     ],
   });
+  // const change=()=>{
+  //   for (let index = 0; index < question.propositions.length; index++) {
+  //     const element = question.propositions[index];
+  //     if(!element.target.checked){
+  //       const update=element.
+  //     }
+  //   }
+  // }
+
   const [notify, setNotify] = useState({
     isOpen: false,
     message: "",
@@ -204,25 +213,22 @@ export default function YesOrNoQuestion(props) {
       }
     }
   };
+  const check = (index) => {
+    // for (let index = 0; index < question.propositions.length; index++) {
+    const element = question.propositions[index];
+    if (element.veracity === true) {
+      element.veracity = false;
+      setquestion({ ...question });
+    }
+
+    // }
+  };
   const handleInputChange = (e) => {
-    const { name, value, checked } = e.target;
+    const { name, value } = e.target;
     setquestion({
       ...question,
-      [name]: value || checked,
+      [name]: value,
     });
-    if (checked) {
-      if (question.propositions.length < 1) {
-        setquestion({
-          ...question,
-          [name]: value || checked,
-        });
-      }
-      // console.log(check);
-    } else {
-      //  console.log(check);
-
-      setquestion((prev) => prev.filter((x) => value !== x));
-    }
   };
   const checkRef = useRef();
 
@@ -363,70 +369,86 @@ export default function YesOrNoQuestion(props) {
             <div
               style={{ direction: "row", display: "flex", textAlign: "center" }}
             >
-              {question.propositions.map((item, index) => {
+              {/* {question.propositions.map((item, index) => {
                 console.log("#item", item);
-                return (
-                  <div key={index}>
-                    <Grid container textAlign="center" spacing={2}>
-                      {/* <div className="radio"> */}
-                      <Grid
-                        item
-                        xs={12}
-                        // style={{ marginTop: "15px", marginRight: "250px" }}
-                      >
-                        <input
-                          type="radio"
-                          style={{
-                            // display: "none",
-                            color: "var(--mahogany-32)",
-                            width: 26,
-                            position: "absolute",
-                            height: 26,
-                            marginTop: "15px",
-                          }}
-                          name="veracity"
-                          value={item.veracity}
-                          onChange={(e) => {
-                            item.veracity = e.target.checked;
-                            // console.log(prop);
-                            console.log(e.target.checked);
-                            setquestion({ ...question });
-                          }}
-                          // checked={question.propositions.ver.indexOf(color) >= 0}
-
-                          // size="30px"
-                        ></input>
-                        <label
-                          //   name={propositions[index].content}
-                          // label={`Option ${index + 1}`}
-                          // className={classes.txtName}
-                          // InputProps={{
-                          //   classes: { input: classes.input },
-                          // }}
-                          value={item.content}
-                          style={{
-                            marginTop: "-10px",
-                            textAlign: "end",
-                          }}
-                          // InputLabelProps={{ className: classes.label }}
-                          // onChange={(e) => {
-                          //   item.content = e.target.value;
-                          //   // console.log(prop);
-                          //   setquestion({ ...question });
-                          // }}
-                        >
-                          {item.content}
-                        </label>
-                        {/* {item.content} */}
-                      </Grid>
-                      {/* <Grid item xs={6}> */}
-
-                      {/* </Grid> */}
-                      {/* </div> */}
-                    </Grid>
-                  </div>
-                );
-              })}
+                return ( */}
+              <div>
+                <Grid container textAlign="center" spacing={2}>
+                  {/* <div className="radio"> */}
+                  <Grid
+                    item
+                    xs={12}
+                    // style={{ marginTop: "15px", marginRight: "250px" }}
+                  >
+                    <input
+                      type="radio"
+                      style={{
+                        // display: "none",
+                        color: "var(--mahogany-32)",
+                        width: 26,
+                        position: "absolute",
+                        height: 26,
+                        marginTop: "15px",
+                      }}
+                      name="veracity"
+                      value={question.propositions[0].veracity}
+                      onChange={(e) => {
+                        // if (e.target.checked) {
+                        check(1);
+                        question.propositions[0].veracity = e.target.checked;
+                        setquestion({ ...question });
+                      }}
+                    ></input>
+                    <label
+                      value={question.propositions[0].content}
+                      style={{
+                        marginTop: "-10px",
+                        textAlign: "end",
+                      }}
+                    >
+                      {question.propositions[0].content}
+                    </label>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    // style={{ marginTop: "15px", marginRight: "250px" }}
+                  >
+                    <input
+                      type="radio"
+                      style={{
+                        // display: "none",
+                        color: "var(--mahogany-32)",
+                        width: 26,
+                        position: "absolute",
+                        height: 26,
+                        marginTop: "15px",
+                      }}
+                      name="veracity"
+                      value={question.propositions[1].veracity}
+                      onChange={(e) => {
+                        // if (e.target.checked) {
+                        check(0);
+                        question.propositions[1].veracity = e.target.checked;
+                        setquestion({ ...question });
+                        // } else if (!e.target.checked) {
+                        //   question.propositions[1].veracity = false;
+                        //   setquestion({ ...question });
+                        // }
+                      }}
+                    ></input>
+                    <label
+                      value={question.propositions[1].content}
+                      style={{
+                        marginTop: "-10px",
+                        textAlign: "end",
+                      }}
+                    >
+                      {question.propositions[1].content}
+                    </label>
+                  </Grid>
+                </Grid>
+              </div>
             </div>
           </Grid>
           {/* </form> */}

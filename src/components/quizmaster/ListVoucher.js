@@ -27,6 +27,7 @@ import { makeStyles } from "@material-ui/core";
 import ConfirmDialog from "../ConfirmDialog";
 import AddVoucher from "./AddVoucher";
 import Modal from "react-modal";
+import Notification from "../Notification";
 
 const customStyles = {
   content: {
@@ -116,12 +117,9 @@ const styles = makeStyles(() => ({
   },
 }));
 const headCells = [
-  // { id: "", label: "" },
-  // { id: "firstName", label: "First Name" },
-  // { id: "lastName", label: "Last Name" },
   { id: "email", label: "Email" },
   { id: "generateVoucher", label: "Voucher", disableSorting: true },
-  { id: "actions", label: "Actions", disableSorting: true },
+  // { id: "actions", label: "Actions", disableSorting: true },
 ];
 export default function ListVoucher() {
   const classes = styles();
@@ -131,10 +129,14 @@ export default function ListVoucher() {
     subTitle: "",
   });
   const [openAddVoucher, setopenAddVoucher] = useState(false);
-  // const quizmasterInfo = JSON.parse(sessionStorage.getItem("quizmasterInfo"));
   const [candidates, setcandidates] = useState([]);
-  const loadCandidates = async () => {
-    const quizmasterInfo = JSON.parse(sessionStorage.getItem("quizmasterInfo"));
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
+  const quizmasterInfo = JSON.parse(sessionStorage.getItem("quizmasterInfo"));
+  const loadCandidatesSkills = async () => {
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -143,18 +145,29 @@ export default function ListVoucher() {
     };
     try {
       const result = await axios.get(
-        process.env.REACT_APP_BACKEND + "/quizmaster/getCandidats",
+        process.env.REACT_APP_BACKEND + "/quizmaster/getSkillCandidate",
         config
       );
-      setcandidates(result.data.reverse());
+      setcandidates(result.data);
       console.log("hello", candidates);
     } catch (error) {
-      console.log(error);
+      if (
+        error.response &&
+        error.response.status >= 400 &&
+        error.response.status <= 500
+      ) {
+        // setloading(false);
+        setNotify({
+          isOpen: true,
+          message: error.response.data.message,
+          type: "error",
+        });
+      }
     }
   };
   useEffect(
     () => {
-      loadCandidates();
+      loadCandidatesSkills();
     },
     [],
     [candidates]
@@ -164,6 +177,47 @@ export default function ListVoucher() {
       return items;
     },
   });
+
+  const deleteVoucher = async (id) => {
+    setConfirmDialog({
+      ...confirmDialog,
+      isOpen: false,
+    });
+    try {
+      const quizmasterInfo = JSON.parse(
+        sessionStorage.getItem("quizmasterInfo")
+      );
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${quizmasterInfo.token}`,
+        },
+      };
+      await axios.delete(
+        process.env.REACT_APP_BACKEND + `/quizmaster/voucher/${id}`,
+        config
+      );
+      loadCandidatesSkills();
+      setNotify({
+        isOpen: true,
+        message: "Deleted Successfully",
+        type: "success",
+      });
+    } catch (error) {
+      if (
+        error.response &&
+        error.response.status >= 400 &&
+        error.response.status <= 500
+      ) {
+        setNotify({
+          isOpen: true,
+          message: error.response.data.message,
+          type: "error",
+        });
+        // console.log(error.response.data.message);
+      }
+    }
+  };
   const [id, setid] = useState();
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTable(candidates, headCells, filterFn);
@@ -229,7 +283,7 @@ export default function ListVoucher() {
               // lineHeight: "2px",
             }}
           >
-            {row.email}
+            {row.userId.email}
           </TableCell>
           <TableCell
             style={{
@@ -278,76 +332,8 @@ export default function ListVoucher() {
               <div style={{ marginTop: "5px" }}>generate</div>
             </div>
           </TableCell>
-
-          <TableCell
-            // margin={10}
-            style={{
-              padding: "0px 30px",
-              backgroundColor: "white",
-              fontSize: "18px",
-              borderBottom: "none",
-              fontFamily: "var(--font-family-cerapro-medium)",
-              color: "#464646",
-              borderRadius: "40px",
-              width: "220px",
-              border: "4px solid var(--mahogany-3)",
-              textAlign: "center",
-              fontWeight: 500,
-            }}
-          >
-            {/* <Button
-                color="primary"
-                onClick={() => {
-                  setopenEditPopup(true);
-                  setRecordForEdit(row);
-                }}
-              >
-                <EditOutlinedIcon fontSize="small" />
-      
-              </Button> */}
-            <img
-              src={pen}
-              className="edit"
-              // key={key}
-              // onClick={() => {
-              //   setopenEditPopup(true);
-              //   setRecordForEdit(row);
-              // }}
-            />
-
-            <img
-              style={{
-                width: "30px",
-                height: "40px",
-                marginLeft: "-5px  ",
-                cursor: "pointer",
-              }}
-              onClick={() => {
-                setConfirmDialog({
-                  isOpen: true,
-                  title: "Are you sure to delete this record?",
-                  subTitle: "You can't undo this operation",
-                  onConfirm: () => {
-                    // deleteQuestion(row._id);
-                  },
-                });
-              }}
-              src={imgdelete}
-              onMouseEnter={(e) => (e.currentTarget.src = deleteHover)}
-              onMouseOut={(e) => (e.currentTarget.src = imgdelete)}
-            />
-          </TableCell>
         </TableRow>
-        {/* <Modal
-          isOpen={openEditPopup}
-          onRequestClose={() => setopenEditPopup(false)}
-          style={customStyles}
-        >
-          <QuestionForm
-            // loadQuestions={loadQuestions}
-            questionId={recordForEdit}
-          />
-        </Modal> */}
+
         <TableRow>
           <TableCell
             style={{
@@ -381,12 +367,12 @@ export default function ListVoucher() {
                           borderRadius: "39px",
                           width: "180px",
                           height: "10px",
-                          // textAlign: "center",
+                          textAlign: "center",
                           fontSize: "20px",
-                          width: "10px",
+                          width: "100px",
                         }}
                       >
-                        state
+                        Skill Name
                       </TableCell>
                       <TableCell
                         style={{
@@ -395,33 +381,23 @@ export default function ListVoucher() {
                           borderRadius: "39px",
                           width: "180px",
                           height: "10px",
-                          // textAlign: "center",
+                          textAlign: "center",
                           fontSize: "20px",
-                          width: "180px",
+                          width: "100px",
                           borderLeft: "4px solid var(--mahogany-3)",
                         }}
                       >
                         name
                       </TableCell>
-                      <TableCell
-                        style={{
-                          borderRadius: "39px",
-                          width: "10px",
-                          height: "10px",
-                          fontSize: "20px",
-                          borderLeft: "4px solid var(--mahogany-3)",
-                        }}
-                      >
-                        nationality
-                      </TableCell>
+
                       <TableCell
                         style={{
                           // padding: "15px 15px",
                           // backgroundColor: "var(--mahogany-3)",
                           borderRadius: "39px",
-                          width: "180px",
+                          width: "100px",
                           height: "10px",
-                          // textAlign: "center",
+                          textAlign: "center",
                           fontSize: "20px",
                           // border-radius: 39px;
                           borderLeft: "4px solid var(--mahogany-3)",
@@ -443,7 +419,7 @@ export default function ListVoucher() {
                           width: "30px",
                         }}
                       >
-                        {row.state}
+                        {row._id_skill.skill_name}
                       </TableCell>
                       <TableCell
                         component="th"
@@ -452,19 +428,10 @@ export default function ListVoucher() {
                           borderLeft: "4px solid var(--mahogany-3)",
                           fontFamily: "var(--font-family-cerapro-medium)",
                           color: "var(--heavy-metal)",
-                          width: "30px",
+                          // width: "20px",
                         }}
                       >
-                        {row.lastName} {row.firstName}
-                      </TableCell>
-                      <TableCell
-                        style={{
-                          borderLeft: "4px solid var(--mahogany-3)",
-                          fontFamily: "var(--font-family-cerapro-medium)",
-                          color: "var(--heavy-metal)",
-                        }}
-                      >
-                        {row.nationality}
+                        {row.userId.lastName} {row.userId.firstName}
                       </TableCell>
                       <TableCell
                         style={{
@@ -474,7 +441,7 @@ export default function ListVoucher() {
                         }}
                       >
                         <img
-                          src={row.picture}
+                          src={row.userId.picture}
                           style={{
                             width: "50px",
                             height: "50px",
@@ -509,7 +476,7 @@ export default function ListVoucher() {
               >
                 <AddVoucher
                   // loadQuestions={loadQuestions}
-                  candidat={id}
+                  candidat={item.userId}
                   onClose={() => setopenAddVoucher(false)}
                 />
               </Modal>
@@ -517,11 +484,16 @@ export default function ListVoucher() {
           ))}
         </TableBody>
       </TblContainer>
-      ;{/* })} */}
-      {/* <ConfirmDialog
+      <Notification
+        notify={notify}
+        setNotify={setNotify}
+        vertical="top"
+        horizontal="right"
+      />
+      <ConfirmDialog
         confirmDialog={confirmDialog}
         setConfirmDialog={setConfirmDialog}
-      /> */}
+      />
     </ContentMenuItem>
   );
 }

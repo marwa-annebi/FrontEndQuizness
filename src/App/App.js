@@ -34,6 +34,7 @@ import Failed from "../components/candidate/score/Failed";
 import { Statistics } from "../components/quizmaster/Statistics";
 import NumbreofQuiz from "../components/quizmaster/Statistic/NumbreOfQuiz";
 import NumbreOfcandidatByMonth from "../components/quizmaster/Statistic/NumbreOfcandidatByMonth";
+import Subscription from "../components/subscriptionQuizmaster/Subscription";
 
 function App() {
   const [companyColors, setcompanyColors] = React.useState("");
@@ -93,6 +94,10 @@ function App() {
           <Route
             element={<ResetPassword />}
             path="/setNewPassword/:id/:resetToken/:type"
+          />
+          <Route
+            element={<Subscription {...companyColors} />}
+            path="/subscription"
           />
           {IsLoggedIn ? (
             <>

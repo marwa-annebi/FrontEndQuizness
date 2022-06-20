@@ -10,6 +10,7 @@ import SideMenuCandidate from "./SideMenuCandidate";
 import ContentMenuItem from "../ContentMenuItem";
 import Loading from "../Loading";
 import Notification from "../Notification";
+import Countdown from "react-countdown";
 export default function PlayQuiz(company_info) {
   const candidate = JSON.parse(sessionStorage.getItem("candidateInfo"));
 
@@ -59,13 +60,10 @@ export default function PlayQuiz(company_info) {
     type: "",
   });
   const [error, seterror] = useState();
-  const [minutes, setminutes] = useState();
-  const [seconds, setseconds] = useState();
-  const [timer, setTimer] = useState("00:00");
   const [loading, setloading] = useState(false);
   const fetchUsers = async () => {
     try {
-      const { result, countQuestion, message, minutes, seconds } = await read({
+      const { result, countQuestion, message, timer } = await read({
         page: page,
         perPage: rowsPerPage,
         id: id,
@@ -76,16 +74,11 @@ export default function PlayQuiz(company_info) {
       if (!exist && result) setquiz([...quiz, ...result]);
       setCount(countQuestion);
       seterror(message);
-      // setcompteur(compteur);
-      setminutes(minutes);
-      setseconds(seconds);
-
-      // const msg = message;
+      setcompteur(timer);
     } catch (error) {
       alert(error);
     }
   };
-
   const handleCheck = (event, _id, question) => {
     var updatedList = [...answercandidate];
     if (answercandidate.length != 0) {
@@ -98,6 +91,36 @@ export default function PlayQuiz(company_info) {
             _id_proposition: _id,
             response: event.target.checked,
           });
+        } else
+          exist.answers.splice(exist.answers.indexOf(event.target.value), 1);
+      } else {
+        let add = {
+          _id_Question: question,
+          answers: [{ _id_proposition: _id, response: event.target.checked }],
+        };
+        updatedList = [...answercandidate, add];
+      }
+    } else if (event.target.checked) {
+      let add = {
+        _id_Question: question,
+        answers: [{ _id_proposition: _id, response: event.target.checked }],
+      };
+      updatedList = [...answercandidate, add];
+    } else {
+      updatedList.splice(answercandidate.indexOf(event.target.value), 1);
+    }
+    // else if(answercandidate)
+    setanswercandidate(updatedList);
+  };
+  const handleCheckRadio = (event, _id, question) => {
+    var updatedList = [...answercandidate];
+    if (answercandidate.length != 0) {
+      const exist = answercandidate.find(
+        (item) => item._id_Question === question
+      );
+      if (exist) {
+        if (event.target.checked) {
+          exist.answers[0]._id_proposition = _id;
         } else
           exist.answers.splice(exist.answers.indexOf(event.target.value), 1);
       } else {
@@ -172,18 +195,6 @@ export default function PlayQuiz(company_info) {
     setPage(newPage);
   };
 
-  const handleInputChange = (e) => {
-    const { name, value, checked } = e.target;
-    setanswercandidate({
-      ...answercandidate,
-      [name]: value || checked,
-    });
-  };
-
-  const isChecked = (_id) => {
-    answercandidate.answers.find((item) => item._id_proposition === _id);
-  };
-
   const getItemIndex = (question, proposition) => {
     let checked = false;
     let existQuestion = answercandidate.find(
@@ -201,7 +212,20 @@ export default function PlayQuiz(company_info) {
       // }
     }
   };
-  console.log(answercandidate);
+
+  const renderer = ({ hours, minutes, seconds, completed }) => {
+    if (hours === 0 && minutes === 1 && seconds === 0) {
+      // Render a completed state
+      return alert("please submit your answers");
+    } else {
+      return (
+        <span>
+          {hours}:{minutes}:{seconds}
+        </span>
+      );
+    }
+  };
+
   return (
     <Grid container spacing={{ xs: 6, md: 12 }}>
       <Grid item md={2}>
@@ -266,7 +290,10 @@ export default function PlayQuiz(company_info) {
                             color: darkColor,
                           }}
                         >
-                          {timer}
+                          <Countdown
+                            date={Date.now() + compteur}
+                            renderer={renderer}
+                          />
                         </h3>
                       </div>
                     </Grid>
@@ -313,24 +340,48 @@ export default function PlayQuiz(company_info) {
                                         key={index}
                                       >
                                         {/* <Grid> */}
-                                        <Checkbox
-                                          key={index}
-                                          name="response"
-                                          onChange={(e) => {
-                                            handleCheck(
-                                              e,
-                                              proposition._id,
-                                              proposition.question
-                                            );
-                                          }}
-                                          style={{
-                                            color: lightColor,
-                                          }}
-                                          checked={getItemIndex(
-                                            proposition.question,
-                                            proposition._id
-                                          )}
-                                        />
+                                        {item.typeQuestion === "TF" && (
+                                          <input
+                                            type="radio"
+                                            key={index}
+                                            name="response"
+                                            onChange={(e) => {
+                                              handleCheckRadio(
+                                                e,
+                                                proposition._id,
+                                                proposition.question
+                                              );
+                                            }}
+                                            style={{
+                                              color: lightColor,
+                                            }}
+                                            checked={getItemIndex(
+                                              proposition.question,
+                                              proposition._id
+                                            )}
+                                          />
+                                        )}
+
+                                        {item.typeQuestion === "MCQ" && (
+                                          <Checkbox
+                                            key={index}
+                                            name="response"
+                                            onChange={(e) => {
+                                              handleCheck(
+                                                e,
+                                                proposition._id,
+                                                proposition.question
+                                              );
+                                            }}
+                                            style={{
+                                              color: lightColor,
+                                            }}
+                                            checked={getItemIndex(
+                                              proposition.question,
+                                              proposition._id
+                                            )}
+                                          />
+                                        )}
                                         {/* <Grid xs={6}> */}
                                         <h5
                                           value={

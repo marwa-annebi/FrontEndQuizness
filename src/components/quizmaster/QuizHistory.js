@@ -252,6 +252,9 @@ export default function QuizHistory() {
               border: "4px solid var(--mahogany-3)",
               fontFamily: "var(--font-family-cerapro-medium)",
               color: "#464646",
+              // display: "flex",
+              textAlign: "center",
+              justifyContent: "space-evenly",
             }}
           >
             {row.typeQuiz === "selection" ? (
@@ -259,7 +262,7 @@ export default function QuizHistory() {
                 src={selection}
                 style={{
                   width: "20px",
-                  position: "absolute",
+                  // position: "sta",
 
                   marginRight: "10px",
                   marginTop: "5px",
@@ -270,22 +273,22 @@ export default function QuizHistory() {
                 src={randomly}
                 style={{
                   width: "20px",
-                  position: "absolute",
+                  // position: "absolute",
 
                   marginRight: "10px",
-                  marginTop: "12px",
+                  marginTop: "5px",
                 }}
               />
             )}
-            <p
+            {/* <p
               style={{
-                lineHeight: "18px",
+                // lineHeight: "18px",
                 textAlign: "center",
               }}
             >
-              {" "}
-              {row.quizName}
-            </p>
+              {" "} */}
+            {row.quizName}
+            {/* </p> */}
           </TableCell>
           <TableCell
             style={{

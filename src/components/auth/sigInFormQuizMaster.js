@@ -55,6 +55,7 @@ export default function SigInForm(companyInfo) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setloading] = useState(false);
+  const [stripeCustomerId, setstripeCustomerId] = useState("");
   const [notify, setNotify] = useState({
     isOpen: false,
     message: "",
@@ -72,7 +73,7 @@ export default function SigInForm(companyInfo) {
       setloading(true);
       const { data } = await axios.post(
         process.env.REACT_APP_BACKEND + "/auth/loginUser",
-        { email, password, type: "3" },
+        { email, password, type: "3", stripeCustomerId },
         config
       );
 
@@ -81,13 +82,12 @@ export default function SigInForm(companyInfo) {
       // console.log("hello");
       if (data) {
         setloading(true);
-        navigate("/dashboard/quizMaster/questionsBank");
-        window.location.reload(true);
+        navigate("/subscription");
+        // window.location.reload(true);
       }
       // setloading(false);
     } catch (error) {
       setloading(false);
-      console.log(error.response.data.message);
       if (
         error.response &&
         error.response.status >= 400 &&

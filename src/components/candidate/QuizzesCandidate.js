@@ -38,20 +38,18 @@ export default function QuizzesCandidate(props) {
     };
     try {
       setloading(true);
-      const { data } = await axios.get(
-        process.env.REACT_APP_BACKEND +
-          `/candidate/getvoucher?_id_voucher=${key}`,
-        // { _id_voucher: key, candidat: candidate.user._id },
+      const { data } = await axios.post(
+        process.env.REACT_APP_BACKEND + `/candidate/getvoucher`,
+        { _id_voucher: key },
         config
       );
-
-      // console.log(data);
-      if (data) {
-        navigate("/playQuiz", { state: data });
-      }
-
+      console.log("#data", data);
+      // if (data) {
+      navigate("/playQuiz", { state: data });
+      // }
       setloading(false);
     } catch (error) {
+      setloading(false);
       if (
         error.response &&
         error.response.status >= 400 &&

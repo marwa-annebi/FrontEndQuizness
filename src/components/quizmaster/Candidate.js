@@ -27,7 +27,8 @@ import { makeStyles } from "@material-ui/core";
 import ConfirmDialog from "../ConfirmDialog";
 import AddVoucher from "./AddVoucher";
 import Modal from "react-modal";
-
+import AddUpdateCandidate from "./crudCandidate/AddUpdateCandidate.js";
+import Notification from "../Notification";
 const customStyles = {
   content: {
     top: "50%",
@@ -116,9 +117,6 @@ const styles = makeStyles(() => ({
   },
 }));
 const headCells = [
-  // { id: "", label: "" },
-  // { id: "firstName", label: "First Name" },
-  // { id: "lastName", label: "Last Name" },
   { id: "email", label: "Email" },
   { id: "generateVoucher", label: "Voucher", disableSorting: true },
   { id: "actions", label: "Actions", disableSorting: true },
@@ -164,9 +162,58 @@ export default function Candidate() {
       return items;
     },
   });
+  const [recordForEdit, setRecordForEdit] = useState(null);
+  const [open, setopen] = useState(false);
+  const [openEdit, setopenEdit] = useState(false);
   const [id, setid] = useState();
+  const [notify, setNotify] = useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTable(candidates, headCells, filterFn);
+  const deleteCandidate = async (id) => {
+    setConfirmDialog({
+      ...confirmDialog,
+      isOpen: false,
+    });
+    try {
+      const quizmasterInfo = JSON.parse(
+        sessionStorage.getItem("quizmasterInfo")
+      );
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${quizmasterInfo.token}`,
+        },
+      };
+      await axios.delete(
+        process.env.REACT_APP_BACKEND + `/quizmaster/deletecandidat/${id}`,
+        config
+      );
+      loadCandidates();
+      setNotify({
+        isOpen: true,
+        message: "Deleted Successfully",
+        type: "success",
+      });
+    } catch (error) {
+      if (
+        error.response &&
+        error.response.status >= 400 &&
+        error.response.status <= 500
+      ) {
+        setNotify({
+          isOpen: true,
+          message: error.response.data.message,
+          type: "error",
+        });
+        // console.log(error.response.data.message);
+      }
+    }
+  };
+
   function Row(props) {
     const { row } = props;
     const [open, setOpen] = React.useState(false);
@@ -250,33 +297,8 @@ export default function Candidate() {
 
               // height: "30px",
             }}
-            onClick={() => {
-              setopenAddVoucher(true);
-              setid(row._id);
-            }}
           >
-            <div
-              style={{
-                display: "flex",
-                textAlign: "center",
-                justifyContent: "space-evenly",
-              }}
-            >
-              <div
-                style={{
-                  color: "var(--gold)",
-                }}
-              >
-                <IoTicketSharp
-                  size={30}
-                  style={{
-                    boxShadow: "0px 3px 6px #00000029",
-                    // backgroundColor: "white",
-                  }}
-                />
-              </div>
-              <div style={{ marginTop: "5px" }}>generate</div>
-            </div>
+            {row.lastName} {row.firstName}
           </TableCell>
 
           <TableCell
@@ -308,11 +330,11 @@ export default function Candidate() {
             <img
               src={pen}
               className="edit"
-              // key={key}
-              // onClick={() => {
-              //   setopenEditPopup(true);
-              //   setRecordForEdit(row);
-              // }}
+              // key={row}
+              onClick={() => {
+                setopenEdit(true);
+                setRecordForEdit(row);
+              }}
             />
 
             <img
@@ -328,7 +350,7 @@ export default function Candidate() {
                   title: "Are you sure to delete this record?",
                   subTitle: "You can't undo this operation",
                   onConfirm: () => {
-                    // deleteQuestion(row._id);
+                    deleteCandidate(row._id);
                   },
                 });
               }}
@@ -338,16 +360,16 @@ export default function Candidate() {
             />
           </TableCell>
         </TableRow>
-        {/* <Modal
-          isOpen={openEditPopup}
-          onRequestClose={() => setopenEditPopup(false)}
+        <Modal
+          isOpen={openEdit}
+          onRequestClose={() => setopenEdit(false)}
           style={customStyles}
         >
-          <QuestionForm
+          <AddUpdateCandidate
             // loadQuestions={loadQuestions}
-            questionId={recordForEdit}
+            candidateId={recordForEdit}
           />
-        </Modal> */}
+        </Modal>
         <TableRow>
           <TableCell
             style={{
@@ -388,21 +410,7 @@ export default function Candidate() {
                       >
                         state
                       </TableCell>
-                      <TableCell
-                        style={{
-                          // padding: "15px 15px",
-                          // backgroundColor: "var(--mahogany-3)",
-                          borderRadius: "39px",
-                          width: "180px",
-                          height: "10px",
-                          // textAlign: "center",
-                          fontSize: "20px",
-                          width: "180px",
-                          borderLeft: "4px solid var(--mahogany-3)",
-                        }}
-                      >
-                        name
-                      </TableCell>
+
                       <TableCell
                         style={{
                           borderRadius: "39px",
@@ -445,18 +453,7 @@ export default function Candidate() {
                       >
                         {row.state}
                       </TableCell>
-                      <TableCell
-                        component="th"
-                        scope="row"
-                        style={{
-                          borderLeft: "4px solid var(--mahogany-3)",
-                          fontFamily: "var(--font-family-cerapro-medium)",
-                          color: "var(--heavy-metal)",
-                          width: "30px",
-                        }}
-                      >
-                        {row.lastName} {row.firstName}
-                      </TableCell>
+
                       <TableCell
                         style={{
                           borderLeft: "4px solid var(--mahogany-3)",
@@ -495,22 +492,37 @@ export default function Candidate() {
   return (
     <ContentMenuItem>
       {/* {recordsAfterPagingAndSorting?.map((item, index) => { */}
+      <button
+        style={{
+          borderRadius: "19px",
+          width: "150px",
+          border: "3px solid var(--gold)",
+          height: "50px",
+          cursor: "pointer",
+          fontFamily: "var(--font-family-cerapro-bold)",
+          color: "var(--mahogany)",
+          background: "white",
+        }}
+        onClick={() => setopen(true)}
+      >
+        Add Candidate
+      </button>
       <TblContainer>
         <TblHead />
         <TableBody>
-          {recordsAfterPagingAndSorting().map((item, index) => (
+          {candidates?.map((item, index) => (
             <>
-              {" "}
               <Row key={index} row={item} />
               <Modal
-                isOpen={openAddVoucher}
-                onRequestClose={() => setopenAddVoucher(false)}
+                isOpen={open}
+                // onAfterOpen={afterOpenModal}
+                onRequestClose={() => setopen(false)}
                 style={customStyles}
               >
-                <AddVoucher
-                  // loadQuestions={loadQuestions}
-                  candidat={id}
-                  onClose={() => setopenAddVoucher(false)}
+                <AddUpdateCandidate
+                  loadCandidates={loadCandidates}
+                  candidateId={null}
+                  setclose={() => setopen(false)}
                 />
               </Modal>
             </>
@@ -518,10 +530,16 @@ export default function Candidate() {
         </TableBody>
       </TblContainer>
       ;{/* })} */}
-      {/* <ConfirmDialog
+      <ConfirmDialog
         confirmDialog={confirmDialog}
         setConfirmDialog={setConfirmDialog}
-      /> */}
+      />
+      <Notification
+        notify={notify}
+        setNotify={setNotify}
+        vertical="top"
+        horizontal="right"
+      />
     </ContentMenuItem>
   );
 }

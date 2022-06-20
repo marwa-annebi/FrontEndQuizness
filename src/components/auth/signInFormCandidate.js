@@ -94,7 +94,7 @@ function SignInFormCandidate(companyInfo) {
       sessionStorage.setItem("candidateInfo", JSON.stringify(data));
       if (data) {
         setloading(true);
-        navigate("/dashboard/candidate");
+        navigate("/dashboard/candidate/update");
         window.location.reload(true);
       }
       // setloading(false);
