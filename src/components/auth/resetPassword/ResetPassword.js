@@ -11,7 +11,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import PasswordStrengthBar from "react-password-strength-bar";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import { TextField } from "@mui/material";
+import { Grid, TextField } from "@mui/material";
 import "./../../../css/resetPassword.css";
 import axios from "axios";
 import { useParams } from "react-router-dom";
@@ -140,56 +140,70 @@ export default function ResetPassword() {
     }
   };
   return (
-    <Fragment>
+    <>
       {loading && <Loading />}
-      <Notification notify={notify} setNotify={setNotify} />
-      <Paper className="form form--wrapper" elevation={8}>
-        <form className="form" onSubmit={handleSubmit}>
-          <h1 className="header4">Reset password</h1>
+      <Notification
+        notify={notify}
+        setNotify={setNotify}
+        vertical="top"
+        horizontal="right"
+      />
+      <Grid container>
+        <Grid xs={6}>
+          <h1>heloo</h1>
+        </Grid>
+        <Grid xs={6} style={{ height: "100vh" }}>
+          <form className="form" onSubmit={handleSubmit}>
+            <h1 className="header4">Reset password</h1>
 
-          <FormControl fullWidth margin="dense">
-            <TextField
-              type={showPassword ? "text" : "password"}
-              // class="form__field"
-              label="New password"
-              value={password}
-              id="filled-adornment-password"
-              // required
-              onChange={(e) => setPassword(e.target.value)}
-              // className={classes.textField}
-              InputProps={{
-                //   className: classes.input,
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      style={{ color: "#560a02" }}
-                    >
-                      {showPassword && <Visibility />}
-                      {!showPassword && <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-              // InputLabelProps={{ className: classes.label }}
-            />
-            <PasswordStrengthBar
-              password={password}
-              style={{
-                width: "330px",
-                marginLeft: "4px",
-                marginBottom: "-20px",
-              }}
-            />
-          </FormControl>
-          <br />
-          <Button type="submit" variant="contained" className={classes.submit}>
-            submit
-          </Button>
-        </form>
-      </Paper>
-    </Fragment>
+            <FormControl fullWidth margin="dense">
+              <TextField
+                type={showPassword ? "text" : "password"}
+                // class="form__field"
+                label="New password"
+                value={password}
+                id="filled-adornment-password"
+                // required
+                onChange={(e) => setPassword(e.target.value)}
+                // className={classes.textField}
+                InputProps={{
+                  //   className: classes.input,
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        style={{ color: "#560a02" }}
+                      >
+                        {showPassword && <Visibility />}
+                        {!showPassword && <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+                // InputLabelProps={{ className: classes.label }}
+              />
+              <PasswordStrengthBar
+                password={password}
+                style={{
+                  width: "330px",
+                  marginLeft: "4px",
+                  marginBottom: "-20px",
+                }}
+              />
+            </FormControl>
+            <br />
+            <Button
+              type="submit"
+              variant="contained"
+              className={classes.submit}
+            >
+              submit
+            </Button>
+          </form>
+        </Grid>
+      </Grid>
+    </>
   );
 }

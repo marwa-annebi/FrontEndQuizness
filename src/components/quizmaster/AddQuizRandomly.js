@@ -9,6 +9,8 @@ import { FiMinus } from "react-icons/fi";
 import NumericInput from "react-numeric-input";
 import { ExpandLess, ExpandMore } from "@material-ui/icons";
 import { IoAdd } from "react-icons/io5";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+
 const styles = makeStyles((theme) => ({
   h5: {
     fontFamily: "cerapro-Medium",
@@ -101,7 +103,7 @@ export default function AddQuizRandomly(props) {
   const [validation_date, setvalidation_date] = useState();
   const [questionList, setquestionList] = useState([]);
   const [quizName, setquizName] = useState("");
-  const [duration, setduration] = useState(1);
+  const [duration, setduration] = useState(15);
   const [tauxscore, settauxscore] = useState(50);
   console.log(tauxscore);
   const [notify, setNotify] = useState({
@@ -109,20 +111,35 @@ export default function AddQuizRandomly(props) {
     message: "",
     type: "",
   });
-  const loadQuestions = async () => {
-    const quizmasterInfo = JSON.parse(sessionStorage.getItem("quizmasterInfo"));
+  const [categories, setcategories] = useState([]);
+  const [skill, setskill] = useState("");
+  const quizmasterInfo = JSON.parse(sessionStorage.getItem("quizmasterInfo"));
+  const loadCategories = async () => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${quizmasterInfo.token}`,
+      },
+    };
+    // console.log(quizmasterInfo.token);
+    const result = await axios.get(
+      process.env.REACT_APP_BACKEND + "/quizmaster/getSkills",
+      config
+    );
+    setcategories(result.data.reverse());
+  };
+  const loadQuestions = async (id) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${quizmasterInfo.token}`,
       },
     };
-    const result = await axios.get(
-      process.env.REACT_APP_BACKEND + "/quizmaster/getAllQuestions",
+    const { data } = await axios.get(
+      process.env.REACT_APP_BACKEND + `/quizmaster/getQuestionSkill/${id}`,
       config
     );
-    // console.log(result.data.reverse());
-    setquestionList(result.data.reverse());
+    console.log(data);
+    setquestionList(data.questions.reverse());
   };
 
   console.log(questionList);
@@ -141,11 +158,10 @@ export default function AddQuizRandomly(props) {
   console.log("*list", list);
   React.useEffect(
     () => {
-      loadQuestions();
-      // getRandom();
+      loadCategories();
     },
     [],
-    [questionList]
+    [questionList, categories]
   );
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -514,7 +530,50 @@ export default function AddQuizRandomly(props) {
                   }}
                 />
               </Grid>
-
+              <Grid xs={12}>
+                <FormControl fullWidth sx={{ m: 1, width: 250 }}>
+                  <InputLabel
+                    id="demo-simple-select-label"
+                    style={{
+                      textAlign: "center",
+                      fontFamily: "var(--font-family-cerapro-medium)",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <h3
+                      style={{
+                        marginTop: "2px",
+                        textAlign: "center",
+                      }}
+                    >
+                      {" "}
+                      Skill
+                    </h3>
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={skill}
+                    onChange={(e) => setskill(e.target.value)}
+                    label="Skill"
+                    name="skill"
+                    style={{ border: "3px solid gold", borderRadius: "49px" }}
+                  >
+                    <MenuItem value="">
+                      <em>Skill</em>
+                    </MenuItem>
+                    {categories?.map((key) => (
+                      <MenuItem
+                        key={key._id}
+                        onClick={() => loadQuestions(key._id)}
+                        value={key._id}
+                      >
+                        {key.skill_name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
               <Grid item xs={12}>
                 <button
                   className="btnVerif border-1px-dove-gray"

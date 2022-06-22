@@ -1,9 +1,9 @@
-export const read = async ({ page, perPage, id } = {}) => {
+export const read = async ({ page, perPage, id, _id_voucher } = {}) => {
   const candidate = JSON.parse(sessionStorage.getItem("candidateInfo"));
 
   try {
     const result = await fetch(
-      `${process.env.REACT_APP_BACKEND}/candidate/getQuizById/${id}?page=${page}&perPage=${perPage}`,
+      `${process.env.REACT_APP_BACKEND}/candidate/getQuizById/${_id_voucher}/${id}?page=${page}&perPage=${perPage}`,
       {
         method: "GET",
         headers: {

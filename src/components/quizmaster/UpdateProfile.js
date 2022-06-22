@@ -10,7 +10,6 @@ import { IconContext } from "react-icons";
 import "./../../css/companySettings.css";
 import axios from "axios";
 import Notification from "../Notification";
-
 const styles = makeStyles((theme) => ({
   grid: {
     textAlign: "center",
@@ -316,6 +315,7 @@ export default function UpdateProfile(props) {
       console.log(data);
       if (data) {
         navigate("/");
+        window.location.reload(false);
       }
     } catch (error) {
       if (

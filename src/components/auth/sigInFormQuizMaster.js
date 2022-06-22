@@ -82,8 +82,8 @@ export default function SigInForm(companyInfo) {
       // console.log("hello");
       if (data) {
         setloading(true);
-        navigate("/subscription");
-        // window.location.reload(true);
+        navigate("/dashboard/quizMaster/statistics");
+        window.location.reload(true);
       }
       // setloading(false);
     } catch (error) {

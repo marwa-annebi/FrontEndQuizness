@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Badge, Button, Grid, IconButton, makeStyles } from "@material-ui/core";
 import { AppBar, Container, Toolbar } from "@mui/material";
 import logo from "./../../assets/Image.png";
+import Popup from "reactjs-popup";
 import { IoLogOut } from "react-icons/io5";
 import { IoMdAddCircle } from "react-icons/io";
 import { RiNotification2Fill } from "react-icons/ri";
@@ -50,6 +51,18 @@ const styles = makeStyles({
     justifyContent: "flex-end",
     width: "190px",
     boxShadow: "0px 3px 6px #00000029",
+  },
+
+  groupe10: {
+    alignItems: "center",
+    // backgroundColor: "#570B03",
+    // borderRadius: "39px",
+    display: "flex",
+    height: "55px",
+    justifyContent: "flex-end",
+    width: "190px",
+    fontFamily: "var(--font-family-cerapro-bold)",
+    color: "#570B03",
   },
   iconLogout: {
     backgroundColor: "gold",
@@ -120,6 +133,7 @@ const customStyles = {
 export default function NavBar(props) {
   const [categories, setcategories] = useState([]);
   console.log(props);
+  const { menu } = props;
   const loadCategories = async () => {
     const quizmasterInfo = JSON.parse(sessionStorage.getItem("quizmasterInfo"));
     const config = {
@@ -135,12 +149,6 @@ export default function NavBar(props) {
   };
   const dispatch = useDispatch();
   const [modalIsOpen, setIsOpen] = React.useState(false);
-  function openModal() {
-    setIsOpen(true);
-  }
-  function closeModal() {
-    setIsOpen(false);
-  }
   const navigate = useNavigate();
   const [recordforedit, setrecordforedit] = useState(null);
   const [openAdd, setopenAdd] = useState(false);
@@ -163,6 +171,36 @@ export default function NavBar(props) {
     sessionStorage.removeItem("quizmasterInfo");
     navigate("/");
   };
+  const [notifications, setnotifications] = useState([]);
+  const [badge, setbadge] = useState("");
+  const quizmasterInfo = JSON.parse(sessionStorage.getItem("quizmasterInfo"));
+  const getNotifications = async () => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${quizmasterInfo.token}`,
+        },
+      };
+      const { data } = await axios.get(
+        process.env.REACT_APP_BACKEND + "/quizmaster/getNotification",
+        config
+      );
+      console.log("#", data);
+      setnotifications(data.notifications);
+      setbadge(data.notifications.length);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  useEffect(
+    () => {
+      getNotifications();
+    },
+    [],
+    [notifications]
+  );
+
   const classes = styles();
   return (
     <AppBar style={{ backgroundColor: "white" }} elevation="0">
@@ -184,8 +222,10 @@ export default function NavBar(props) {
             </div>
             <div className={classes.groupe9}>
               <h2 className={classes.title}>DASHBOARD</h2>
+              {/* <h1>heloo</h1> */}
             </div>
           </div>
+
           <Grid item xs></Grid>
           <div
             style={{
@@ -214,15 +254,76 @@ export default function NavBar(props) {
               >
                 <h3 className={classes.addQuiz}>Add Skill</h3>
               </Button>
-              <IconButton className={classes.iconLogout}>
-                <Badge color="secondary">
-                  <IconContext.Provider
-                    value={{ color: "#570B03", size: "30px" }}
-                  >
-                    <RiNotification2Fill fontSize="small" />
-                  </IconContext.Provider>
-                </Badge>
-              </IconButton>
+              <Popup
+                trigger={
+                  <IconButton className={classes.iconLogout}>
+                    <Badge color="secondary" badgeContent={badge}>
+                      <IconContext.Provider
+                        value={{ color: "#570B03", size: "30px" }}
+                      >
+                        {/* <Badge color="secondary" > */}
+                        <RiNotification2Fill fontSize="small" />
+                        {/* </Badge> */}
+                      </IconContext.Provider>
+                    </Badge>
+                  </IconButton>
+                }
+                position="bottom right"
+              >
+                <div
+                  style={{
+                    backgroundColor: "gold",
+                    width: "250px",
+                    height: "auto",
+                    minHeight: "200px",
+                    borderRadius: "33px",
+                    textAlign: "center",
+                    padding: "10px",
+                    justifyItems: "center",
+                    fontFamily: "var(--font-family-cerapro-medium)",
+                    fontSize: "12px",
+                  }}
+                >
+                  {notifications?.map((notif) => {
+                    return (
+                      <div
+                        style={{
+                          fontFamily: "var(--font-family-cerapro-medium)",
+                          fontSize: "14px",
+                          borderRadius: "33px",
+                          textAlign: "center",
+                          width: "230px",
+                          background: "#FFFDF2",
+                          justifyContent: "center",
+                          // opacity: "0.5 ",
+                          // opacity: "0.5",
+                          marginLeft: "15px",
+                          height: "auto",
+                          minHeight: "44px",
+                          // lineHeight: "18px",
+                          border: "1px solid var(--mahogany)",
+                          paddingTop: "1px",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => {
+                          navigate("/dashboard/quizMaster/vouchers");
+                        }}
+                      >
+                        <p
+                          style={{
+                            fontFamily: "var(--font-family-cerapro-medium)",
+                            fontSize: "14px",
+                            color: "#1C1312",
+                          }}
+                        >
+                          {notif}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </Popup>
+
               <IconButton className={classes.iconLogout}>
                 <IconContext.Provider
                   value={{ color: "#570B03", size: "70px" }}

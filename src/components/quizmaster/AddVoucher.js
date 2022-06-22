@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import trac from "./../../assets/ticket-sharp-svgrepo-com.svg";
 import { GrAdd } from "react-icons/gr";
+import Notification from "../Notification";
 const styles = makeStyles((theme) => ({
   h5: {
     fontFamily: "cerapro-Medium",
@@ -110,24 +111,38 @@ export default function AddVoucher(candidat, onClose) {
   });
   console.log("#voucher", voucher);
   console.log(candidat.candidat);
-  const addVoucher = async () => {
-    const result = await axios.post(
-      process.env.REACT_APP_BACKEND + "/quizmaster/createVoucher",
-      {
-        quiz: voucher.quiz,
-        validation_date: voucher.validation_date,
-        creation_date: voucher.creation_date,
-        candidat: candidat.candidat,
-      },
-      config
-    );
-    console.log(result);
-    if (result) {
+  const addVoucher = async (e) => {
+    e.preventDefault();
+    try {
+      const result = await axios.post(
+        process.env.REACT_APP_BACKEND + "/quizmaster/createVoucher",
+        {
+          quiz: voucher.quiz,
+          validation_date: voucher.validation_date,
+          creation_date: voucher.creation_date,
+          candidat: candidat.candidat,
+        },
+        config
+      );
+      // if (result) {
       setNotify({
         isOpen: true,
         message: result.message,
         type: "success",
       });
+      // }
+    } catch (error) {
+      if (
+        error.response &&
+        error.response.status >= 400 &&
+        error.response.status <= 500
+      ) {
+        setNotify({
+          isOpen: true,
+          message: error.response.data.message,
+          type: "error",
+        });
+      }
     }
   };
   const handleInputChange = (e) => {
@@ -141,12 +156,12 @@ export default function AddVoucher(candidat, onClose) {
   const classes = styles();
   return (
     <div style={{ maxHeight: "500px" }}>
-      {/* <div
-        style={{
-          //   direction: "row",
-          display: "flex",
-        }}
-      > */}
+      <Notification
+        notify={notify}
+        setNotify={setNotify}
+        vertical="top"
+        horizontal="right"
+      />
       <div
         style={{
           direction: "row",
@@ -161,9 +176,6 @@ export default function AddVoucher(candidat, onClose) {
           style={{
             width: "30px",
             height: "30px",
-            // marginLeft: "77px",
-            // cursor: "pointer",
-            // display: "inline",
             marginRight: "5px",
           }}
           className="iconaddskill"

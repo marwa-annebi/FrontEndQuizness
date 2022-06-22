@@ -119,7 +119,6 @@ const styles = makeStyles(() => ({
 const headCells = [
   { id: "email", label: "Email" },
   { id: "generateVoucher", label: "Voucher", disableSorting: true },
-  // { id: "actions", label: "Actions", disableSorting: true },
 ];
 export default function ListVoucher() {
   const classes = styles();
@@ -149,7 +148,6 @@ export default function ListVoucher() {
         config
       );
       setcandidates(result.data);
-      console.log("hello", candidates);
     } catch (error) {
       if (
         error.response &&

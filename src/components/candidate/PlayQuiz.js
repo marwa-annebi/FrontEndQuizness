@@ -42,7 +42,6 @@ export default function PlayQuiz(company_info) {
   const classes = styles();
   const location = useLocation();
   const { state } = location;
-  console.log(state);
   const [quiz, setquiz] = useState([]);
   const [compteur, setcompteur] = useState();
   const [count, setCount] = useState(0);
@@ -54,6 +53,7 @@ export default function PlayQuiz(company_info) {
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(1);
   const id = state.data.quiz;
+  const _id_voucher = state.data._id;
   const [notify, setNotify] = useState({
     isOpen: false,
     message: "",
@@ -66,6 +66,7 @@ export default function PlayQuiz(company_info) {
       const { result, countQuestion, message, timer } = await read({
         page: page,
         perPage: rowsPerPage,
+        _id_voucher: _id_voucher,
         id: id,
       });
 
@@ -159,7 +160,7 @@ export default function PlayQuiz(company_info) {
       const { data } = await axios.post(
         process.env.REACT_APP_BACKEND + "/candidate/correctAnswer",
         {
-          voucher: voucher,
+          _id_voucher: state.data._id,
           array: answercandidate,
           nbQuestion: state.nbQuestion,
           Tauxscore: state.Tauxscore,
@@ -187,6 +188,7 @@ export default function PlayQuiz(company_info) {
       }
     }
   };
+  console.log(state.data._id);
 
   useEffect(() => {
     fetchUsers();
@@ -216,7 +218,7 @@ export default function PlayQuiz(company_info) {
   const renderer = ({ hours, minutes, seconds, completed }) => {
     if (hours === 0 && minutes === 1 && seconds === 0) {
       // Render a completed state
-      return alert("please submit your answers");
+      return alert("please submit your answers  ");
     } else {
       return (
         <span>

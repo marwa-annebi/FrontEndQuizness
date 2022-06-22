@@ -16,12 +16,8 @@ import Button from "@mui/material/Button";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import { useTheme } from "@mui/material/styles";
-const headCells = [
-  // { id: "", label: "" },
-  { id: "_id_question", label: "Id" },
-  { id: "tronc", label: "tronc" },
-  { id: "skill", label: "skill" },
-];
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+
 const styles = makeStyles((theme) => ({
   h5: {
     fontFamily: "cerapro-Medium",
@@ -138,6 +134,7 @@ export default function AddQuizBySelection(props) {
   const [loading, setloading] = useState(false);
   const [tauxscore, settauxscore] = useState(50);
   const [count, setcount] = useState(0);
+  const [skill, setskill] = useState("");
   const [filterSkill, setfilterSkill] = useState("");
   const handleChangeFilter = (event) => {
     setfilterSkill(event.target.value);
@@ -157,25 +154,25 @@ export default function AddQuizBySelection(props) {
     );
     setcategories(result.data.reverse());
   };
-  const loadQuestions = async () => {
-    const quizmasterInfo = JSON.parse(sessionStorage.getItem("quizmasterInfo"));
+  const quizmasterInfo = JSON.parse(sessionStorage.getItem("quizmasterInfo"));
+  const loadQuestions = async (id) => {
+    // e.preventDefault();
     const config = {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${quizmasterInfo.token}`,
       },
     };
-    const result = await axios.get(
-      process.env.REACT_APP_BACKEND + "/quizmaster/getAllQuestions",
+    const { data } = await axios.get(
+      process.env.REACT_APP_BACKEND + `/quizmaster/getQuestionSkill/${id}`,
+      // { skill: skill },
       config
     );
-    console.log(result.data.reverse());
-    setquestionList(result.data.reverse());
+    setquestionList(data.questions.reverse());
   };
-
   React.useEffect(
     () => {
-      loadQuestions();
+      // loadQuestions();
       loadCategories();
     },
     [],
@@ -538,6 +535,50 @@ export default function AddQuizBySelection(props) {
             overflow: "auto",
           }}
         >
+          <Grid xs={12}>
+            <FormControl fullWidth sx={{ m: 1, width: 250 }}>
+              <InputLabel
+                id="demo-simple-select-label"
+                style={{
+                  textAlign: "center",
+                  fontFamily: "var(--font-family-cerapro-medium)",
+                  justifyContent: "center",
+                }}
+              >
+                <h3
+                  style={{
+                    marginTop: "2px",
+                    textAlign: "center",
+                  }}
+                >
+                  {" "}
+                  Skill
+                </h3>
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={skill}
+                onChange={(e) => setskill(e.target.value)}
+                label="Skill"
+                name="skill"
+                style={{ border: "3px solid gold", borderRadius: "49px" }}
+              >
+                <MenuItem value="">
+                  <em>Skill</em>
+                </MenuItem>
+                {categories?.map((key) => (
+                  <MenuItem
+                    key={key._id}
+                    onClick={() => loadQuestions(key._id)}
+                    value={key._id}
+                  >
+                    {key.skill_name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
           <Table size="small" aria-label="purchases">
             <TableHead style={{ borderBottom: "none" }}>
               <TableRow style={{ backgroundColor: "#F2DDDB" }}>
@@ -773,7 +814,7 @@ export default function AddQuizBySelection(props) {
                       // marginTop: "-4px",
                     }}
                   >
-                    Selection
+                    Submit
                   </div>
                 </button>
                 <div

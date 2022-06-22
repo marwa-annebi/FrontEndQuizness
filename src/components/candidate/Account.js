@@ -126,41 +126,41 @@ export default function Account(props) {
       },
     };
     try {
-      if (password.length < 7) {
+      // if (password.length < 7) {
+      //   setNotify({
+      //     isOpen: true,
+      //     message: "Password must be at least 7 characters",
+      //     type: "error",
+      //   });
+      // } else if (password !== confirmPassword) {
+      //   setNotify({
+      //     isOpen: true,
+      //     message: "Passwords do not match",
+      //     type: "error",
+      //   })
+      // }
+      // } else {
+      const { data } = await axios.post(
+        process.env.REACT_APP_BACKEND + "/candidate/updateProfile",
+        {
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          password: password,
+          picture: picture,
+          nationality: nationality,
+          state: state,
+          Address: Address,
+        },
+        config
+      );
+      if (data) {
         setNotify({
           isOpen: true,
-          message: "Password must be at least 7 characters",
-          type: "error",
+          message: "updated successfully",
+          type: "success",
         });
-      } else if (password !== confirmPassword) {
-        setNotify({
-          isOpen: true,
-          message: "Passwords do not match",
-          type: "error",
-        });
-      } else {
-        const { data } = await axios.post(
-          process.env.REACT_APP_BACKEND + "/candidate/updateProfile",
-          {
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            password: password,
-            picture: picture,
-            nationality: nationality,
-            state: state,
-            Address: Address,
-          },
-          config
-        );
-        if (data) {
-          setNotify({
-            isOpen: true,
-            message: "updated successfully",
-            type: "success",
-          });
-          sessionStorage.setItem("candidateInfo", JSON.stringify(data));
-        }
+        sessionStorage.setItem("candidateInfo", JSON.stringify(data));
       }
     } catch (error) {
       if (
