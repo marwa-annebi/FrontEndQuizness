@@ -17,6 +17,8 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import Loading from "../../Loading";
 import Notification from "../../Notification";
+import reset from "./../../../assets/reset.svg";
+
 const styles = makeStyles({
   textField: {
     // width: "200%",
@@ -148,9 +150,9 @@ export default function ResetPassword() {
         vertical="top"
         horizontal="right"
       />
-      <Grid container>
-        <Grid xs={6}>
-          <h1>heloo</h1>
+      <Grid container style={{ width: "100%", marginLeft: "0px" }}>
+        <Grid item xs={6} style={{ width: "50%", height: "90%" }}>
+          <img src={reset} width="100%" height="90%"></img>
         </Grid>
         <Grid xs={6} style={{ height: "100vh" }}>
           <form className="form" onSubmit={handleSubmit}>

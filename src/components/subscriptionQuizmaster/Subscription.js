@@ -3,7 +3,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Loading from "../Loading";
 import Notification from "../Notification";
-
+import logo from "./../../assets/logo.png";
 export default function Subscription(props) {
   const quizmasterInfo = JSON.parse(sessionStorage.getItem("quizmasterInfo"));
   const [prices, setprices] = useState([]);
@@ -13,8 +13,7 @@ export default function Subscription(props) {
     message: "",
     type: "",
   });
-  const darkColor = props.account.darkColor;
-  const lightColor = props.account.lightColor;
+
   useEffect(() => {
     fetchPrices();
   }, [prices]);
@@ -46,7 +45,8 @@ export default function Subscription(props) {
         process.env.REACT_APP_BACKEND + "/subs/session",
         {
           priceId: id,
-          subDomain: quizmasterInfo.user.account.domain_name,
+          user: quizmasterInfo.user._id,
+          // subDomain: quizmasterInfo.user.account.domain_name,
         },
         config
       );
@@ -71,123 +71,214 @@ export default function Subscription(props) {
       }
     }
   };
-
+  const features = [
+    {
+      Premium: (
+        <div
+          style={{
+            fontFamily: "var(--font-family-cerapro-medium)",
+            color: "#1D1D1D",
+            fontSize: "13px",
+          }}
+        >
+          <p>5000 users</p>
+          <p>10 000 quiz</p>
+          <p>100 000 questions</p>
+          <p>2 Types of Quiz (Randomize,By selection)</p>
+          <p>More Types of Question</p>
+          <p>Customize scoring Method</p>
+        </div>
+      ),
+    },
+    {
+      Standard: (
+        <div
+          style={{
+            fontFamily: "var(--font-family-cerapro-medium)",
+            color: "#1D1D1D",
+            fontSize: "13px",
+          }}
+        >
+          <p>3000 users</p>
+          <p>6000 quiz</p>
+          <p>60 000 questions</p>
+          <p>2 Types of Quiz (Randomize,By selection)</p>
+          <p>More Types of Question</p>
+          <p>1 scoring method </p>
+        </div>
+      ),
+    },
+    {
+      Basic: (
+        <div
+          style={{
+            fontFamily: "var(--font-family-cerapro-medium)",
+            color: "#1D1D1D",
+            fontSize: "13px",
+          }}
+        >
+          <p>1000 users</p>
+          <p>3000 quiz</p>
+          <p>50 000 questions</p>
+          <p>2 Types of Quiz (Randomize,By selection)</p>
+          <p>2 Types of Question(Multiple Choice,True Or False)</p>
+          <p>1 scoring method </p>
+        </div>
+      ),
+    },
+  ];
+  const backgrounds = {
+    Premium: "var(--gold)",
+    Standard: "var(--mahogany)",
+    Basic: "#1D1D1D",
+  };
+  const color = {
+    Premium: "var(--mahogany)",
+    Standard: "var(--gold)",
+    Basic: "white",
+  };
   return (
     <>
       {loading ? (
         <Loading />
       ) : (
-        <Grid
-          container
-          textAlign="center"
-          justifyContent="space-between"
-          style={{ paddingLeft: "35px", marginTop: "120px" }}
-        >
+        <Grid container textAlign="center" justifyContent="center" spacing={2}>
           <Notification
             notify={notify}
             setNotify={setNotify}
             vertical="top"
             horizontal="right"
           />
-          {prices.data?.map((key, index) => {
-            return (
-              <Grid item xs={4} style={{ display: "block" }}>
-                <Paper
-                  style={{
-                    width: "400px",
-                    borderRadius: "39px",
-                    border: `4px solid ${lightColor}`,
-                    height: "350px",
-                    boxShadow: "0px 6px 6px #00000029",
-                    backgroundColor: darkColor,
-                  }}
-                >
-                  <h1
+          <Grid
+            item
+            xs={12}
+            style={{ marginTop: "50px", marginLeft: "-1100px" }}
+          >
+            <img src={logo} width="250px" height="60px" />
+          </Grid>
+          <Grid item xs={12}>
+            <h1
+              style={{
+                fontFamily: "var(--font-family-cerapro-bold)",
+                textAlign: "center",
+                marginTop: "-10px",
+                fontSize: "36px",
+                color: "var(--mahogany)",
+              }}
+            >
+              Pricing
+              <hr style={{ width: "200px" }}></hr>
+            </h1>
+          </Grid>
+          <Grid xs={12} item style={{ display: "flex", marginLeft: "70px" }}>
+            {prices.data?.map((key, index) => {
+              return (
+                <Grid item xs={4} style={{ display: "block" }}>
+                  <Paper
                     style={{
-                      fontFamily: "var(--font-family-cerapro-bold)",
-                      //   color: "#1D1D1D",
-                      color: lightColor,
-                    }}
-                  >
-                    {key.nickname}
-                  </h1>
-                </Paper>
-                <Paper
-                  style={{
-                    width: "380px",
-                    borderRadius: "39px",
-                    border: `4px solid ${lightColor}`,
-                    height: "350px",
-                    boxShadow: "0px 6px 6px #00000029",
-                    marginTop: "-280px",
-                    paddingLeft: "20px",
-                    textAlign: "start",
-                  }}
-                >
-                  <p
-                    style={{
-                      fontFamily: "var(--font-family-cerapro-bold)",
-                    }}
-                  >
-                    Features Include
-                  </p>
-                  <div></div>
-                  <div
-                    style={{
-                      display: "flex",
-                      direction: "row",
-                      marginTop: "180px",
-                      textAlign: "center",
-                    }}
-                  >
-                    <h2
-                      style={{
-                        fontFamily: "var(--font-family-cerapro-bold)",
-                      }}
-                    >
-                      $ {key.unit_amount / 100}
-                    </h2>
-                    <p
-                      style={{
-                        fontFamily: "var(--font-family-cerapro-bold)",
-                        color: "#AFAFAF",
-                        marginTop: "28px",
-                        //   position: "absolute",
-                      }}
-                    >
-                      /month
-                    </p>{" "}
-                  </div>
-                  <button
-                    style={{
-                      //   marginTop: "20px",
-                      background: darkColor,
-                      opacity: "0.7",
+                      width: "400px",
                       borderRadius: "39px",
-                      border: `2px solid ${lightColor}`,
-                      width: "350px",
-                      height: "50px",
-                      boxShadow: "0px 3px 6px #00000029",
+                      border: `4px solid ${color[key.nickname]}`,
+                      height: "350px",
+                      boxShadow: "0px 6px 6px #00000029",
+                      backgroundColor: backgrounds[key.nickname],
+                    }}
+                  >
+                    <h1
+                      style={{
+                        fontFamily: "var(--font-family-cerapro-bold)",
+                        //   color: "#1D1D1D",
+                        color: color[key.nickname],
+                      }}
+                    >
+                      {key.nickname}
+                    </h1>
+                  </Paper>
+                  <Paper
+                    style={{
+                      width: "380px",
+                      borderRadius: "39px",
+                      border: `4px solid ${color[key.nickname]}`,
+
+                      height: "350px",
+                      boxShadow: "0px 6px 6px #00000029",
+                      marginTop: "-280px",
+                      paddingLeft: "20px",
+                      textAlign: "start",
                     }}
                   >
                     <p
                       style={{
                         fontFamily: "var(--font-family-cerapro-bold)",
-                        color: lightColor,
-                        fontSize: "22px",
-                        opacity: 1,
-                        cursor: "pointer",
-                        lineHeight: "5px",
+                        color: "var(--mahogany)",
                       }}
-                      onClick={() => createSession(key.id)}
                     >
-                      Buy Now
+                      Features Include
                     </p>
-                  </button>
-                </Paper>
-              </Grid>
-            );
-          })}
+                    <div style={{ marginLeft: "10px" }}>
+                      {features.map((feature) => {
+                        return feature[key.nickname];
+                      })}
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        direction: "row",
+                        // marginTop: "180px",
+                        textAlign: "center",
+                      }}
+                    >
+                      <h2
+                        style={{
+                          fontFamily: "var(--font-family-cerapro-bold)",
+                        }}
+                      >
+                        $ {key.unit_amount / 100}
+                      </h2>
+                      <p
+                        style={{
+                          fontFamily: "var(--font-family-cerapro-bold)",
+                          color: "#AFAFAF",
+                          marginTop: "28px",
+                          //   position: "absolute",
+                        }}
+                      >
+                        /month
+                      </p>{" "}
+                    </div>
+                    <button
+                      style={{
+                        //   marginTop: "20px",
+                        background: backgrounds[key.nickname],
+                        // opacity: "0.7",
+                        borderRadius: "39px",
+                        border: `2px solid ${color[key.nickname]}`,
+                        width: "350px",
+                        height: "50px",
+                        marginTop: "30px",
+                        boxShadow: "0px 3px 6px #00000029",
+                      }}
+                    >
+                      <p
+                        style={{
+                          fontFamily: "var(--font-family-cerapro-bold)",
+                          color: color[key.nickname],
+
+                          fontSize: "22px",
+                          opacity: 1,
+                          cursor: "pointer",
+                          marginTop: "5px",
+                        }}
+                        onClick={() => createSession(key.id)}
+                      >
+                        Buy Now
+                      </p>
+                    </button>
+                  </Paper>
+                </Grid>
+              );
+            })}
+          </Grid>
         </Grid>
       )}
     </>

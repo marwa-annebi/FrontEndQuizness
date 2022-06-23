@@ -100,15 +100,7 @@ function SignUpQuizmaster() {
   };
   const navigate = useNavigate();
   const submitHandler = async (e) => {
-    // setDone(undefined);
     e.preventDefault();
-    // if (password !== confirmpassword) {
-    //   setNotify({
-    //     isOpen: true,
-    //     message: "passwords do not match",
-    //     type: "error",
-    //   });
-    // } else {
     try {
       const config = {
         headers: {
@@ -126,9 +118,8 @@ function SignUpQuizmaster() {
       const quizmasterInfo = JSON.parse(
         sessionStorage.getItem("quizmasterInfo")
       );
-      console.log(quizmasterInfo);
       if (quizmasterInfo) {
-        navigate(`/quizmaster/${quizmasterInfo.userId}`);
+        navigate("/subscription");
       }
     } catch (error) {
       if (

@@ -19,6 +19,13 @@
   src: url("./fonts/CeraProBold.otf") format("opentype");
 }
 
+@font-face {
+  font-family: "specimen";
+  font-style: normal;
+  font-weight: 700;
+  src: url("./fonts/specimen.otf") format("opentype");
+}
+
 .App {
   /* font-family: "cerapro-bold"; */
   width: 100vw;

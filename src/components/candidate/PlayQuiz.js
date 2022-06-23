@@ -168,8 +168,9 @@ export default function PlayQuiz(company_info) {
         config
       );
       setloading(false);
+      // console.log(data);
       if (data.scoreFinal >= state.Tauxscore) {
-        navigate("/Quiz/Success", { state: data.scoreFinal });
+        navigate("/Quiz/Success", { state: data });
       } else {
         navigate("/Quiz/Failed", { state: data.scoreFinal });
       }

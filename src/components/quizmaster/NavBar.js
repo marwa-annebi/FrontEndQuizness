@@ -217,6 +217,10 @@ export default function NavBar(props) {
                   src={img}
                   // onClick={window.location("/dashboard/quizMaster")}
                   className={classes.image1}
+                  style={{
+                    marginTop: "3px",
+                    borderRadius: "40px",
+                  }}
                 ></img>
               </Link>
             </div>

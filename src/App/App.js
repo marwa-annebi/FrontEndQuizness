@@ -27,7 +27,7 @@ import EditQuizBySelection from "../components/quizmaster/EditQuizBySelection";
 import EditQuizRandomly from "../components/quizmaster/EditQuizRandomly";
 import { CheckoutSuccess } from "../components/candidate/CheckoutSuccess";
 import NotFound from "../components/NotFoundPage";
-
+import Example from "../components/candidate/certificate/Example";
 import ListVoucher from "../components/quizmaster/ListVoucher";
 import Success from "../components/candidate/score/Success";
 import Failed from "../components/candidate/score/Failed";
@@ -95,10 +95,7 @@ function App() {
             element={<ResetPassword />}
             path="/setNewPassword/:id/:resetToken/:type"
           />
-          <Route
-            element={<Subscription {...companyColors} />}
-            path="/subscription"
-          />
+
           {IsLoggedIn ? (
             <>
               <Route
@@ -171,6 +168,10 @@ function App() {
                 element={<Failed company_info={companyColors} />}
                 path="/Quiz/Failed"
               />
+              <Route
+                element={<Example {...companyColors} />}
+                path="/printcertificate"
+              />
             </>
           ) : (
             <Route path="*" element={<NotFound />} />
@@ -180,6 +181,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} exact />
           <Route element={<LinaerStepper />} path="/quizmaster/:id" exact />
+          <Route element={<Subscription />} path="/subscription" />
         </Routes>
       )}
     </BrowserRouter>

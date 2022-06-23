@@ -106,6 +106,7 @@ export default function QuestionForm(props) {
       { content: "", veracity: false },
     ],
   });
+  console.log(question);
   const [notify, setNotify] = useState({
     isOpen: false,
     message: "",
@@ -137,9 +138,8 @@ export default function QuestionForm(props) {
     loadCategories();
     if (questionId) setquestion({ ...questionId });
   }, []);
-  const addQuestion = async (e) => {
-    e.preventDefault();
-
+  const addQuestion = async () => {
+    // e.preventDefault();
     const quizmasterInfo = JSON.parse(sessionStorage.getItem("quizmasterInfo"));
     const config = {
       headers: {

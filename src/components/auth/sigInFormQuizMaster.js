@@ -49,8 +49,6 @@ export default function SigInForm(companyInfo) {
   const microsoft = () => {
     window.open("http://localhost:5000/auth/microsoft/Quizmaster", "_self");
   };
-
-  // const { switchToSignup } = useContext(AccountContext);
   const classes = styles();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -101,7 +99,6 @@ export default function SigInForm(companyInfo) {
       }
     }
   };
-  console.log("siginnn", companyInfo);
   const darkColor = companyInfo.companyInfo.company_colors.account.darkColor;
   const lightColor = companyInfo.companyInfo.company_colors.account.lightColor;
   const [showPassword, setshowPassword] = useState(false);

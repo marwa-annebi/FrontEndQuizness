@@ -140,6 +140,7 @@ export default function ForgotPasswordScreen(props) {
                       height: "80px",
                       textAlign: "center",
                       marginTop: "30px",
+                      borderRadius: "40px",
                     }}
                   />
                 </div>

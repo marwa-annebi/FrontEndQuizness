@@ -1,6 +1,6 @@
 import { Grid, Paper } from "@mui/material";
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import ContentMenuItem from "../../ContentMenuItem";
 import NavBarCandidate from "../NavBarCandidate";
 import { ReactComponent as Happy } from "./../../../assets/undraw_happy_announcement_re_tsm0.svg";
@@ -14,13 +14,20 @@ export default function Success(company_info) {
   const darkColor = company_info.company_info.account.darkColor;
   const lightColor = company_info.company_info.account.lightColor;
   const location = useLocation();
+
   const { state } = location;
+  let data = state;
+  const navigate = useNavigate();
+  console.log(data);
   const styles = makeStyles(() => ({
     plume: {
       fill: lightColor,
       "--color-1": darkColor,
     },
   }));
+  const getCertificate = () => {
+    navigate("/printcertificate", { state: data });
+  };
   const classes = styles();
   return (
     <Grid container spacing={{ xs: 6, md: 12 }}>
@@ -67,12 +74,13 @@ export default function Success(company_info) {
                 color: "#1D1D1D",
               }}
             >
-              {state} %
+              {state.scoreFinal} %
             </Grid>
             <Grid xs={12} item>
               <Happy width="400px" height="350px" className={classes.plume} />
             </Grid>
           </Grid>
+          <button onClick={getCertificate}> get your Certificate</button>
         </ContentMenuItem>
       </Grid>
     </Grid>
