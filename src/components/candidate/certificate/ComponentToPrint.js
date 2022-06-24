@@ -1,3 +1,4 @@
+import moment from "moment";
 import React from "react";
 import "./../../../css/certificate.css";
 
@@ -11,7 +12,8 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
         style={{
           borderColor: account.account.darkColor,
           borderRadius: "39px",
-          marginLeft: "50px",
+          // marginLeft: "50px",
+          marginTop: "25px",
         }}
       >
         <tr>
@@ -19,8 +21,11 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
             <img
               src={account.account.logo}
               alt="logo"
-              width="100px"
-              style={{ borderRadius: "40px" }}
+              style={{
+                borderRadius: "40px",
+                width: "70px",
+                height: "70px",
+              }}
             />
           </td>
         </tr>
@@ -45,10 +50,13 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
               {candidat.voucher.candidat.lastName}{" "}
               {candidat.voucher.candidat.firstName}
             </h1>
-            <h3 class="afterName">
-              For his/her completion of HSE Awareness session
+            <h3
+              class="afterName"
+              style={{ fontFamily: "var(--font-family-cerapro-medium)" }}
+            >
+              For his/her success in the quiz
             </h3>
-            <h3>Awarded on 1 March 2020 </h3>
+            {/* <h3>{moment(new Date())} </h3> */}
           </td>
         </tr>
         <tr>
@@ -58,7 +66,16 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
               class="certSign"
               alt="sign"
             />
-            <h3>Person Name </h3>
+            <div style={{ marginTop: "-50px" }}>
+              <h4
+                style={{
+                  fontFamily: "'Dancing Script', cursive",
+                  // paddingLeft: "100px",
+                }}
+              >
+                {account.account.businessName}
+              </h4>
+            </div>
           </td>
         </tr>
       </table>

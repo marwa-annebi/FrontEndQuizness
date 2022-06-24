@@ -200,7 +200,19 @@ export default function NavBar(props) {
     [],
     [notifications]
   );
-
+  const deleteNotif = async (id) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${quizmasterInfo.token}`,
+      },
+    };
+    await axios.delete(
+      process.env.REACT_APP_BACKEND + `/quizmaster/deleteNotification/${id}`,
+      config
+    );
+    window.location.reload(false);
+  };
   const classes = styles();
   return (
     <AppBar style={{ backgroundColor: "white" }} elevation="0">
@@ -288,7 +300,7 @@ export default function NavBar(props) {
                     fontSize: "12px",
                   }}
                 >
-                  {notifications?.map((notif) => {
+                  {notifications?.map((notif, index) => {
                     return (
                       <div
                         style={{
@@ -311,6 +323,7 @@ export default function NavBar(props) {
                         }}
                         onClick={() => {
                           navigate("/dashboard/quizMaster/vouchers");
+                          deleteNotif(notif);
                         }}
                       >
                         <p

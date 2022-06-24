@@ -83,9 +83,18 @@ const items = [
       className={({ isActive }) => (isActive ? "link-active" : "link")}
       to="/dashboard/quizMaster/vouchers"
     >
-      Vouchers
+      Orders
     </NavLink>,
     "6"
+  ),
+  getItem(
+    <NavLink
+      className={({ isActive }) => (isActive ? "link-active" : "link")}
+      to="/dashboard/quizMaster/scores"
+    >
+      Score Candidates
+    </NavLink>,
+    "7"
   ),
   // getItem("Voucher ", "5"),
 ];

@@ -14,8 +14,8 @@ export default function Success(company_info) {
   const darkColor = company_info.company_info.account.darkColor;
   const lightColor = company_info.company_info.account.lightColor;
   const location = useLocation();
-
   const { state } = location;
+
   let data = state;
   const navigate = useNavigate();
   console.log(data);
@@ -51,15 +51,34 @@ export default function Success(company_info) {
           <ReactAudioPlayer src={song} autoPlay="true" />
 
           <Grid container textAlign="center" justifyContent="center">
-            <Grid xs={12} item>
+            <Grid xs={10} item>
               <h1
                 style={{
                   color: "#1D1D1D",
+                  marginLeft: "150px",
+
                   fontFamily: "var(--font-family-cerapro-bold)",
                 }}
               >
                 YOUR SCORE IS
               </h1>
+            </Grid>
+            <Grid xs={2} item>
+              <button
+                onClick={getCertificate}
+                style={{
+                  marginLeft: "10px",
+                  borderRadius: "39px",
+                  height: "60px",
+                  width: "150px",
+                  fontFamily: "var(--font-family-cerapro-bold)",
+                  backgroundColor: lightColor,
+                  border: `2px solid ${darkColor}`,
+                }}
+              >
+                {" "}
+                get your Certificate
+              </button>
             </Grid>
             <Grid
               xs={2}
@@ -72,15 +91,16 @@ export default function Success(company_info) {
                 fontSize: "45px",
                 fontFamily: "var(--font-family-cerapro-bold)",
                 color: "#1D1D1D",
+                marginLeft: "30px",
               }}
             >
               {state.scoreFinal} %
             </Grid>
+
             <Grid xs={12} item>
               <Happy width="400px" height="350px" className={classes.plume} />
             </Grid>
           </Grid>
-          <button onClick={getCertificate}> get your Certificate</button>
         </ContentMenuItem>
       </Grid>
     </Grid>

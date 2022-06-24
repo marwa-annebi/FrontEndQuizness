@@ -325,26 +325,6 @@ export default function Account(props) {
                         className={classes.textField}
                       ></TextField>
                     </Grid>{" "}
-                    <Grid xs={4}>
-                      <div
-                        style={{
-                          marginTop: "10px",
-
-                          color: "#2D2D2D",
-                          fontFamily: "var(--font-family-cerapro-bold)",
-                          fontSize: "20px",
-                          marginBottom: "-5px",
-                        }}
-                      >
-                        ConfirmPassword:
-                      </div>
-                      <TextField
-                        variant="standard"
-                        className={classes.textField}
-                        value={confirmPassword}
-                        onChange={(e) => setconfirmPassword(e.target.value)}
-                      ></TextField>
-                    </Grid>
                   </Paper>
                 </div>
               </Grid>

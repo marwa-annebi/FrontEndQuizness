@@ -35,6 +35,7 @@ import { Statistics } from "../components/quizmaster/Statistics";
 import NumbreofQuiz from "../components/quizmaster/Statistic/NumbreOfQuiz";
 import NumbreOfcandidatByMonth from "../components/quizmaster/Statistic/NumbreOfcandidatByMonth";
 import Subscription from "../components/subscriptionQuizmaster/Subscription";
+import ScoreCandidate from "../components/quizmaster/ScoreCandidate";
 
 function App() {
   const [companyColors, setcompanyColors] = React.useState("");
@@ -110,6 +111,7 @@ function App() {
                 <Route path="quizHistory" element={<QuizHistory />} />
                 <Route path="questionsBank" element={<QuestionsBank />} />
                 <Route path="category" element={<Category />} />
+                <Route path="scores" element={<ScoreCandidate />} />
 
                 <Route path="candidate" element={<Candidate />} />
                 <Route path="statistics/*" element={<Statistics />}>

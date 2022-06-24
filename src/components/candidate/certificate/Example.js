@@ -29,8 +29,8 @@ export default function Example(props) {
           // padding: "10px",
           fontFamily: " var(--font-family-cerapro-bold)",
           fontSize: "16px",
-          // marginLeft: "760px",
-          // marginTop: "30px",
+          marginLeft: "240px",
+          marginTop: "300px",
         }}
         onClick={handlePrint}
       >
